@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Estudio Teórico y Físico-Matemático de la Onda Electromagnética en Rayos X | X-Ray Physics Lab</title>
+  
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="style.css">
+
+  <!-- KaTeX para renderizado de alta precisión de fórmulas electromagnéticas y cuánticas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+
+  <!-- Importmap para Three.js ES6 -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+
+  <style>
+    /* Estilos dedicados para el documento monográfico de estudio */
+    .study-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 16px 24px 60px;
+    }
+
+    .study-header-banner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--polar-panel);
+      border: 1px solid var(--polar-border);
+      border-radius: 8px;
+      padding: 14px 22px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-polar-sm);
+    }
+
+    .study-nav-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: var(--glacier-100);
+      color: var(--glacier-800);
+      border: 1px solid var(--glacier-300);
+      border-radius: 6px;
+      font-weight: 800;
+      font-size: 11px;
+      text-decoration: none;
+      transition: all 0.15s ease;
+    }
+
+    .study-nav-back:hover {
+      background: var(--glacier-500);
+      color: #ffffff;
+      border-color: var(--glacier-600);
+      box-shadow: 0 2px 8px rgba(14, 165, 233, 0.35);
+    }
+
+    /* Layout en dos columnas: Simulador 3D interactivo fijo + Tratado Teórico */
+    .study-grid {
+      display: grid;
+      grid-template-columns: 1fr 480px;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .study-content-column {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .study-sim-sticky-column {
+      position: sticky;
+      top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .study-section-card {
+      background: var(--polar-panel);
+      border: 1px solid var(--polar-border);
+      border-radius: 8px;
+      padding: 22px 26px;
+      box-shadow: var(--shadow-polar-sm);
+    }
+
+    .study-section-card h2 {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--glacier-text-main);
+      border-bottom: 2px solid var(--glacier-400);
+      padding-bottom: 8px;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .study-section-card h3 {
+      font-size: 12.5px;
+      font-weight: 800;
+      color: var(--glacier-700);
+      margin: 16px 0 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .study-section-card p, .study-section-card li {
+      font-size: 12px;
+      line-height: 1.7;
+      color: var(--glacier-text-main);
+      margin-bottom: 10px;
+    }
+
+    .math-callout {
+      background: var(--polar-subtle);
+      border-left: 4px solid var(--glacier-500);
+      border-radius: 0 6px 6px 0;
+      padding: 12px 16px;
+      margin: 14px 0;
+      border-top: 1px solid var(--polar-border-subtle);
+      border-right: 1px solid var(--polar-border-subtle);
+      border-bottom: 1px solid var(--polar-border-subtle);
+    }
+
+    .math-callout-racing {
+      border-left-color: var(--racing-red);
+      background: #fff8f8;
+    }
+
+    .study-canvas-box {
+      width: 100%;
+      height: 380px;
+      background: #06090e;
+      border-radius: 7px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .study-canvas-box canvas {
+      display: block;
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    .study-controls-panel {
+      background: var(--polar-panel);
+      border: 1px solid var(--polar-border);
+      border-radius: 8px;
+      padding: 14px 16px;
+      box-shadow: var(--shadow-polar-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .slider-row-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .slider-row-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    .study-readout-pill {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--glacier-700);
+      background: var(--glacier-100);
+      padding: 2px 7px;
+      border-radius: 4px;
+    }
+
+    .legend-tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .legend-chip {
+      font-size: 9.5px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .chip-e { background: var(--racing-red-light); color: var(--racing-red); border: 1px solid var(--racing-red-border); }
+    .chip-b { background: var(--glacier-100); color: var(--glacier-700); border: 1px solid var(--glacier-300); }
+    .chip-s { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
+    .chip-e-beam { background: #cffafe; color: #0891b2; border: 1px solid #a5f3fc; }
+
+    @media (max-width: 1100px) {
+      .study-grid { grid-template-columns: 1fr; }
+      .study-sim-sticky-column { position: static; }
+    }
+  </style>
+</head>
+<body class="lab-body">
+
+  <div class="study-container">
+
+    <!-- CABECERA DE NAVEGACIÓN Y TÍTULO -->
+    <header class="study-header-banner">
+      <div>
+        <div class="brand-badge">TRATADO MONOGRÁFICO DE ELECTRODINÁMICA CUÁNTICA & MÉDICA</div>
+        <h1 style="font-size: 18px; font-weight: 800; margin-top: 4px; color: var(--glacier-text-main);">
+          GENERACIÓN DE ONDAS ELECTROMAGNÉTICAS POR IMPACTO ELECTRÓNICO (RAYOS X)
+        </h1>
+        <span style="font-size: 10px; color: var(--glacier-text-muted); font-weight: 600;">
+          DESACELERACIÓN COULOMBIANA, POTENCIALES DE LIÉNARD-WIECHERT, ESPECTRO DE KRAMERS Y LÍMITE DE DUANE-HUNT
+        </span>
+      </div>
+
+      <div style="display: flex; gap: 8px;">
+        <a href="calculos_rayos.html" class="study-nav-back" title="Abrir Formulario de Ecuaciones y Cálculos">
+          📐 ECUACIONES ↗
+        </a>
+        <a href="index.html" class="study-nav-back">
+          ⬅ VOLVER AL LABORATORIO
+        </a>
+      </div>
+    </header>
+
+    <!-- GRID PRINCIPAL: CONTENIDO CIENTÍFICO + SIMULADOR 3D DEDICADO -->
+    <div class="study-grid">
+
+      <!-- COLUMNA IZQUIERDA: TRATADO TEÓRICO-MATEMÁTICO RIGUROSO -->
+      <main class="study-content-column">
+
+        <!-- SECCIÓN 1: INTRODUCCIÓN Y FENOMENOLOGÍA FUNDAMENTAL -->
+        <article class="study-section-card">
+          <h2>1. Naturaleza Electromagnética y Origen Físico del Fotón de Rayos X</h2>
+          <p>
+            Cuando un electrón libre acelerado por una diferencia de potencial electrostático de decenas de kilovoltios ($V_0 \sim 20 - 150\text{ kVp}$) colisiona contra un blanco metálico de alto número atómico ($Z=74$ en Tungsteno), penetra en la red cristalina a velocidades relativistas ($\beta = v/c \sim 0.27 - 0.63$).
+          </p>
+          <p>
+            A escala atómica, el electrón no choca mecánicamente como una esfera sólida; interactúa intensamente con el <strong>campo electrostático nuclear coulombiano no apantallado</strong>. Esta interacción da lugar a dos mecanismos de emisión electromagnética perfectamente diferenciados:
+          </p>
+          <ul>
+            <li>
+              <strong>Radiación de Frenado (Bremsstrahlung):</strong> Emisión continua originada por la aceleración transversal y longitudinal brusca ($\vec{a} = d\vec{v}/dt$) del electrón incidente en el pozo coulombiano del núcleo ($+Ze$). Representa entre el $80\%$ y el $90\%$ del haz diagnóstico.
+            </li>
+            <li>
+              <strong>Radiación Característica:</strong> Emisión discreta y monoenergética resultante de la ionización de electrones de capas profundas ($K, L$), seguida por la desexcitación de electrones de niveles superiores mediante saltos cuánticos radiativos.
+            </li>
+          </ul>
+        </article>
+
+        <!-- SECCIÓN 2: ELECTRODINÁMICA DE MAXWELL Y LIÉNARD-WIECHERT -->
+        <article class="study-section-card">
+          <h2>2. Electrodinámica Clásica: Potenciales de Liénard-Wiechert y Potencia de Larmor</h2>
+          <p>
+            A partir de las ecuaciones covariantes de Maxwell en el gauge de Lorenz ($\partial_\mu A^\mu = 0$), el campo electromagnético exacto generado por una carga puntual $q = -e$ con trayectoria arbitraria $\vec{r}'(t')$ viene dado por los <strong>Campos de Liénard-Wiechert</strong> evaluados en el tiempo retardado $t_{\text{ret}} = t - |\vec{r} - \vec{r}'|/c$:
+          </p>
+
+          <div class="math-callout">
+            $$\vec{E}(\vec{r}, t) = \underbrace{\frac{q}{4\pi\varepsilon_0} \left[ \frac{\hat{n} - \vec{\beta}}{\gamma^2 (1 - \vec{\beta}\cdot\hat{n})^3 R^2} \right]_{\text{ret}}}_{\text{Campo de Velocidad (Cuasiestático, } \propto 1/R^2\text{)}} + \underbrace{\frac{q}{4\pi\varepsilon_0 c} \left[ \frac{\hat{n} \times \left( (\hat{n} - \vec{\beta}) \times \dot{\vec{\beta}} \right)}{(1 - \vec{\beta}\cdot\hat{n})^3 R} \right]_{\text{ret}}}_{\text{Campo de Radiación (Onda EM, } \propto 1/R\text{)}}$$
+          </div>
+
+          <p>
+            donde $\vec{\beta} = \vec{v}/c$, $\dot{\vec{\beta}} = \vec{a}/c$, $\gamma = 1/\sqrt{1-\beta^2}$ es el factor de Lorentz, y $\hat{n} = \vec{R}/R$ es el vector unitario hacia el observador.
+          </p>
+          <p>
+            El campo magnético asociado $\vec{B}(\vec{r}, t)$ es estrictamente ortogonal al campo eléctrico y al vector de propagación:
+          </p>
+
+          <div class="math-callout">
+            $$\vec{B}_{\text{rad}}(\vec{r}, t) = \frac{1}{c} \left( \hat{n} \times \vec{E}_{\text{rad}} \right)$$
+          </div>
+
+          <h3>Flujo de Energía: Vector de Poynting y Potencia Total Irradiada</h3>
+          <p>
+            La densidad de flujo de energía electromagnética transportada por el fotón de rayos X está determinada por el <strong>Vector de Poynting</strong> $\vec{S}$:
+          </p>
+
+          <div class="math-callout">
+            $$\vec{S} = \frac{1}{\mu_0} \left( \vec{E} \times \vec{B} \right) = \frac{1}{\mu_0 c} |\vec{E}_{\text{rad}}|^2 \, \hat{n} \quad \left[ \frac{\text{W}}{\text{m}^2} \right]$$
+          </div>
+
+          <p>
+            Integrando el flujo del vector de Poynting sobre una esfera cerrada en el infinito, se obtiene la <strong>Generalización Relativista de Liénard para la Potencia de Larmor</strong>:
+          </p>
+
+          <div class="math-callout math-callout-racing">
+            $$P = \frac{e^2 \gamma^6}{6\pi\varepsilon_0 c^3} \left[ |\vec{a}|^2 - |\vec{\beta} \times \vec{a}|^2 \right]$$
+          </div>
+
+          <p>
+            Esta ecuación demuestra por qué la desaceleración de partículas superligeras como los electrones ($m_e = 9.109\times 10^{-31}\text{ kg}$) produce radiación electromagnética billones de veces más intensa que la de protones o iones pesados, dado que la aceleración coulombiana $a = F/m \propto 1/m$.
+          </p>
+        </article>
+
+        <!-- SECCIÓN 3: ESPECTRO CONTINUO DE BREMSSTRAHLUNG Y LEY DE KRAMERS -->
+        <article class="study-section-card">
+          <h2>3. Dispersión Coulombiana y Espectro Continuo de Kramers (1923)</h2>
+          <p>
+            Cuando el electrón pasa a una distancia $b$ (parámetro de impacto) del núcleo cargado con $+Ze$, describe una trayectoria hiperbólica en el potencial central de Coulomb $V(r) = \frac{Ze^2}{4\pi\varepsilon_0 r}$.
+          </p>
+          <p>
+            Al experimentar una aceleración impulsiva temporal $\vec{a}(t)$ de duración $\tau \sim b/v \sim 10^{-19}\text{ s}$, el pulso de radiación electromagnética emitido posee componentes espectrales continuas dadas por la <strong>Transformada de Fourier</strong> $\tilde{a}(\omega) = \int_{-\infty}^\infty a(t) e^{i\omega t} dt$.
+          </p>
+          <p>
+            Hendrik Kramers dedujo en 1923 la distribución espectral de intensidad para un haz polienergético de electrones frenados en un blanco metálico grueso:
+          </p>
+
+          <div class="math-callout">
+            $$I(E) \, dE = K \cdot Z \cdot i \cdot \left( E_{\max} - E \right) \, dE$$
+          </div>
+
+          <p>
+            donde $K \approx 1.0 \times 10^{-9}\text{ keV}^{-1}$, $Z$ es el número atómico del blanco, $i$ es la corriente de tubo (mA), y $E_{\max} = e V_0$ es la energía cinética máxima de los electrones incidentes.
+          </p>
+          <p>
+            Esta ley explica por qué el espectro no filtrado (crudo) es una recta decreciente que nace en $E = 0$ y culmina exactamente en el corte cuántico $E_{\max}$.
+          </p>
+        </article>
+
+        <!-- SECCIÓN 4: LÍMITE CUÁNTICO DE DUANE-HUNT -->
+        <article class="study-section-card">
+          <h2>4. Límite Cuántico de Duane-Hunt y Longitud de Onda Mínima</h2>
+          <p>
+            La electrodinámica puramente clásica predecía que la desaceleración instantánea en distancias infinitesimales ($b \to 0$) emitiría frecuencias arbitrariamente altas ($\nu \to \infty$), lo que constituía una catástrofe ultravioleta del frenado.
+          </p>
+          <p>
+            En 1915, William Duane y Franklin Hunt aplicaron la hipótesis de cuantización de Planck-Einstein, postulando que la energía máxima que puede portar un único fotón de Bremsstrahlung corresponde a la pérdida total de la energía cinética del electrón en una única interacción frontal ($b \approx 0$):
+          </p>
+
+          <div class="math-callout math-callout-racing">
+            $$E_{\max} = h \cdot \nu_{\max} = \frac{h \cdot c}{\lambda_{\min}} = e \cdot V_0$$
+          </div>
+
+          <p>
+            Despejando la <strong>longitud de onda de corte de Duane-Hunt ($\lambda_{\min}$)</strong>:
+          </p>
+
+          <div class="math-callout math-callout-racing">
+            $$\lambda_{\min} = \frac{h c}{e V_0} = \frac{1239.84187 \text{ pm}\cdot\text{keV}}{V_0 (\text{kV})}$$
+          </div>
+
+          <p>
+            Para un tubo operando a $80\text{ kVp}$, la longitud de onda más corta posible en todo el espectro es:
+          </p>
+          <div class="math-callout">
+            $$\lambda_{\min} = \frac{1239.84}{80} = 15.498 \text{ pm} = 0.155 \text{ \AA} \quad \implies \quad \nu_{\max} = \frac{c}{\lambda_{\min}} = 19.34 \text{ EHz } (10^{18}\text{ Hz})$$
+          </div>
+          <p>
+            Ningún fotón puede ser generado con energía superior a $80\text{ keV}$, independientemente de la corriente mA o del material del blanco.
+          </p>
+        </article>
+
+        <!-- SECCIÓN 5: RADIACIÓN CARACTERÍSTICA Y LEY DE MOSELEY -->
+        <article class="study-section-card">
+          <h2>5. Radiación Característica: Cuantización Orbital y Ley de Moseley</h2>
+          <p>
+            Si la energía del electrón incidente supera la energía de enlace de la capa K ($E_0 > E_K$, donde $E_K = 69.5\text{ keV}$ en Tungsteno), existe una probabilidad finita de ionizar el átomo expulsando un electrón de la capa $1s_{1/2}$.
+          </p>
+          <p>
+            La vacante creada deja al átomo en un estado excitado inestable ($\sim 10^{-16}\text{ s}$). Al decaer un electrón desde un nivel cuántico superior, se emite un fotón monoenergético que cumple las <strong>reglas de selección dipolar</strong> ($\Delta l = \pm 1, \Delta j = 0, \pm 1$):
+          </p>
+          <ul>
+            <li><strong>Línea $K_{\alpha_1}$ ($2p_{3/2} \to 1s_{1/2}$):</strong> $E = 59.32\text{ keV}$ (Tungsteno)</li>
+            <li><strong>Línea $K_{\alpha_2}$ ($2p_{1/2} \to 1s_{1/2}$):</strong> $E = 57.98\text{ keV}$ (Tungsteno)</li>
+            <li><strong>Línea $K_{\beta_1}$ ($3p_{3/2} \to 1s_{1/2}$):</strong> $E = 67.24\text{ keV}$ (Tungsteno)</li>
+          </ul>
+
+          <div class="math-callout">
+            $$\sqrt{\nu_{K_\alpha}} = \sqrt{\frac{3}{4} R_\infty c} \cdot (Z - \sigma) \quad \text{(Ley de Moseley, 1913)}$$
+          </div>
+
+          <p>
+            donde $\sigma \approx 1$ es la constante de apantallamiento nuclear para la capa K. Esto permite identificar inequívocamente la composición atómica del blanco a través de sus picos discretos.
+          </p>
+        </article>
+
+        <!-- SECCIÓN 6: DISTRIBUCIÓN ANGULAR RELATIVISTA Y EFECTO TALÓN -->
+        <article class="study-section-card">
+          <h2>6. Distribución Espacial Relativista ("Beaming") y Efecto Talón</h2>
+          <p>
+            A velocidades no relativistas ($\beta \ll 1$), la radiación de frenado presenta la distribución dipolar simétrica clásica de Larmor ($dP/d\Omega \propto \sin^2\theta$, con máxima emisión perpendicular a la desaceleración $\theta = 90^\circ$).
+          </p>
+          <p>
+            A potenciales diagnósticos ($80 - 150\text{ kVp}$), la transformación de Lorentz deforma el lóbulo hacia adelante debido al efecto Doppler relativista:
+          </p>
+
+          <div class="math-callout">
+            $$\frac{dP}{d\Omega} = \frac{e^2 a^2}{16\pi^2\varepsilon_0 c^3} \frac{\sin^2\theta}{(1 - \beta\cos\theta)^5}$$
+          </div>
+
+          <p>
+            El ángulo de máxima emisión se desplaza hacia adelante: $\theta_{\max} \approx \arccos\left( \frac{\sqrt{1 + 15\beta^2} - 1}{3\beta} \right)$.
+          </p>
+          <p>
+            Debido a este efecto y a la inclinación del ánodo ($\alpha = 7^\circ - 17^\circ$), los fotones emitidos hacia el lado anódico deben atravesar un mayor espesor de tungsteno antes de emerger, sufriendo una atenuación exponencial mucho mayor según la <strong>Ley de Beer-Lambert</strong>:
+          </p>
+
+          <div class="math-callout">
+            $$I(\theta) = I_0(\theta) \cdot \exp\left(-\mu(E) \frac{\bar{x}}{\sin\theta}\right)$$
+          </div>
+
+          <p>
+            Esto genera el célebre <strong>Efecto Talón (Anode Heel Effect)</strong>: el haz de rayos X es hasta un $30\%$ más intenso en el lado del cátodo que en el lado del ánodo, principio esencial en la colimación y posicionamiento radiológico de pacientes en radiología de tórax y fémur.
+          </p>
+        </article>
+
+      </main>
+
+      <!-- COLUMNA DERECHA: SIMULADOR 3D INTERACTIVO CON THREE.JS -->
+      <aside class="study-sim-sticky-column">
+
+        <!-- TARJETA DEL SIMULADOR 3D -->
+        <div class="study-section-card" style="padding: 14px;">
+          <h2 style="font-size: 12px; margin-bottom: 10px;">
+            🔬 VISUALIZADOR 3D // VECTOR DE POYNTING & ONDAS EM
+          </h2>
+
+          <div class="study-canvas-box" id="study-em-canvas-container">
+            <!-- Canvas WebGL Three.js -->
+          </div>
+
+          <div class="legend-tag-row">
+            <span class="legend-chip chip-e">▲ Campo Eléctrico E (Rojo Racing)</span>
+            <span class="legend-chip chip-b">▶ Campo Magnético B (Azul Glaciar)</span>
+            <span class="legend-chip chip-s">➔ Vector Poynting S = (E×B)/μ0</span>
+            <span class="legend-chip chip-e-beam">● Electrón Relativista (-e)</span>
+          </div>
+        </div>
+
+        <!-- CONSOLA DE PARÁMETROS DEL SIMULADOR CUÁNTICO -->
+        <div class="study-controls-panel">
+          <div style="font-size: 11px; font-weight: 800; color: var(--glacier-800); text-transform: uppercase;">
+            ⚙️ PARÁMETROS DEL FOTÓN DE RAYOS X
+          </div>
+
+          <!-- Slider kVp -->
+          <div class="slider-row-item">
+            <div class="slider-row-header">
+              <span>ALTA TENSIÓN (kVp):</span>
+              <span id="study-val-kvp" class="study-readout-pill">80 kVp</span>
+            </div>
+            <input type="range" id="study-slider-kvp" min="20" max="150" value="80" step="1" class="lab-slider slider-cyan">
+          </div>
+
+          <!-- Modos de Componentes EM -->
+          <div class="slider-row-item">
+            <div class="slider-row-header">
+              <span>VISUALIZACIÓN DE CAMPOS:</span>
+            </div>
+            <div class="btn-group-toggle" style="width: 100%;">
+              <button id="btn-view-all" class="btn-toggle-option active" style="flex: 1;">E + B + S</button>
+              <button id="btn-view-e" class="btn-toggle-option" style="flex: 1;">Solo E</button>
+              <button id="btn-view-b" class="btn-toggle-option" style="flex: 1;">Solo B</button>
+            </div>
+          </div>
+
+          <!-- Displays Numéricos en Tiempo Real -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 6px;">
+            <div style="background: var(--polar-subtle); border: 1px solid var(--polar-border); border-radius: 5px; padding: 6px 8px;">
+              <div style="font-size: 8.5px; color: var(--glacier-text-muted); font-weight: 700;">LONGITUD λmin:</div>
+              <div id="study-readout-lambda" style="font-size: 13px; font-weight: 800; color: var(--racing-red);">15.50 pm</div>
+            </div>
+            <div style="background: var(--polar-subtle); border: 1px solid var(--polar-border); border-radius: 5px; padding: 6px 8px;">
+              <div style="font-size: 8.5px; color: var(--glacier-text-muted); font-weight: 700;">FRECUENCIA νmax:</div>
+              <div id="study-readout-freq" style="font-size: 13px; font-weight: 800; color: var(--glacier-700);">19.34 EHz</div>
+            </div>
+            <div style="background: var(--polar-subtle); border: 1px solid var(--polar-border); border-radius: 5px; padding: 6px 8px;">
+              <div style="font-size: 8.5px; color: var(--glacier-text-muted); font-weight: 700;">VELOCIDAD β:</div>
+              <div id="study-readout-beta" style="font-size: 13px; font-weight: 800; color: var(--status-green);">50.2% c</div>
+            </div>
+            <div style="background: var(--polar-subtle); border: 1px solid var(--polar-border); border-radius: 5px; padding: 6px 8px;">
+              <div style="font-size: 8.5px; color: var(--glacier-text-muted); font-weight: 700;">FACTOR LORENTZ γ:</div>
+              <div id="study-readout-gamma" style="font-size: 13px; font-weight: 800; color: var(--glacier-800);">1.1565</div>
+            </div>
+          </div>
+
+          <div style="font-size: 9.5px; color: var(--glacier-text-muted); line-height: 1.4; border-top: 1px solid var(--polar-border-subtle); padding-top: 8px;">
+            💡 <strong>Interacción 3D:</strong> Arrastre con el ratón para rotar la cámara y observar la perpendicularidad $\vec{E} \perp \vec{B}$ y el avance del vector de Poynting $\vec{S}$.
+          </div>
+        </div>
+
+      </aside>
+
+    </div>
+
+  </div>
+
+  <!-- SCRIPT THREE.JS DE LA SIMULACIÓN CUÁNTICA EN ONDA_ELECTROMAGNETICA.HTML -->
+  <script type="module">
+    import * as THREE from 'three';
+
+    const container = document.getElementById('study-em-canvas-container');
+    const width = container.clientWidth || 450;
+    const height = container.clientHeight || 380;
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x06090e);
+
+    const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
+    camera.position.set(0, 3.2, 11);
+    camera.lookAt(0, 0, 0);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    container.appendChild(renderer.domElement);
+
+    // Luces
+    scene.add(new THREE.AmbientLight(0xffffff, 0.9));
+    const dLight = new THREE.DirectionalLight(0x38bdf8, 2.0);
+    dLight.position.set(5, 8, 6);
+    scene.add(dLight);
+
+    // Controles de ratón
+    let isDragging = false;
+    let prevX = 0, prevY = 0;
+    renderer.domElement.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      prevX = e.clientX;
+      prevY = e.clientY;
+    });
+    window.addEventListener('mouseup', () => { isDragging = false; });
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      const dx = e.clientX - prevX;
+      const dy = e.clientY - prevY;
+      prevX = e.clientX;
+      prevY = e.clientY;
+      camera.position.x += dx * 0.02;
+      camera.position.y -= dy * 0.02;
+      camera.lookAt(0, 0, 0);
+    });
+
+    // Construcción del Átomo de Tungsteno y Onda
+    const nucleus = new THREE.Mesh(
+      new THREE.SphereGeometry(0.55, 32, 32),
+      new THREE.MeshStandardMaterial({ color: 0xffb703, emissive: 0xd97706, emissiveIntensity: 0.8 })
+    );
+    nucleus.position.set(-2.8, 0, 0);
+    scene.add(nucleus);
+
+    // Órbitas
+    const orbit = new THREE.Mesh(
+      new THREE.RingGeometry(1.2, 1.22, 64),
+      new THREE.MeshBasicMaterial({ color: 0x38bdf8, side: THREE.DoubleSide, transparent: true, opacity: 0.4 })
+    );
+    orbit.position.set(-2.8, 0, 0);
+    orbit.rotation.x = Math.PI / 2.2;
+    scene.add(orbit);
+
+    // Electrón desviado
+    const electron = new THREE.Mesh(
+      new THREE.SphereGeometry(0.12, 16, 16),
+      new THREE.MeshBasicMaterial({ color: 0x00f0ff })
+    );
+    scene.add(electron);
+
+    // Onda EM Transversal
+    const waveLength = 7.5;
+    const waveSegments = 200;
+    const waveGroup = new THREE.Group();
+    waveGroup.position.set(-1.8, 0.6, 0);
+
+    // Eje z
+    const axisGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,0,0), new THREE.Vector3(waveLength,0,0)]);
+    waveGroup.add(new THREE.Line(axisGeo, new THREE.LineBasicMaterial({ color: 0x64748b, transparent: true, opacity: 0.3 })));
+
+    // E Wave (Vertical, Rojo Racing)
+    const ePoints = [];
+    for (let i = 0; i <= waveSegments; i++) ePoints.push(new THREE.Vector3((i/waveSegments)*waveLength, 0, 0));
+    const eGeo = new THREE.BufferGeometry().setFromPoints(ePoints);
+    const eLine = new THREE.Line(eGeo, new THREE.LineBasicMaterial({ color: 0xef233c, linewidth: 2 }));
+    waveGroup.add(eLine);
+
+    // B Wave (Horizontal, Azul Glaciar)
+    const bPoints = [];
+    for (let i = 0; i <= waveSegments; i++) bPoints.push(new THREE.Vector3((i/waveSegments)*waveLength, 0, 0));
+    const bGeo = new THREE.BufferGeometry().setFromPoints(bPoints);
+    const bLine = new THREE.Line(bGeo, new THREE.LineBasicMaterial({ color: 0x0ea5e9, linewidth: 2 }));
+    waveGroup.add(bLine);
+
+    // Vector de Poynting S
+    const poynting = new THREE.ArrowHelper(new THREE.Vector3(1,0,0), new THREE.Vector3(waveLength,0,0), 1.2, 0xffb703, 0.3, 0.15);
+    waveGroup.add(poynting);
+
+    // Flechas vectoriales
+    const arrowsE = [];
+    const arrowsB = [];
+    for (let i = 0; i < 14; i++) {
+      const aE = new THREE.ArrowHelper(new THREE.Vector3(0,1,0), new THREE.Vector3(0,0,0), 0.7, 0xef233c, 0.15, 0.08);
+      const aB = new THREE.ArrowHelper(new THREE.Vector3(0,0,1), new THREE.Vector3(0,0,0), 0.7, 0x0ea5e9, 0.15, 0.08);
+      waveGroup.add(aE);
+      waveGroup.add(aB);
+      arrowsE.push(aE);
+      arrowsB.push(aB);
+    }
+    scene.add(waveGroup);
+
+    // Parámetros Físicos
+    let currentKVp = 80;
+    let viewMode = 'all';
+
+    function updateCalculations() {
+      const lambdaMin = 1239.84 / currentKVp;
+      const freqMax = (currentKVp * 1.602e-16) / 6.626e-34 / 1e18; // EHz
+      const gamma = 1 + currentKVp / 511.0;
+      const beta = Math.sqrt(1 - 1 / (gamma * gamma));
+
+      document.getElementById('study-val-kvp').innerText = `${currentKVp} kVp`;
+      document.getElementById('study-readout-lambda').innerText = `${lambdaMin.toFixed(2)} pm`;
+      document.getElementById('study-readout-freq').innerText = `${freqMax.toFixed(2)} EHz`;
+      document.getElementById('study-readout-beta').innerText = `${(beta * 100).toFixed(1)}% c`;
+      document.getElementById('study-readout-gamma').innerText = gamma.toFixed(4);
+    }
+
+    const slider = document.getElementById('study-slider-kvp');
+    if (slider) {
+      slider.addEventListener('input', (e) => {
+        currentKVp = parseFloat(e.target.value);
+        updateCalculations();
+      });
+    }
+
+    document.getElementById('btn-view-all').addEventListener('click', () => {
+      viewMode = 'all';
+      setModeActive('btn-view-all');
+      eLine.visible = true; bLine.visible = true; poynting.visible = true;
+      arrowsE.forEach(a => a.visible = true);
+      arrowsB.forEach(a => a.visible = true);
+    });
+    document.getElementById('btn-view-e').addEventListener('click', () => {
+      viewMode = 'e';
+      setModeActive('btn-view-e');
+      eLine.visible = true; bLine.visible = false; poynting.visible = false;
+      arrowsE.forEach(a => a.visible = true);
+      arrowsB.forEach(a => a.visible = false);
+    });
+    document.getElementById('btn-view-b').addEventListener('click', () => {
+      viewMode = 'b';
+      setModeActive('btn-view-b');
+      eLine.visible = false; bLine.visible = true; poynting.visible = false;
+      arrowsE.forEach(a => a.visible = false);
+      arrowsB.forEach(a => a.visible = true);
+    });
+
+    function setModeActive(id) {
+      ['btn-view-all', 'btn-view-e', 'btn-view-b'].forEach(b => {
+        document.getElementById(b).classList.remove('active');
+      });
+      document.getElementById(id).classList.add('active');
+    }
+
+    updateCalculations();
+
+    // Loop de animación
+    let clock = new THREE.Clock();
+    function animate() {
+      requestAnimationFrame(animate);
+      const t = clock.getElapsedTime();
+
+      // Electrón en órbita y choque
+      const cyc = (t * 2.0) % 3.0;
+      if (cyc < 1.4) {
+        const u = -3.5 + (cyc / 1.4) * 3.5;
+        electron.position.set(-2.8 + u, 0.6 / (1 + Math.exp(-u)), 0);
+      } else {
+        const u = ((cyc - 1.4) / 1.6) * 3.0;
+        electron.position.set(-2.8 + Math.cos(0.7)*u, 0.6 + Math.sin(0.7)*u, 0);
+      }
+
+      // Ondas transversales
+      const freqK = 3.5 + (currentKVp / 150) * 4.0;
+      const speedPhase = t * (7.0 + (currentKVp / 150) * 10.0);
+      const amp = 0.9;
+
+      const ePos = eGeo.attributes.position;
+      const bPos = bGeo.attributes.position;
+      for (let i = 0; i <= waveSegments; i++) {
+        const x = (i / waveSegments) * waveLength;
+        const y = Math.sin(x * freqK - speedPhase) * amp;
+        ePos.setXYZ(i, x, y, 0);
+        bPos.setXYZ(i, x, 0, y);
+      }
+      ePos.needsUpdate = true;
+      bPos.needsUpdate = true;
+
+      // Flechas
+      for (let i = 0; i < 14; i++) {
+        const x = ((i + 0.5) / 14) * waveLength;
+        const val = Math.sin(x * freqK - speedPhase) * amp;
+        const aE = arrowsE[i];
+        const aB = arrowsB[i];
+        if (aE) {
+          aE.position.set(x, 0, 0);
+          aE.setDirection(new THREE.Vector3(0, val >= 0 ? 1 : -1, 0));
+          aE.setLength(Math.max(0.08, Math.abs(val)), 0.14, 0.07);
+        }
+        if (aB) {
+          aB.position.set(x, 0, 0);
+          aB.setDirection(new THREE.Vector3(0, 0, val >= 0 ? 1 : -1));
+          aB.setLength(Math.max(0.08, Math.abs(val)), 0.14, 0.07);
+        }
+      }
+
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+      const w = container.clientWidth;
+      const h = container.clientHeight;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    });
+  </script>
+
+</body>
+</html>

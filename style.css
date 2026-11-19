@@ -1,0 +1,1429 @@
+/* ==========================================================================
+   xray-physics-lab-3d : Clinical Medical Console
+   60-30-10 Color Architecture:
+   - 60% Blanco Polar  (Polar White: #f3f7fa base, #ffffff panels, #edf5fa insets)
+   - 30% Azul Glaciar  (Glacier Blue: #0ea5e9, #0284c7, #38bdf8, #e0f2fe, #0c4a6e)
+   - 10% Rojo Racing   (Racing Red: #ef233c, #dc2626, #d90429, #fee2e2)
+   * Modelo 3D WebGL / Three.js Intacto y Preservado *
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap');
+
+:root {
+  /* ── 60% BLANCO POLAR (Polar White Surfaces) ────────────────────────── */
+  --polar-bg-base:      #f3f7fa;      /* Clean snowy polar foundation */
+  --polar-panel:        #ffffff;      /* Pure crystalline white cards & panels */
+  --polar-inset:        #edf5fa;      /* Ice-tinted white for wells & inputs */
+  --polar-subtle:       #f8fafc;      /* Crisp secondary frost */
+  --polar-border:       #cfe1ee;      /* Soft ice-white border */
+  --polar-border-subtle:#e5eff7;      /* Very soft polar divider */
+
+  /* ── 30% AZUL GLACIAR (Glacier Blue Architectural Structure) ─────────── */
+  --glacier-50:         #f0f9ff;      /* Glacial frost mist */
+  --glacier-100:        #e0f2fe;      /* Glacial ice wash */
+  --glacier-200:        #bae6fd;      /* Icy blue highlight */
+  --glacier-300:        #7dd3fc;      /* Glacier crystal */
+  --glacier-400:        #38bdf8;      /* Vivid glacier sky */
+  --glacier-500:        #0ea5e9;      /* Core glacier cyan-blue */
+  --glacier-600:        #0284c7;      /* Deep glacier blue */
+  --glacier-700:        #0369a1;      /* Rich glacier ocean */
+  --glacier-800:        #075985;      /* Deep iceberg navy */
+  --glacier-900:        #0c4a6e;      /* Deep fjord navy */
+  --glacier-text-main:  #082f49;      /* Polar high-contrast typography */
+  --glacier-text-muted: #476a8a;      /* Secondary technical label text */
+
+  /* ── 10% ROJO RACING (Racing Red Critical Focal Points) ──────────────── */
+  --racing-red:         #ef233c;      /* Pure energetic racing red */
+  --racing-red-hover:   #d90429;      /* Deep racing red on hover */
+  --racing-red-active:  #b70220;      /* Pressed state */
+  --racing-red-glow:    rgba(239, 35, 60, 0.45);
+  --racing-red-light:   #fee2e2;      /* Delicate alert tint */
+  --racing-red-border:  #f87171;      /* Crisp warning outline */
+
+  /* ── Functional Secondary Accents (Controlled) ───────────────────────── */
+  --status-green:       #059669;      /* Medical standby green */
+  --status-green-light: #d1fae5;
+  --amber-track:        #d97706;      /* Rotor thermal cue */
+  --amber-light:        #fef3c7;
+
+  /* ── Canvas Viewport (Kept Dark for Optimal 3D Glow Visibility) ──────── */
+  --bg-dark-canvas:     #06090e;      /* Space/vacuum chamber depth */
+  --hud-cyan:           #38bdf8;
+  --hud-amber:          #fbbf24;
+  --hud-green:          #34d399;
+  --hud-red:            #ef233c;      /* Racing red Duane-Hunt cutoff */
+  --hud-purple:         #c084fc;
+  --hud-gold:           #fde68a;
+
+  /* ── Typography & Shadows ─────────────────────────────────────────────── */
+  --font-mono: "JetBrains Mono", "SF Mono", "Cascadia Code", "Consolas",
+               "Roboto Mono", monospace;
+  --shadow-polar-sm: 0 1px 3px rgba(12, 74, 110, 0.08), 0 1px 2px rgba(12, 74, 110, 0.04);
+  --shadow-polar-md: 0 4px 14px rgba(12, 74, 110, 0.09), 0 1px 4px rgba(12, 74, 110, 0.05);
+  --shadow-polar-lg: 0 10px 28px rgba(12, 74, 110, 0.12), 0 3px 8px rgba(12, 74, 110, 0.06);
+}
+
+/* ============================================================
+   RESET & FOUNDATION (60% Blanco Polar Base)
+   ============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--polar-bg-base);
+  color: var(--glacier-text-main);
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.55;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============================================================
+   HEADER DE INSTRUMENTACIÓN (Blanco Polar + Azul Glaciar + Rojo Racing)
+   ============================================================ */
+.lab-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 22px;
+  background: var(--polar-panel);
+  border-bottom: 2px solid var(--glacier-400);
+  box-shadow: var(--shadow-polar-sm);
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+
+.header-branding {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* Badge con acento Azul Glaciar */
+.brand-badge {
+  display: inline-block;
+  align-self: flex-start;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.8px;
+  padding: 2px 8px;
+  background: var(--glacier-100);
+  color: var(--glacier-700);
+  border: 1px solid var(--glacier-300);
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.brand-title {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  color: var(--glacier-text-main);
+}
+
+.brand-subtitle {
+  font-size: 10px;
+  color: var(--glacier-text-muted);
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.header-status-group {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* Caja de Estado con borde Glaciar y acento Rojo Racing */
+.status-indicator-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--polar-inset);
+  padding: 6px 14px;
+  border-radius: 6px;
+  border: 1px solid var(--glacier-200);
+  box-shadow: inset 0 1px 2px rgba(12, 74, 110, 0.04);
+}
+
+/* 10% Rojo Racing: LED de Alta Tensión */
+.status-led {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: all 0.25s ease;
+}
+
+.led-active {
+  background-color: var(--racing-red);
+  box-shadow: 0 0 10px var(--racing-red), 0 0 18px var(--racing-red-glow);
+  animation: racingLedPulse 1.1s infinite alternate ease-in-out;
+}
+
+.led-standby {
+  background-color: var(--status-green);
+  box-shadow: 0 0 8px rgba(5, 150, 105, 0.4);
+}
+
+@keyframes racingLedPulse {
+  from { opacity: 0.70; transform: scale(0.95); }
+  to   { opacity: 1.00; transform: scale(1.10); }
+}
+
+/* 10% Rojo Racing: Texto de Exposición */
+.exposure-banner {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+.exposure-banner-active {
+  color: var(--racing-red);
+  text-shadow: 0 0 12px rgba(239, 35, 60, 0.25);
+}
+
+.exposure-banner-standby {
+  color: var(--status-green);
+}
+
+.header-action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+/* 10% Rojo Racing: Botón Principal de Exposición */
+.btn-exposure {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.7px;
+  padding: 8px 16px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  text-transform: uppercase;
+}
+
+.btn-exposure-active {
+  background: linear-gradient(135deg, var(--racing-red) 0%, var(--racing-red-hover) 100%);
+  color: #ffffff;
+  box-shadow: 0 2px 10px var(--racing-red-glow), 0 0 0 1px rgba(239, 35, 60, 0.3);
+}
+
+.btn-exposure-active:hover {
+  background: var(--racing-red-hover);
+  box-shadow: 0 4px 16px rgba(239, 35, 60, 0.6), 0 0 0 2px var(--racing-red);
+  transform: translateY(-1px);
+}
+
+.btn-exposure-standby {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  color: #ffffff;
+  box-shadow: 0 2px 10px rgba(5, 150, 105, 0.35);
+}
+
+.btn-exposure-standby:hover {
+  background: #047857;
+  transform: translateY(-1px);
+}
+
+/* Botón de Enlace al Tratado Monográfico de Ondas EM */
+.btn-lab-link {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  padding: 8px 14px;
+  border-radius: 5px;
+  border: 1px solid var(--glacier-400);
+  background: var(--glacier-100);
+  color: var(--glacier-800);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.18s ease;
+  box-shadow: var(--shadow-polar-sm);
+}
+
+.btn-lab-link:hover {
+  background: var(--glacier-500);
+  border-color: var(--glacier-600);
+  color: #ffffff;
+  box-shadow: 0 2px 10px rgba(14, 165, 233, 0.4);
+  transform: translateY(-1px);
+}
+
+/* Botón secundario en Azul Glaciar */
+.btn-lab-util {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 8px 13px;
+  border-radius: 5px;
+  border: 1px solid var(--glacier-300);
+  background: var(--polar-panel);
+  color: var(--glacier-700);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: var(--shadow-polar-sm);
+}
+
+.btn-lab-util:hover {
+  background: var(--glacier-100);
+  border-color: var(--glacier-500);
+  color: var(--glacier-900);
+}
+
+/* ============================================================
+   MAIN LAYOUT (60% Blanco Polar Container)
+   ============================================================ */
+.lab-main-layout {
+  display: grid;
+  grid-template-columns: 1fr 480px;
+  gap: 12px;
+  padding: 12px 16px;
+  max-width: 1920px;
+  margin: 0 auto;
+}
+
+.lab-visualizers-column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.lab-controls-column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+/* ============================================================
+   CARDS DE INSTRUMENTACIÓN (Blanco Polar + Borde Glaciar)
+   ============================================================ */
+.viewport-card,
+.oscilloscope-card,
+.rack-panel {
+  background: var(--polar-panel);
+  border: 1px solid var(--polar-border);
+  border-radius: 8px;
+  box-shadow: var(--shadow-polar-sm);
+  overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.viewport-card:hover,
+.oscilloscope-card:hover,
+.rack-panel:hover {
+  border-color: var(--glacier-300);
+  box-shadow: var(--shadow-polar-md);
+}
+
+/* Header bar con tinte Blanco Polar y Acento Azul Glaciar */
+.card-header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 14px;
+  background: linear-gradient(180deg, var(--polar-panel) 0%, var(--polar-subtle) 100%);
+  border-bottom: 1px solid var(--polar-border);
+}
+
+.card-title {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: var(--glacier-text-main);
+  text-transform: uppercase;
+}
+
+.card-meta {
+  font-size: 9.5px;
+  color: var(--glacier-text-muted);
+  letter-spacing: 0.3px;
+  font-weight: 600;
+}
+
+/* ============================================================
+   3D VIEWPORT CONTAINER (El Modelo 3D se Mantiene Intacto)
+   ============================================================ */
+.viewport-canvas-wrapper {
+  position: relative;
+  width: 100%;
+  height: 520px;
+  min-height: 440px;
+  background: var(--bg-dark-canvas);
+  overflow: hidden;
+}
+
+.viewport-canvas-wrapper canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* ── HUD Flotante (Glacier Glassmorphism sobre Viewport) ── */
+.hud-overlay {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  pointer-events: none;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hud-badge-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.hud-item {
+  display: flex;
+  flex-direction: column;
+  background: rgba(8, 20, 36, 0.85);
+  border: 1px solid rgba(56, 189, 248, 0.30);
+  border-radius: 4px;
+  padding: 4px 8px;
+  backdrop-filter: blur(5px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.hud-label {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  color: rgba(186, 230, 253, 0.75);
+  text-transform: uppercase;
+}
+
+.hud-value {
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+}
+
+.hud-cyan   { color: var(--hud-cyan);   text-shadow: 0 0 8px rgba(56, 189, 248, 0.6); }
+.hud-amber  { color: var(--hud-amber);  text-shadow: 0 0 8px rgba(251, 191, 36, 0.6); }
+.hud-green  { color: var(--hud-green);  text-shadow: 0 0 8px rgba(52, 211, 153, 0.6); }
+/* 10% Rojo Racing: Límite Duane-Hunt */
+.hud-red    { color: var(--racing-red); text-shadow: 0 0 10px var(--racing-red-glow); font-weight: 800; }
+.hud-purple { color: var(--hud-purple); text-shadow: 0 0 8px rgba(192, 132, 252, 0.6); }
+.hud-gold   { color: var(--hud-gold);   text-shadow: 0 0 8px rgba(253, 230, 138, 0.6); }
+
+/* ── Monitor Térmico HU (30% Glaciar a 10% Rojo Racing) ── */
+.hu-thermal-meter {
+  pointer-events: auto;
+  background: rgba(8, 20, 36, 0.88);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  border-radius: 4px;
+  padding: 5px 10px;
+  backdrop-filter: blur(5px);
+  align-self: flex-start;
+  min-width: 310px;
+}
+
+.hu-label-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.hu-text-label {
+  font-size: 9px;
+  color: rgba(186, 230, 253, 0.80);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.hu-text-val {
+  font-size: 11px;
+  font-weight: 800;
+  color: #fbbf24;
+}
+
+.hu-text-pct {
+  font-size: 10px;
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+.hu-bar-track {
+  width: 100%;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+/* Degradado Glaciar a Rojo Racing en sobrecarga */
+.hu-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--glacier-400) 0%, #fbbf24 65%, var(--racing-red) 100%);
+  border-radius: 3px;
+  transition: width 0.4s ease;
+}
+
+.btn-micro {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 3px;
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  background: rgba(14, 165, 233, 0.15);
+  color: var(--glacier-200);
+  cursor: pointer;
+  pointer-events: auto;
+  transition: all 0.15s ease;
+}
+
+.btn-micro:hover {
+  background: var(--racing-red);
+  border-color: var(--racing-red);
+  color: #ffffff;
+  box-shadow: 0 0 8px var(--racing-red-glow);
+}
+
+.viewport-footer-tips {
+  padding: 7px 14px;
+  font-size: 10px;
+  color: var(--glacier-text-muted);
+  background: var(--polar-subtle);
+  border-top: 1px solid var(--polar-border);
+}
+
+/* ============================================================
+   MICROSCOPIO 3D DE ONDAS ELECTROMAGNÉTICAS (Segundo Modelo 3D)
+   ============================================================ */
+.em-microscope-card {
+  margin-top: 2px;
+}
+
+.em-microscope-canvas-wrapper {
+  position: relative;
+  width: 100%;
+  height: 350px;
+  background: var(--bg-dark-canvas);
+  overflow: hidden;
+}
+
+.em-microscope-canvas-wrapper canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.micro-hud-overlay {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  pointer-events: none;
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.btn-micro-study {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: 1px solid var(--glacier-400);
+  background: var(--glacier-100);
+  color: var(--glacier-800);
+  text-decoration: none;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.btn-micro-study:hover {
+  background: var(--glacier-500);
+  border-color: var(--glacier-600);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(14, 165, 233, 0.4);
+}
+
+.em-microscope-tips {
+  background: var(--polar-panel);
+}
+
+/* Enlace externo en la barra de pestañas */
+.lab-tab-link-out {
+  color: var(--glacier-700) !important;
+  border-left: 1px solid var(--polar-border);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  background: var(--glacier-50) !important;
+}
+
+.lab-tab-link-out:hover {
+  background: var(--glacier-100) !important;
+  color: var(--glacier-900) !important;
+}
+
+/* ============================================================
+   OSCILLOSCOPE CARD (Azul Glaciar + Blanco Polar)
+   ============================================================ */
+.scope-header-bar {
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.scope-header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.scope-legend-hint {
+  font-size: 9.5px;
+  color: var(--glacier-text-muted);
+}
+
+.scope-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.scope-unit-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--glacier-700);
+}
+
+.btn-group-toggle {
+  display: flex;
+  border: 1px solid var(--glacier-300);
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: var(--shadow-polar-sm);
+}
+
+.btn-toggle-option {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 4px 11px;
+  border: none;
+  background: var(--polar-panel);
+  color: var(--glacier-700);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+/* Estado Activo en 30% Azul Glaciar */
+.btn-toggle-option.active {
+  background: linear-gradient(135deg, var(--glacier-500) 0%, var(--glacier-600) 100%);
+  color: #ffffff;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.btn-toggle-option:hover:not(.active) {
+  background: var(--glacier-100);
+  color: var(--glacier-900);
+}
+
+.oscilloscope-canvas-wrapper {
+  padding: 0;
+  background: #06090e;
+  line-height: 0;
+}
+
+.oscilloscope-canvas {
+  display: block;
+  width: 100%;
+  height: 190px;
+  background: #06090e;
+}
+
+.scope-footer-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px 14px;
+  border-top: 1px solid var(--polar-border);
+  background: var(--polar-subtle);
+}
+
+.scope-stat-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--polar-panel);
+  border: 1px solid var(--glacier-200);
+  border-radius: 4px;
+  padding: 3px 10px;
+  box-shadow: var(--shadow-polar-sm);
+}
+
+.stat-tag {
+  font-size: 10px;
+  color: var(--glacier-text-muted);
+  font-weight: 600;
+}
+
+.stat-val {
+  font-size: 10.5px;
+  font-weight: 800;
+  color: var(--glacier-700);
+}
+
+/* ============================================================
+   PANEL DE CONTROL RADIOLÓGICO (Rack 30% Azul Glaciar Header)
+   ============================================================ */
+.rack-panel {
+  flex: 1 1 auto;
+}
+
+/* Header del Rack: 30% Azul Glaciar Puro */
+.rack-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: linear-gradient(135deg, var(--glacier-600) 0%, var(--glacier-700) 100%);
+  color: #ffffff;
+  border-bottom: 2px solid var(--glacier-400);
+}
+
+.rack-indicator {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0 8px #ffffff, 0 0 14px var(--glacier-300);
+  animation: racingLedPulse 1.8s infinite alternate;
+  flex-shrink: 0;
+}
+
+.rack-title {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  flex: 1;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.rack-serial {
+  font-size: 9px;
+  opacity: 0.85;
+  letter-spacing: 0.6px;
+  font-weight: 600;
+}
+
+.rack-body {
+  padding: 8px 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
+  overflow: visible;
+  max-height: none;
+  background: var(--polar-panel);
+}
+
+/* Span 2 columnas (filtros, interruptor principal) */
+.control-span-2 {
+  grid-column: span 2;
+}
+
+/* Contenedor dual de filtros Al + Cu en la misma fila */
+.filters-dual-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+/* ── Grupos de Control (60% Blanco Polar Base + Borde Glaciar) ── */
+.control-group,
+.control-subgroup-box {
+  background: var(--polar-subtle);
+  border: 1px solid var(--polar-border);
+  border-radius: 6px;
+  padding: 6px 8px;
+  transition: border-color 0.15s ease;
+  min-width: 0;
+}
+
+.control-group:hover,
+.control-subgroup-box:hover {
+  border-color: var(--glacier-300);
+}
+
+.subgroup-title {
+  display: block;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: var(--glacier-800);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.control-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+  flex-wrap: wrap;
+  gap: 2px;
+}
+
+.control-label {
+  font-size: 8.5px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: var(--glacier-text-main);
+  text-transform: uppercase;
+  line-height: 1.3;
+}
+
+/* ── Digital Display (Estilo Instrumento Glaciar) ── */
+.digital-display {
+  font-size: 13px;
+  font-weight: 800;
+  padding: 1px 6px;
+  border-radius: 4px;
+  letter-spacing: 1px;
+  font-variant-numeric: tabular-nums;
+  min-width: 36px;
+  text-align: center;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+  flex-shrink: 0;
+}
+
+.digital-cyan {
+  background: var(--glacier-950, #082f49);
+  color: var(--glacier-300);
+  border: 1px solid var(--glacier-600);
+  text-shadow: 0 0 8px rgba(56, 189, 248, 0.7);
+}
+
+.digital-amber {
+  background: #1c1404;
+  color: #fbbf24;
+  border: 1px solid #78350f;
+  text-shadow: 0 0 8px rgba(251, 191, 36, 0.7);
+}
+
+.digital-green {
+  background: #022013;
+  color: #34d399;
+  border: 1px solid #065f46;
+  text-shadow: 0 0 8px rgba(52, 211, 153, 0.7);
+}
+
+/* ── Stepper Row (Botones Glaciares) ── */
+.stepper-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn-step, .btn-step-mini {
+  font-family: var(--font-mono);
+  font-weight: 800;
+  border: 1px solid var(--glacier-300);
+  border-radius: 4px;
+  background: var(--polar-panel);
+  color: var(--glacier-700);
+  cursor: pointer;
+  transition: all 0.14s ease;
+  flex-shrink: 0;
+  line-height: 1;
+  box-shadow: var(--shadow-polar-sm);
+}
+
+.btn-step       { width: 22px; height: 22px; font-size: 14px; }
+.btn-step-mini  { width: 19px; height: 19px; font-size: 12px; }
+
+.btn-step:hover, .btn-step-mini:hover {
+  background: var(--glacier-500);
+  border-color: var(--glacier-600);
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(14, 165, 233, 0.35);
+}
+
+/* ── Sliders en Azul Glaciar con Pistas Suaves ── */
+.lab-slider {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 5px;
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+  transition: height 0.15s;
+  background: var(--polar-border);
+}
+
+.lab-slider:hover { height: 6px; }
+
+.slider-cyan   { background: linear-gradient(to right, var(--glacier-500) 0%, var(--glacier-500) var(--val, 50%), var(--polar-border) var(--val, 50%)); }
+.slider-amber  { background: linear-gradient(to right, var(--amber-track) 0%, var(--amber-track) var(--val, 50%), var(--polar-border) var(--val, 50%)); }
+.slider-silver { background: linear-gradient(to right, var(--glacier-400) 0%, var(--glacier-400) var(--val, 50%), var(--polar-border) var(--val, 50%)); }
+.slider-copper { background: linear-gradient(to right, #b45309 0%, #b45309 var(--val, 50%), var(--polar-border) var(--val, 50%)); }
+
+.lab-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--glacier-500);
+  border: 2px solid #ffffff;
+  box-shadow: 0 1px 4px rgba(12, 74, 110, 0.25), 0 0 0 2px var(--glacier-500);
+  cursor: pointer;
+  transition: transform 0.12s, box-shadow 0.12s;
+}
+
+.lab-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 2px 8px rgba(14, 165, 233, 0.4), 0 0 0 3px var(--glacier-400);
+}
+
+.slider-amber::-webkit-slider-thumb  { background: var(--amber-track); box-shadow: 0 1px 4px rgba(0,0,0,0.2), 0 0 0 2px var(--amber-track); }
+.slider-silver::-webkit-slider-thumb { background: var(--glacier-500); box-shadow: 0 1px 4px rgba(0,0,0,0.2), 0 0 0 2px var(--glacier-400); }
+.slider-copper::-webkit-slider-thumb { background: #b45309; box-shadow: 0 1px 4px rgba(0,0,0,0.2), 0 0 0 2px #b45309; }
+
+.control-range-ticks {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2px;
+  font-size: 7.5px;
+  color: var(--glacier-text-muted);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+/* ── Segmented Control (Azul Glaciar Activo) ── */
+.segmented-control {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.segmented-label {
+  cursor: pointer;
+  flex: 1;
+  min-width: 70px;
+}
+
+.segmented-label input[type="radio"] { display: none; }
+
+.segmented-box {
+  display: block;
+  text-align: center;
+  padding: 4px 5px;
+  border-radius: 4px;
+  border: 1px solid var(--glacier-200);
+  background: var(--polar-panel);
+  color: var(--glacier-700);
+  font-size: 9px;
+  font-weight: 700;
+  transition: all 0.15s ease;
+  box-shadow: var(--shadow-polar-sm);
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.segmented-label input:checked + .segmented-box {
+  background: linear-gradient(135deg, var(--glacier-500) 0%, var(--glacier-600) 100%);
+  border-color: var(--glacier-700);
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(14, 165, 233, 0.35);
+}
+
+.segmented-box:hover {
+  background: var(--glacier-100);
+  border-color: var(--glacier-400);
+  color: var(--glacier-900);
+}
+
+.segmented-label input:checked + .segmented-box:hover {
+  background: var(--glacier-600);
+  color: #ffffff;
+}
+
+/* ── Selectores de Laboratorio ── */
+.lab-select {
+  width: 100%;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 5px;
+  border: 1px solid var(--glacier-300);
+  background: var(--polar-panel);
+  color: var(--glacier-text-main);
+  cursor: pointer;
+  outline: none;
+  transition: all 0.15s ease;
+  box-shadow: var(--shadow-polar-sm);
+}
+
+.lab-select:focus {
+  border-color: var(--glacier-500);
+  box-shadow: 0 0 0 2px var(--glacier-100);
+}
+
+/* ── Filas de Filtros ── */
+.filter-row { margin-bottom: 7px; }
+
+.filter-row-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.filter-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--glacier-text-main);
+}
+
+.filter-val {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--glacier-700);
+}
+
+/* ============================================================
+   WORKBENCH SECTION (Pestañas Inferiores)
+   ============================================================ */
+.lab-workbench-section {
+  margin: 0 16px 16px;
+  background: var(--polar-panel);
+  border: 1px solid var(--polar-border);
+  border-radius: 8px;
+  box-shadow: var(--shadow-polar-sm);
+  overflow: hidden;
+}
+
+.workbench-nav-bar {
+  display: flex;
+  border-bottom: 1px solid var(--polar-border);
+  background: var(--polar-subtle);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.workbench-nav-bar::-webkit-scrollbar { display: none; }
+
+.lab-tab-btn {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  padding: 11px 18px;
+  border: none;
+  border-bottom: 3px solid transparent;
+  background: transparent;
+  color: var(--glacier-text-muted);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+  text-transform: uppercase;
+}
+
+.lab-tab-btn:hover {
+  color: var(--glacier-700);
+  background: var(--glacier-50);
+}
+
+/* Pestaña Activa en 30% Azul Glaciar */
+.lab-tab-btn.active {
+  color: var(--glacier-700);
+  border-bottom-color: var(--glacier-500);
+  background: var(--polar-panel);
+}
+
+.workbench-tab-content { padding: 0; }
+
+.lab-tab-panel { display: none; }
+.lab-tab-panel.active { display: block; }
+
+/* ── Pestaña 1: Ecuaciones en Vivo ── */
+.equations-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  padding: 14px 16px;
+}
+
+@media (max-width: 1100px) {
+  .equations-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.equation-card {
+  background: var(--polar-subtle);
+  border: 1px solid var(--polar-border);
+  border-radius: 7px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.equation-card:hover {
+  box-shadow: var(--shadow-polar-md);
+  border-color: var(--glacier-400);
+}
+
+.eq-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: var(--polar-panel);
+  border-bottom: 1px solid var(--polar-border);
+}
+
+.eq-title {
+  font-size: 10.5px;
+  font-weight: 800;
+  color: var(--glacier-text-main);
+  letter-spacing: 0.3px;
+}
+
+.eq-category-tag {
+  font-size: 8.5px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: var(--glacier-100);
+  color: var(--glacier-700);
+  border: 1px solid var(--glacier-300);
+  white-space: nowrap;
+}
+
+.eq-body {
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.eq-formula {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--glacier-text-main);
+  line-height: 1.65;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.eq-subst {
+  font-size: 11px;
+  color: var(--glacier-text-main);
+  line-height: 1.55;
+  padding: 6px 10px;
+  background: var(--polar-panel);
+  border-left: 3px solid var(--glacier-500);
+  border-radius: 0 4px 4px 0;
+  border-top: 1px solid var(--polar-border-subtle);
+  border-right: 1px solid var(--polar-border-subtle);
+  border-bottom: 1px solid var(--polar-border-subtle);
+  overflow-x: auto;
+  word-break: break-word;
+}
+
+.eq-caption {
+  font-size: 10px;
+  color: var(--glacier-text-muted);
+  line-height: 1.5;
+}
+
+.text-accent  { color: var(--glacier-600); font-weight: 800; }
+/* 10% Rojo Racing: Alerta de disipación de calor */
+.text-danger  { color: var(--racing-red);   font-weight: 800; }
+.text-success { color: var(--status-green); font-weight: 800; }
+.text-center  { text-align: center; }
+.text-muted   { color: var(--glacier-text-muted); }
+
+.badge {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 3px;
+  vertical-align: middle;
+}
+
+.badge-ok   { background: var(--status-green-light); color: #047857; border: 1px solid #a7f3d0; }
+.badge-warn { background: var(--amber-light);        color: #92400e; border: 1px solid #fcd34d; }
+.badge-info { background: var(--glacier-100);       color: var(--glacier-700); border: 1px solid var(--glacier-300); }
+
+/* ── Pestaña 2: Cuaderno Experimental ── */
+.logbook-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--polar-border);
+  background: var(--polar-subtle);
+}
+
+.btn-action-primary,
+.btn-action-secondary,
+.btn-action-danger {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  padding: 7px 14px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-transform: uppercase;
+}
+
+/* Acción Primaria en 30% Azul Glaciar */
+.btn-action-primary {
+  background: linear-gradient(135deg, var(--glacier-500) 0%, var(--glacier-600) 100%);
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(14, 165, 233, 0.3);
+}
+
+.btn-action-primary:hover {
+  background: var(--glacier-600);
+  box-shadow: 0 4px 10px rgba(14, 165, 233, 0.45);
+}
+
+.btn-action-secondary {
+  background: var(--polar-panel);
+  color: var(--glacier-700);
+  border: 1px solid var(--glacier-300);
+  box-shadow: var(--shadow-polar-sm);
+}
+
+.btn-action-secondary:hover {
+  background: var(--glacier-100);
+  border-color: var(--glacier-500);
+  color: var(--glacier-900);
+}
+
+/* 10% Rojo Racing: Acción de Peligro / Limpiar */
+.btn-action-danger {
+  background: var(--racing-red-light);
+  color: var(--racing-red);
+  border: 1px solid var(--racing-red-border);
+}
+
+.btn-action-danger:hover {
+  background: var(--racing-red);
+  color: #ffffff;
+  box-shadow: 0 2px 8px var(--racing-red-glow);
+}
+
+.logbook-hint {
+  font-size: 10px;
+  color: var(--glacier-text-muted);
+  flex: 1;
+  min-width: 200px;
+  font-weight: 500;
+}
+
+.logbook-table-container {
+  overflow-x: auto;
+  padding: 14px;
+  background: var(--polar-panel);
+}
+
+.lab-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 10.5px;
+}
+
+.lab-table th {
+  background: var(--glacier-50);
+  color: var(--glacier-800);
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  padding: 8px 10px;
+  text-align: left;
+  border-bottom: 2px solid var(--glacier-400);
+  white-space: nowrap;
+}
+
+.lab-table td {
+  padding: 7px 10px;
+  border-bottom: 1px solid var(--polar-border);
+  color: var(--glacier-text-main);
+}
+
+.lab-table tbody tr:nth-child(even) { background: var(--polar-subtle); }
+.lab-table tbody tr:hover { background: var(--glacier-100); }
+
+/* ── Pestaña 3: Aislamiento de Módulos (Toggles Glaciares) ── */
+.isolation-toggles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 10px;
+  padding: 14px;
+  background: var(--polar-panel);
+}
+
+.toggle-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--polar-subtle);
+  border: 1px solid var(--polar-border);
+  border-radius: 7px;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.toggle-card:hover {
+  border-color: var(--glacier-400);
+  background: var(--glacier-50);
+}
+
+.toggle-card input[type="checkbox"] { display: none; }
+
+.toggle-custom {
+  position: relative;
+  flex-shrink: 0;
+  width: 36px;
+  height: 20px;
+  border-radius: 10px;
+  background: var(--polar-border);
+  transition: background 0.2s ease;
+}
+
+.toggle-custom::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease;
+}
+
+/* Toggle encendido en 30% Azul Glaciar */
+.toggle-card input:checked + .toggle-custom {
+  background: var(--glacier-500);
+}
+
+.toggle-card input:checked + .toggle-custom::after {
+  transform: translateX(16px);
+}
+
+.toggle-desc strong {
+  display: block;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--glacier-text-main);
+  margin-bottom: 2px;
+}
+
+.toggle-desc span {
+  font-size: 10px;
+  color: var(--glacier-text-muted);
+}
+
+/* ── Pestaña 4: Guía Teórica ── */
+.theory-article {
+  padding: 18px 22px;
+  max-width: 1200px;
+  background: var(--polar-panel);
+}
+
+.theory-article h3 {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--glacier-text-main);
+  border-bottom: 2px solid var(--glacier-400);
+  padding-bottom: 8px;
+  margin-bottom: 14px;
+}
+
+.theory-article h4 {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--glacier-700);
+  margin-bottom: 7px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.theory-article p {
+  font-size: 11.5px;
+  color: var(--glacier-text-main);
+  line-height: 1.65;
+}
+
+.theory-columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.theory-col {
+  background: var(--polar-subtle);
+  border: 1px solid var(--polar-border);
+  border-radius: 7px;
+  padding: 12px 14px;
+}
+
+/* ============================================================
+   SCROLLBAR POLAR / GLACIAR
+   ============================================================ */
+::-webkit-scrollbar { width: 7px; height: 7px; }
+::-webkit-scrollbar-track { background: var(--polar-inset); }
+::-webkit-scrollbar-thumb { background: var(--glacier-300); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--glacier-500); }
+
+/* ============================================================
+   RESPONSIVE DESIGN
+   ============================================================ */
+@media (max-width: 1100px) {
+  .lab-main-layout { grid-template-columns: 1fr; }
+  .lab-controls-column { flex-direction: row; flex-wrap: wrap; }
+  .rack-body { max-height: none; flex-direction: row; flex-wrap: wrap; }
+  .control-group, .control-subgroup-box { flex: 1 1 220px; }
+  .viewport-canvas-wrapper { height: 420px; min-height: 320px; }
+}
+
+@media (max-width: 700px) {
+  .lab-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .lab-main-layout { padding: 8px; gap: 8px; }
+  .equations-grid { grid-template-columns: 1fr; }
+  .theory-columns { grid-template-columns: 1fr; }
+}
