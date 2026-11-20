@@ -118,7 +118,7 @@ class XRayPhysicsLabApp {
     // Handle window resize
     try {
       window.addEventListener('resize', () => this.handleWindowResize());
-    } catch (err) {}
+    } catch (err) { }
 
     console.log('X-Ray Physics Lab 3D initialized successfully.');
   }
@@ -812,7 +812,7 @@ class XRayPhysicsLabApp {
       if (this.controls && this.controls.update) {
         this.controls.update();
       }
-    } catch (e) {}
+    } catch (e) { }
 
     // 2. Physics & Thermodynamics Update
     try {
@@ -824,28 +824,28 @@ class XRayPhysicsLabApp {
           effDelta
         );
       }
-    } catch (e) {}
+    } catch (e) { }
 
     // 3. 3D Tube Model Update (Anode Rotation, Filament Glow, Thermal Focal Track)
     try {
       if (this.tubeModel && this.currentPhysics) {
         this.tubeModel.update(this.currentPhysics, effDelta, this.state.isExposing);
       }
-    } catch (e) {}
+    } catch (e) { }
 
     // 4. Particles & Transverse Sinusoidal EM Waves Update
     try {
       if (this.particleSim && this.currentPhysics) {
         this.particleSim.update(this.currentPhysics, deltaSec, this.state.isExposing);
       }
-    } catch (e) {}
+    } catch (e) { }
 
     // 4b. Independent Microscopic EM Wave 3D Model Update
     try {
       if (this.emInspector) {
         this.emInspector.update(deltaSec);
       }
-    } catch (e) {}
+    } catch (e) { }
 
     // 5. Audio Synthesizer Update
     try {
@@ -854,19 +854,19 @@ class XRayPhysicsLabApp {
         const intensityRatio = (this.currentPhysics.filtration.totalFilteredIntensity / 1000.0);
         this.labSynth.update(this.state.isExposing, rpm, intensityRatio);
       }
-    } catch (e) {}
+    } catch (e) { }
 
     // 6. Live HUD Refresh (Digital Readouts & HU Meter Bar)
     try {
       this.updateHUD();
-    } catch (e) {}
+    } catch (e) { }
 
     // 7. Equations Update (Safe Throttled Update)
     if (timestamp - this.lastEquationUpdate > 2000) {
       this.lastEquationUpdate = timestamp;
       try {
         this.updateEquations();
-      } catch (e) {}
+      } catch (e) { }
     }
 
     // 8. CRITICAL: 3D WebGL Rendering
