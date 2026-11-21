@@ -7,7 +7,7 @@
   <title>Simulador Científico 3D de Tubo de Rayos X de Ánodo Rotatorio | X-Ray Physics Lab 3D</title>
 
   <!-- Estilos del Laboratorio -->
-  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/svg+xml" href="logo.svg">
   <link rel="stylesheet" href="style.css">
 
   <!-- KaTeX para renderizado de fórmulas matemáticas (opcional con degradación elegante) -->
@@ -30,7 +30,7 @@
   <!-- BARRA SUPERIOR DE INSTRUMENTACIÓN CIENTÍFICA -->
   <header class="lab-header">
     <div class="header-branding">
-      <div class="brand-badge">LABORATORIO 3D</div>
+      <div class="brand-badge">ESTUDIO DE PROPIEDADES ELECTROMAGNÉTICAS</div>
       <h1 class="brand-title">SIMULADOR RAYOS X</h1>
       <span class="brand-subtitle">ELECTROMAGNETISMO</span>
     </div>
@@ -60,7 +60,7 @@
         </button>
         <button id="btn-toggle-audio" class="btn-lab-util"
           title="Activar/desactivar sintetizador acústico de instrumentación">
-          🔇 AUDIO LAB: SILENCIADO
+          AUDIO: SILENCIADO
         </button>
         <button id="btn-toggle-sidebar" class="btn-lab-util btn-panel-toggle"
           title="Ocultar o desplegar el Panel de Control para ampliar los modelos 3D al 100%">
@@ -84,7 +84,7 @@
       <div class="viewport-card">
         <div class="card-header-bar">
           <div style="display: flex; align-items: center; gap: 8px;">
-            <span class="card-title">MODELO 3D // ÁNODO ROTATORIO &amp; ONDAS EM</span>
+            <span class="card-title">EQUIPO DE RAYOS X CON ÁNODO ROTATORIO</span>
             <span class="badge badge-info">Haz Útil vs Dispersión 4π</span>
           </div>
           <div style="display: flex; align-items: center; gap: 8px;">
@@ -159,8 +159,7 @@
 
         <div class="viewport-footer-tips">
           <span>
-            💡 <strong>Control 3D:</strong> Clic izquierdo + arrastrar | Rueda: Zoom |
-            <strong style="color: var(--glacier-400);">Haz Útil:</strong> Cono colimado inferior (1-2%) |
+            💡 Haz Útil:</strong> Cono colimado inferior (1-2%) |
             <strong style="color: #f59e0b);">Radiación Dispersa &amp; de Fuga:</strong> Emisión omnidireccional (4π
             esterorradianes) atenuada por blindaje plomado
           </span>
@@ -224,9 +223,7 @@
             <strong style="color: #d97706;">➔ Vector de Poynting S = (E×B)/μ0</strong> | Lóbulo Doppler de
             Liénard-Wiechert
           </span>
-          <span style="font-size: 9.5px; color: var(--glacier-text-muted);">
-            OrbitControls: Arrastrar / Zoom | Sincronizado en vivo con el Tubo Principal
-          </span>
+
         </div>
       </div>
 
@@ -302,19 +299,14 @@
 
         <div class="viewport-footer-tips focusing-cup-tips">
           <span>
-            💡 <strong>Marco Físico &amp; Matemático (Ecuaciones de Laplace &amp; Poisson):</strong>
-            Divergencia: <strong style="color: var(--glacier-400);">∇·E = ρ/ε₀</strong> | Campo irrotacional: <strong
-              style="color: var(--racing-red);">E = −∇V</strong> ➔ Poisson: <strong style="color: #fbbf24;">∇²V =
-              −ρ/ε₀</strong>.
-            En tránsito libre fuera de carga espacial, <strong>ρ = 0 ➔ ∇²V = 0 (Laplace)</strong>.
-            La copa de níquel a potencial negativo configura <strong>superficies equipotenciales cóncavas</strong>.
-            La fuerza <strong style="color: #10b981;">F = −eE = e∇V</strong> ejerce una repulsión lateral que enfoca
-            convergentemente los electrones hacia la <strong>mancha focal</strong> del ánodo.
+            💡 <strong>Marco Físico (Poisson &amp; Laplace):</strong>
+            <strong style="color: var(--glacier-400);">∇·E = ρ/ε₀</strong> con <strong
+              style="color: var(--racing-red);">E = −∇V</strong> da <strong style="color: #fbbf24;">∇²V = −ρ/ε₀</strong>
+            (en tránsito sin carga espacial, <strong>ρ = 0 ➔ ∇²V = 0</strong>). La copa de níquel negativa moldea
+            <strong>equipotenciales cóncavas</strong> y <strong style="color: #10b981;">F = −eE = e∇V</strong> converge
+            el haz hacia la <strong>mancha focal</strong> del ánodo.
           </span>
-          <span style="font-size: 9.5px; color: var(--glacier-text-muted); margin-top: 4px; display: block;">
-            OrbitControls: Arrastrar para orbitar 3D | Rueda: Zoom | Sincronizado en tiempo real con kVp y Emisión del
-            Tubo
-          </span>
+
         </div>
       </div>
 
@@ -372,10 +364,10 @@
           <div class="atomic-control-group">
             <span class="atomic-control-label">DISPARO MANUAL:</span>
             <button id="btn-atom-trigger-brems" class="btn-atom-action"
-              title="Disparar deflexión coulombiana y radiación continua">⚡ Frenado (Brems)</button>
+              title="Disparar deflexión coulombiana y radiación continua"> Frenado (Brems)</button>
             <button id="btn-atom-trigger-kalpha" class="btn-atom-action"
-              title="Ionizar capa K y transición L -> K (59.3 keV)">💥 Ionizar K &amp; Salto Kα</button>
-            <button id="btn-atom-trigger-kbeta" class="btn-atom-action" title="Transición M -> K (67.2 keV)">✨ Salto M →
+              title="Ionizar capa K y transición L -> K (59.3 keV)"> Ionizar K &amp; Salto Kα</button>
+            <button id="btn-atom-trigger-kbeta" class="btn-atom-action" title="Transición M -> K (67.2 keV)"> Salto M →
               K (Kβ)</button>
           </div>
 
@@ -391,18 +383,12 @@
 
         <div class="viewport-footer-tips atomic-interaction-tips">
           <span>
-            💡 <strong>Mecanismos a Escala Atómica en el Blanco:</strong>
-            <strong style="color: #f59e0b;">1. Radiación de Frenado (Bremsstrahlung):</strong> El electrón incidente se
-            desvía por atracción electrostática del núcleo positivo (+Ze) sin tocar electrones orbitales; la
-            desaceleración emite un fotón continuo de energía <strong style="color: #f59e0b;">hν = Eᵢ − E_f</strong>.
-            | <strong style="color: #ef233c;">2. Radiación Característica:</strong> Si <strong
-              style="color: #10b981;">E_inc ≥ E_K</strong> (69.5 keV en W), expulsa un electrón de la Capa K creando una
-            vacante; un electrón de la Capa L o M cae para llenarla emitiendo un fotón monoenergético discreto (<strong
-              style="color: #ef233c;">Kα = 59.3 keV</strong>, <strong style="color: #a855f7;">Kβ = 67.2 keV</strong>).
-          </span>
-          <span style="font-size: 9.5px; color: var(--glacier-text-muted); margin-top: 4px; display: block;">
-            OrbitControls: Arrastrar para rotar 3D | Rueda: Zoom | Sincronizado en tiempo real con el selector de
-            kilovoltaje (kVp) y material del tubo.
+            💡 <strong>Emisión en el Blanco:</strong>
+            <strong>1. Bremsstrahlung:</strong> desvío por <strong style="color: var(--glacier-400);">+Ze</strong> (sin
+            colisión orbital) emite espectro continuo <strong style="color: #fbbf24;">hν = Eᵢ − E_f</strong>.
+            <strong>2. Característica:</strong> si <strong style="color: var(--racing-red);">E_inc ≥ E_K (69.5
+              keV)</strong>, expulsa electrón K y transiciones L/M emiten líneas discretas (<strong
+              style="color: #10b981;">Kα = 59.3 keV</strong>, <strong style="color: #10b981;">Kβ = 67.2 keV</strong>).
           </span>
         </div>
       </div>
@@ -447,6 +433,393 @@
         </div>
         </div>
         -->
+
+      <!-- SECCIÓN INFERIOR: PIZARRA CIENTÍFICA, CUADERNO EXPERIMENTAL Y AISLAMIENTO -->
+      <section class="lab-workbench-section">
+        <div class="workbench-nav-bar">
+          <button class="lab-tab-btn active" data-tab="equations">
+            PIZARRA DE ECUACIONES ELECTROMAGNÉTICAS
+          </button>
+          <button class="lab-tab-btn" data-tab="logbook">
+            CUADERNO DE DOSIMETRÍA
+          </button>
+          <button class="lab-tab-btn" data-tab="simulation-results">
+            RESULTADOS DE SIMULACIÓN
+          </button>
+          <button class="lab-tab-btn" data-tab="isolation">
+            AISLAMIENTO DE SUBSISTEMAS & MODO OSCURO
+          </button>
+          <button class="lab-tab-btn" data-tab="theory">
+            GUÍA TEÓRICA DE FÍSICA MÉDICA
+          </button>
+          <a href="calculos_rayos.html" class="lab-tab-btn lab-tab-link-out"
+            title="Abrir Tratado Detallado de Ecuaciones y Cálculos">
+            ECUACIONES ↗
+          </a>
+          <a href="onda_electromagnetica.html" class="lab-tab-btn lab-tab-link-out"
+            title="Abrir Monografía Completa sobre Ondas Electromagnéticas">
+            ESTUDIO ONDAS EM ↗
+          </a>
+        </div>
+
+        <div class="workbench-tab-content">
+
+          <!-- PESTAÑA 1: ECUACIONES EN VIVO -->
+          <div id="tab-equations" class="lab-tab-panel active">
+            <div
+              style="background: var(--polar-panel); border-bottom: 1px solid var(--polar-border); padding: 12px 18px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+              <div>
+                <span style="font-size: 11px; font-weight: 800; color: var(--glacier-800); text-transform: uppercase;">
+                  ECUACIONES USADAS
+                </span>
+              </div>
+            </div>
+            <div id="equations-container" class="equations-grid">
+              <div class="equation-card" data-eq-id="child_langmuir">
+                <div class="eq-header">
+                  <span class="eq-title">2. Límite de Carga Espacial (Ley de Child-Langmuir)</span>
+                  <span class="eq-category-tag">Cátodo &amp; Campo E</span>
+                </div>
+                <div class="eq-body">
+                  <div class="eq-formula"><em>J</em><sub>sc</sub> = (4/9) · <em>&epsilon;</em><sub>0</sub> ·
+                    &radic;(2<em>e</em>/<em>m</em><sub>e</sub>) · <em>V</em><sup>3/2</sup> / <em>d</em><sup>2</sup>
+                  </div>
+                  <div class="eq-subst">
+                    = (2.33×10<sup>−6</sup>) · (80,000 V)<sup>1.5</sup> / (0.018 m)<sup>2</sup>
+                    = <strong class="text-accent">162.80 mA/cm²</strong>
+                  </div>
+                  <div class="eq-caption">
+                    Régimen actual: <span class="badge badge-ok">Saturación por Temperatura (Richardson-Dushman)</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="equation-card" data-eq-id="relativistic">
+                <div class="eq-header">
+                  <span class="eq-title">3. Aceleración Electrostática y Cinemática Relativista</span>
+                  <span class="eq-category-tag">Campo E &amp; Electrones</span>
+                </div>
+                <div class="eq-body">
+                  <div class="eq-formula">
+                    <em>&gamma;</em> = 1 + <em>eV</em> / (<em>m</em><sub>e</sub><em>c</em><sup>2</sup>) = 1 + 80 keV /
+                    511.0
+                    keV = <strong>1.1565</strong><br>
+                    <em>&beta;</em> = <em>v</em> / <em>c</em> = &radic;(1 − 1/<em>&gamma;</em><sup>2</sup>) =
+                    <strong>0.5024</strong>
+                    &implies; <em>v</em> = <strong class="text-accent">150,600 km/s</strong> (50.2% de <em>c</em>)
+                  </div>
+                  <div class="eq-caption">La masa inercial del electrón se incrementa un 15.7% sobre su masa en reposo.
+                  </div>
+                </div>
+              </div>
+
+              <div class="equation-card" data-eq-id="larmor">
+                <div class="eq-header">
+                  <span class="eq-title">4. Radiación por Frenado Brusco (Potencia de Larmor / Liénard)</span>
+                  <span class="eq-category-tag">Ánodo &amp; Electrodinámica</span>
+                </div>
+                <div class="eq-body">
+                  <div class="eq-formula">
+                    <em>P</em> = <em>e</em><sup>2</sup> · <em>a</em><sup>2</sup> · <em>&gamma;</em><sup>6</sup> /
+                    (6&pi;<em>&epsilon;</em><sub>0</sub><em>c</em><sup>3</sup>)
+                    &emsp;|&emsp; <em>&eta;</em> &approx; 9×10<sup>−10</sup> · <em>Z</em> · <em>V</em> = <strong
+                      class="text-accent">0.533%</strong>
+                  </div>
+                  <div class="eq-subst">
+                    Potencia Total: <strong>16.0 kW</strong> | Radiación X: <strong>85.3 W</strong> | Calor en Ánodo:
+                    <strong class="text-danger">15915 W</strong> (99.47%)
+                  </div>
+                  <div class="eq-caption">Frenado coulombiano en Tungsteno (Z = 74). Prácticamente todo se disipa como
+                    calor.</div>
+                </div>
+              </div>
+
+              <div class="equation-card" data-eq-id="duane_hunt">
+                <div class="eq-header">
+                  <span class="eq-title">5. Límite Cuántico de Duane-Hunt &amp; Ley de Planck</span>
+                  <span class="eq-category-tag">Ondas EM &amp; Cuántica</span>
+                </div>
+                <div class="eq-body">
+                  <div class="eq-formula">
+                    <em>&lambda;</em><sub>min</sub> = <em>h</em>·<em>c</em> / (<em>e</em>·<em>V</em><sub>0</sub>) =
+                    1239.84
+                    pm·keV / 80 keV = <strong class="text-accent">15.50 pm</strong> (0.155 &Aring;)<br>
+                    <em>&nu;</em><sub>max</sub> = <em>e</em>·<em>V</em><sub>0</sub> / <em>h</em> = <strong
+                      class="text-accent">19.344 EHz</strong> (10<sup>18</sup> Hz)
+                  </div>
+                  <div class="eq-caption">Longitud de onda de corte mínima: ningún fotón de Bremsstrahlung supera la
+                    energía
+                    cinética del electrón incidente.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PESTAÑA 2: CUADERNO EXPERIMENTAL -->
+          <div id="tab-logbook" class="lab-tab-panel">
+            <div class="logbook-toolbar">
+              <button id="btn-log-measurement" class="btn-action-primary">
+                ➕ REGISTRAR MEDICIÓN ACTUAL
+              </button>
+              <button id="btn-export-csv" class="btn-action-secondary">
+                💾 EXPORTAR DATOS (CSV)
+              </button>
+              <button id="btn-clear-logbook" class="btn-action-danger">
+                🗑️ LIMPIAR HISTORIAL
+              </button>
+
+            </div>
+
+            <div class="logbook-table-container">
+              <table class="lab-table">
+                <thead>
+                  <tr>
+                    <th>Hora</th>
+                    <th>kVp</th>
+                    <th>mA</th>
+                    <th>Blanco</th>
+                    <th>Ángulo</th>
+                    <th>Filtro Al</th>
+                    <th>Filtro Cu</th>
+                    <th>λmin (pm)</th>
+                    <th>Ē (keV)</th>
+                    <th>HVL (mm Al)</th>
+                    <th>Eficiencia</th>
+                  </tr>
+                </thead>
+                <tbody id="logbook-table-body">
+                  <tr>
+                    <td colspan="11" class="text-center text-muted">No se han registrado mediciones aún. Pulse
+                      "Registrar
+                      Medición Actual".</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- PESTAÑA 3: RESULTADOS DE SIMULACIÓN -->
+          <div id="tab-simulation-results" class="lab-tab-panel">
+            <div class="logbook-toolbar">
+              <button id="btn-sim-log" class="btn-action-primary"
+                title="Registrar instantáneamente los 14 parámetros físicos de la simulación activa">
+                ➕ REGISTRAR MEDICIÓN ACTUAL
+              </button>
+              <button id="btn-sim-export-csv" class="btn-action-secondary"
+                title="Exportar todas las mediciones de simulación en formato CSV">
+                💾 EXPORTAR DATOS (CSV)
+              </button>
+              <button id="btn-sim-clear" class="btn-action-danger" title="Limpiar todo el historial de simulación">
+                🗑️ LIMPIAR HISTORIAL
+              </button>
+              <span class="badge"
+                style="background: rgba(16, 185, 129, 0.15); color: #059669; border: 1px solid rgba(16, 185, 129, 0.3); font-weight: 700; padding: 4px 8px; border-radius: 4px; font-size: 10px; display: inline-flex; align-items: center; gap: 4px;">
+                💾 LocalStorage Activo
+              </span>
+              <span class="logbook-hint">
+                .
+              </span>
+            </div>
+
+            <!-- Barra de métricas dinámicas de simulación -->
+            <div class="sim-summary-strip">
+              <div class="sim-metric-pill">
+                <span class="metric-label">TOTAL REGISTROS:</span>
+                <span id="sim-count-badge" class="metric-value">0</span>
+              </div>
+              <div class="sim-metric-pill">
+                <span class="metric-label">ÚLTIMO DISPARO:</span>
+                <span id="sim-last-time" class="metric-value">--:--:--</span>
+              </div>
+              <div class="sim-metric-pill">
+                <span class="metric-label">MECANISMO CUÁNTICO:</span>
+                <span id="sim-last-mechanism" class="metric-value" style="color: var(--glacier-400);">Bremsstrahlung +
+                  Característica</span>
+              </div>
+              <div class="sim-metric-pill">
+                <span class="metric-label">POTENCIA RADIADA:</span>
+                <span id="sim-avg-power" class="metric-value text-accent">-- W</span>
+              </div>
+            </div>
+
+            <div class="logbook-table-container">
+              <table class="lab-table sim-results-table">
+                <thead>
+                  <tr>
+                    <th title="Número correlativo de registro">#</th>
+                    <th title="Hora local del registro">Hora</th>
+                    <th title="Tensión máxima pico de aceleración">kVp</th>
+                    <th title="Corriente real del tubo de rayos X">mA</th>
+                    <th title="Material y número atómico del blanco del ánodo">Blanco</th>
+                    <th title="Velocidad angular del disco anódico">RPM Ánodo</th>
+                    <th title="Flujo incidente de electrones en el punto focal">Flujo de Electrones</th>
+                    <th title="Fracción relativista de la velocidad de la luz beta = v/c">Vel. Relativista (β)</th>
+                    <th title="Velocidad lineal de impacto y factor de Lorentz gamma">Rapidez v (γ)</th>
+                    <th title="Longitud de onda de corte mínima de Duane-Hunt">Límite Duane-Hunt</th>
+                    <th title="Radiación de frenado continuo coulombiano">RX Frenado</th>
+                    <th title="Radiación cuántica característica por ionización de capa interna">RX Característicos</th>
+                    <th title="Potencia instantánea radiada por aceleración de Larmor / Liénard">Potencia Larmor</th>
+                    <th title="Eficiencia de conversión de energía eléctrica a rayos X">Eficiencia (η)</th>
+                    <th title="Carga térmica acumulada y porcentaje de capacidad calórica del ánodo">Carga Térmica Ánodo
+                    </th>
+                  </tr>
+                </thead>
+                <tbody id="sim-results-table-body">
+                  <tr>
+                    <td colspan="15" class="text-center text-muted">
+                      No se han registrado resultados de simulación aún. Pulse "Registrar Medición Actual" para capturar
+                      los 14 parámetros físicos simultáneamente.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div id="tab-isolation" class="lab-tab-panel">
+            <div class="isolation-toggles-grid">
+              <label class="toggle-card">
+                <input type="checkbox" id="toggle-glass" checked>
+                <span class="toggle-custom"></span>
+                <div class="toggle-desc">
+                  <strong>Envoltura de Vidrio Borosilicato</strong>
+                  <span>Carcasa al vacío con ventana inferior de salida</span>
+                </div>
+              </label>
+
+              <label class="toggle-card">
+                <input type="checkbox" id="toggle-stator" checked>
+                <span class="toggle-custom"></span>
+                <div class="toggle-desc">
+                  <strong>Estator Externo de Inducción</strong>
+                  <span>Bobinas electromagnéticas de giro del ánodo</span>
+                </div>
+              </label>
+
+              <label class="toggle-card">
+                <input type="checkbox" id="toggle-efield" checked>
+                <span class="toggle-custom"></span>
+                <div class="toggle-desc">
+                  <strong>Líneas de Campo Electrostático (E = −∇V)</strong>
+                  <span>Líneas de fuerza de aceleración entre cátodo y ánodo</span>
+                </div>
+              </label>
+
+              <label class="toggle-card">
+                <input type="checkbox" id="toggle-electrons" checked>
+                <span class="toggle-custom"></span>
+                <div class="toggle-desc">
+                  <strong>Haz de Electrones Acelerados (Cian)</strong>
+                  <span>Partículas con cinemática relativista (β = v/c)</span>
+                </div>
+              </label>
+
+              <label class="toggle-card">
+                <input type="checkbox" id="toggle-waves" checked>
+                <span class="toggle-custom"></span>
+                <div class="toggle-desc">
+                  <strong>Haz Útil de Rayos X (Cono Colimado)</strong>
+                  <span>Fotones emitidos hacia el puerto de salida inferior (1-2%)</span>
+                </div>
+              </label>
+
+              <label class="toggle-card">
+                <input type="checkbox" id="toggle-scatter" checked>
+                <span class="toggle-custom"></span>
+                <div class="toggle-desc">
+                  <strong>Radiación Dispersa &amp; de Fuga (4π esterorradianes)</strong>
+                  <span>Fotones emitidos omnidireccionalmente fuera del haz útil (~98%)</span>
+                </div>
+              </label>
+
+              <label class="toggle-card">
+                <input type="checkbox" id="toggle-vectors">
+                <span class="toggle-custom"></span>
+                <div class="toggle-desc">
+                  <strong>Modo Inspección Vectores E ⊥ B</strong>
+                  <span>Visualizar campos eléctrico (E, rojo) y magnético (B, azul)</span>
+                </div>
+              </label>
+
+              <label class="toggle-card">
+                <input type="checkbox" id="toggle-darkroom">
+                <span class="toggle-custom"></span>
+                <div class="toggle-desc">
+                  <strong>Modo Cámara Oscura (Darkroom)</strong>
+                  <span>Fondo ultranegro para máxima visibilidad de fluorescencia</span>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- PESTAÑA 4: GUÍA TEÓRICA -->
+          <div id="tab-theory" class="lab-tab-panel">
+            <div class="theory-article">
+              <h3>Fundamentos de Generación de Rayos X en Ánodo Rotatorio</h3>
+              <p>
+                Un tubo de rayos X es un convertidor termoiónico y electrodinámico de alta energía en vacío ultra-alto
+                (&lt;
+                10<sup>−6</sup> Torr).
+                El cátodo calienta un filamento helicoidal de tungsteno hasta temperaturas de 2100 a 2700 K, emitiendo
+                electrones por el efecto <strong>Richardson-Dushman</strong>.
+                Bajo una diferencia de potencial de 20 a 150 kVp, estos electrones son acelerados hacia el ánodo,
+                alcanzando
+                velocidades de hasta el 63% de la velocidad de la luz (<em>c</em>).
+              </p>
+              <div class="theory-columns">
+                <div class="theory-col">
+                  <h4>1. Espectro Continuo (Bremsstrahlung)</h4>
+                  <p>
+                    Producido por la desaceleración coulombiana brusca del electrón en el campo electrostático del
+                    núcleo
+                    atómico metálico.
+                    Según la electrodinámica clásica (fórmula de Larmor / Liénard), una carga acelerada irradia potencia
+                    electromagnética.
+                    El límite máximo de energía del fotón está fijado por la ley cuántica de
+                    <strong>Duane-Hunt</strong>:
+                    ningún fotón puede tener más energía que la energía cinética total del electrón:
+                    <em>&lambda;<sub>min</sub> = hc / eV<sub>0</sub></em>.
+                  </p>
+                </div>
+                <div class="theory-col">
+                  <h4>2. Radiación Característica</h4>
+                  <p>
+                    Si la energía del electrón incidente supera la energía de enlace de la capa K
+                    (<em>E<sub>K</sub></em> =
+                    69.5 keV en Tungsteno, 20.0 keV en Molibdeno), se ioniza el átomo y se produce una vacante.
+                    Al decaer un electrón de una capa superior (L o M) para llenar la vacante, se emite un fotón
+                    monoenergético característico (<em>K&alpha;<sub>1</sub></em>, <em>K&alpha;<sub>2</sub></em>,
+                    <em>K&beta;</em>).
+                  </p>
+                </div>
+                <div class="theory-col">
+                  <h4>3. Efecto Talón (Anode Heel Effect)</h4>
+                  <p>
+                    Los rayos X se originan a una profundidad finita dentro del metal del blanco. Debido a la
+                    inclinación
+                    del ángulo del ánodo (7° a 17°), los fotones emitidos hacia el lado del ánodo deben recorrer una
+                    mayor
+                    trayectoria de tungsteno, sufriendo mayor autoabsorción.
+                    Por ello, el haz de rayos X es notablemente más intenso en el lado del cátodo que en el lado del
+                    ánodo.
+                  </p>
+                </div>
+                <div class="theory-col">
+                  <h4>4. Filtración y Endurecimiento (Beer-Lambert)</h4>
+                  <p>
+                    Los filtros de Aluminio y Cobre eliminan preferencialmente los fotones de baja energía que no
+                    penetrarían al paciente y solo aumentarían la dosis absorbida en piel.
+                    La ley de Beer-Lambert (<em>I = I<sub>0</sub> e<sup>−&mu;x</sup></em>) eleva la energía media del
+                    haz
+                    (<em>&Eacute;̄</em>), lo que se conoce como <strong>endurecimiento del haz</strong> (<em>beam
+                      hardening</em>).
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
 
     </section>
 
@@ -618,301 +991,6 @@
   <button id="btn-floating-open-rack" class="floating-panel-toggle" title="Desplegar Panel de Control Radiológico">
     ⚙ PANEL DE CONTROL ◀
   </button>
-
-  <!-- SECCIÓN INFERIOR: PIZARRA CIENTÍFICA, CUADERNO EXPERIMENTAL Y AISLAMIENTO -->
-  <section class="lab-workbench-section">
-    <div class="workbench-nav-bar">
-      <button class="lab-tab-btn active" data-tab="equations">
-        PIZARRA DE ECUACIONES ELECTROMAGNÉTICAS
-      </button>
-      <button class="lab-tab-btn" data-tab="logbook">
-        CUADERNO EXPERIMENTAL & DOSIMETRÍA
-      </button>
-      <button class="lab-tab-btn" data-tab="isolation">
-        AISLAMIENTO DE SUBSISTEMAS & MODO OSCURO
-      </button>
-      <button class="lab-tab-btn" data-tab="theory">
-        GUÍA TEÓRICA DE FÍSICA MÉDICA
-      </button>
-      <a href="calculos_rayos.html" class="lab-tab-btn lab-tab-link-out"
-        title="Abrir Tratado Detallado de Ecuaciones y Cálculos">
-        ECUACIONES ↗
-      </a>
-      <a href="onda_electromagnetica.html" class="lab-tab-btn lab-tab-link-out"
-        title="Abrir Monografía Completa sobre Ondas Electromagnéticas">
-        ESTUDIO ONDAS EM ↗
-      </a>
-    </div>
-
-    <div class="workbench-tab-content">
-
-      <!-- PESTAÑA 1: ECUACIONES EN VIVO -->
-      <div id="tab-equations" class="lab-tab-panel active">
-        <div
-          style="background: var(--polar-panel); border-bottom: 1px solid var(--polar-border); padding: 12px 18px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-          <div>
-            <span style="font-size: 11px; font-weight: 800; color: var(--glacier-800); text-transform: uppercase;">
-              ECUACIONES USADAS
-            </span>
-          </div>
-        </div>
-        <div id="equations-container" class="equations-grid">
-          <div class="equation-card" data-eq-id="child_langmuir">
-            <div class="eq-header">
-              <span class="eq-title">2. Límite de Carga Espacial (Ley de Child-Langmuir)</span>
-              <span class="eq-category-tag">Cátodo &amp; Campo E</span>
-            </div>
-            <div class="eq-body">
-              <div class="eq-formula"><em>J</em><sub>sc</sub> = (4/9) · <em>&epsilon;</em><sub>0</sub> ·
-                &radic;(2<em>e</em>/<em>m</em><sub>e</sub>) · <em>V</em><sup>3/2</sup> / <em>d</em><sup>2</sup></div>
-              <div class="eq-subst">
-                = (2.33×10<sup>−6</sup>) · (80,000 V)<sup>1.5</sup> / (0.018 m)<sup>2</sup>
-                = <strong class="text-accent">162.80 mA/cm²</strong>
-              </div>
-              <div class="eq-caption">
-                Régimen actual: <span class="badge badge-ok">Saturación por Temperatura (Richardson-Dushman)</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="equation-card" data-eq-id="relativistic">
-            <div class="eq-header">
-              <span class="eq-title">3. Aceleración Electrostática y Cinemática Relativista</span>
-              <span class="eq-category-tag">Campo E &amp; Electrones</span>
-            </div>
-            <div class="eq-body">
-              <div class="eq-formula">
-                <em>&gamma;</em> = 1 + <em>eV</em> / (<em>m</em><sub>e</sub><em>c</em><sup>2</sup>) = 1 + 80 keV / 511.0
-                keV = <strong>1.1565</strong><br>
-                <em>&beta;</em> = <em>v</em> / <em>c</em> = &radic;(1 − 1/<em>&gamma;</em><sup>2</sup>) =
-                <strong>0.5024</strong>
-                &implies; <em>v</em> = <strong class="text-accent">150,600 km/s</strong> (50.2% de <em>c</em>)
-              </div>
-              <div class="eq-caption">La masa inercial del electrón se incrementa un 15.7% sobre su masa en reposo.
-              </div>
-            </div>
-          </div>
-
-          <div class="equation-card" data-eq-id="larmor">
-            <div class="eq-header">
-              <span class="eq-title">4. Radiación por Frenado Brusco (Potencia de Larmor / Liénard)</span>
-              <span class="eq-category-tag">Ánodo &amp; Electrodinámica</span>
-            </div>
-            <div class="eq-body">
-              <div class="eq-formula">
-                <em>P</em> = <em>e</em><sup>2</sup> · <em>a</em><sup>2</sup> · <em>&gamma;</em><sup>6</sup> /
-                (6&pi;<em>&epsilon;</em><sub>0</sub><em>c</em><sup>3</sup>)
-                &emsp;|&emsp; <em>&eta;</em> &approx; 9×10<sup>−10</sup> · <em>Z</em> · <em>V</em> = <strong
-                  class="text-accent">0.533%</strong>
-              </div>
-              <div class="eq-subst">
-                Potencia Total: <strong>16.0 kW</strong> | Radiación X: <strong>85.3 W</strong> | Calor en Ánodo:
-                <strong class="text-danger">15915 W</strong> (99.47%)
-              </div>
-              <div class="eq-caption">Frenado coulombiano en Tungsteno (Z = 74). Prácticamente todo se disipa como
-                calor.</div>
-            </div>
-          </div>
-
-          <div class="equation-card" data-eq-id="duane_hunt">
-            <div class="eq-header">
-              <span class="eq-title">5. Límite Cuántico de Duane-Hunt &amp; Ley de Planck</span>
-              <span class="eq-category-tag">Ondas EM &amp; Cuántica</span>
-            </div>
-            <div class="eq-body">
-              <div class="eq-formula">
-                <em>&lambda;</em><sub>min</sub> = <em>h</em>·<em>c</em> / (<em>e</em>·<em>V</em><sub>0</sub>) = 1239.84
-                pm·keV / 80 keV = <strong class="text-accent">15.50 pm</strong> (0.155 &Aring;)<br>
-                <em>&nu;</em><sub>max</sub> = <em>e</em>·<em>V</em><sub>0</sub> / <em>h</em> = <strong
-                  class="text-accent">19.344 EHz</strong> (10<sup>18</sup> Hz)
-              </div>
-              <div class="eq-caption">Longitud de onda de corte mínima: ningún fotón de Bremsstrahlung supera la energía
-                cinética del electrón incidente.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- PESTAÑA 2: CUADERNO EXPERIMENTAL -->
-      <div id="tab-logbook" class="lab-tab-panel">
-        <div class="logbook-toolbar">
-          <button id="btn-log-measurement" class="btn-action-primary">
-            ➕ REGISTRAR MEDICIÓN ACTUAL
-          </button>
-          <button id="btn-export-csv" class="btn-action-secondary">
-            💾 EXPORTAR DATOS (CSV)
-          </button>
-          <button id="btn-clear-logbook" class="btn-action-danger">
-            🗑️ LIMPIAR HISTORIAL
-          </button>
-          <span class="logbook-hint">Almacene registros para estudiar el efecto del kVp y la filtración sobre la Capa
-            Hemirreductora (HVL) y la dosis en piel.</span>
-        </div>
-
-        <div class="logbook-table-container">
-          <table class="lab-table">
-            <thead>
-              <tr>
-                <th>Hora</th>
-                <th>kVp</th>
-                <th>mA</th>
-                <th>Blanco</th>
-                <th>Ángulo</th>
-                <th>Filtro Al</th>
-                <th>Filtro Cu</th>
-                <th>λmin (pm)</th>
-                <th>Ē (keV)</th>
-                <th>HVL (mm Al)</th>
-                <th>Eficiencia</th>
-              </tr>
-            </thead>
-            <tbody id="logbook-table-body">
-              <tr>
-                <td colspan="11" class="text-center text-muted">No se han registrado mediciones aún. Pulse "Registrar
-                  Medición Actual".</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- PESTAÑA 3: AISLAMIENTO DE MÓDULOS -->
-      <div id="tab-isolation" class="lab-tab-panel">
-        <div class="isolation-toggles-grid">
-          <label class="toggle-card">
-            <input type="checkbox" id="toggle-glass" checked>
-            <span class="toggle-custom"></span>
-            <div class="toggle-desc">
-              <strong>Envoltura de Vidrio Borosilicato</strong>
-              <span>Carcasa al vacío con ventana inferior de salida</span>
-            </div>
-          </label>
-
-          <label class="toggle-card">
-            <input type="checkbox" id="toggle-stator" checked>
-            <span class="toggle-custom"></span>
-            <div class="toggle-desc">
-              <strong>Estator Externo de Inducción</strong>
-              <span>Bobinas electromagnéticas de giro del ánodo</span>
-            </div>
-          </label>
-
-          <label class="toggle-card">
-            <input type="checkbox" id="toggle-efield" checked>
-            <span class="toggle-custom"></span>
-            <div class="toggle-desc">
-              <strong>Líneas de Campo Electrostático (E = −∇V)</strong>
-              <span>Líneas de fuerza de aceleración entre cátodo y ánodo</span>
-            </div>
-          </label>
-
-          <label class="toggle-card">
-            <input type="checkbox" id="toggle-electrons" checked>
-            <span class="toggle-custom"></span>
-            <div class="toggle-desc">
-              <strong>Haz de Electrones Acelerados (Cian)</strong>
-              <span>Partículas con cinemática relativista (β = v/c)</span>
-            </div>
-          </label>
-
-          <label class="toggle-card">
-            <input type="checkbox" id="toggle-waves" checked>
-            <span class="toggle-custom"></span>
-            <div class="toggle-desc">
-              <strong>Haz Útil de Rayos X (Cono Colimado)</strong>
-              <span>Fotones emitidos hacia el puerto de salida inferior (1-2%)</span>
-            </div>
-          </label>
-
-          <label class="toggle-card">
-            <input type="checkbox" id="toggle-scatter" checked>
-            <span class="toggle-custom"></span>
-            <div class="toggle-desc">
-              <strong>Radiación Dispersa &amp; de Fuga (4π esterorradianes)</strong>
-              <span>Fotones emitidos omnidireccionalmente fuera del haz útil (~98%)</span>
-            </div>
-          </label>
-
-          <label class="toggle-card">
-            <input type="checkbox" id="toggle-vectors">
-            <span class="toggle-custom"></span>
-            <div class="toggle-desc">
-              <strong>Modo Inspección Vectores E ⊥ B</strong>
-              <span>Visualizar campos eléctrico (E, rojo) y magnético (B, azul)</span>
-            </div>
-          </label>
-
-          <label class="toggle-card">
-            <input type="checkbox" id="toggle-darkroom">
-            <span class="toggle-custom"></span>
-            <div class="toggle-desc">
-              <strong>Modo Cámara Oscura (Darkroom)</strong>
-              <span>Fondo ultranegro para máxima visibilidad de fluorescencia</span>
-            </div>
-          </label>
-        </div>
-      </div>
-
-      <!-- PESTAÑA 4: GUÍA TEÓRICA -->
-      <div id="tab-theory" class="lab-tab-panel">
-        <div class="theory-article">
-          <h3>Fundamentos de Generación de Rayos X en Ánodo Rotatorio</h3>
-          <p>
-            Un tubo de rayos X es un convertidor termoiónico y electrodinámico de alta energía en vacío ultra-alto (&lt;
-            10<sup>−6</sup> Torr).
-            El cátodo calienta un filamento helicoidal de tungsteno hasta temperaturas de 2100 a 2700 K, emitiendo
-            electrones por el efecto <strong>Richardson-Dushman</strong>.
-            Bajo una diferencia de potencial de 20 a 150 kVp, estos electrones son acelerados hacia el ánodo, alcanzando
-            velocidades de hasta el 63% de la velocidad de la luz (<em>c</em>).
-          </p>
-          <div class="theory-columns">
-            <div class="theory-col">
-              <h4>1. Espectro Continuo (Bremsstrahlung)</h4>
-              <p>
-                Producido por la desaceleración coulombiana brusca del electrón en el campo electrostático del núcleo
-                atómico metálico.
-                Según la electrodinámica clásica (fórmula de Larmor / Liénard), una carga acelerada irradia potencia
-                electromagnética.
-                El límite máximo de energía del fotón está fijado por la ley cuántica de <strong>Duane-Hunt</strong>:
-                ningún fotón puede tener más energía que la energía cinética total del electrón:
-                <em>&lambda;<sub>min</sub> = hc / eV<sub>0</sub></em>.
-              </p>
-            </div>
-            <div class="theory-col">
-              <h4>2. Radiación Característica</h4>
-              <p>
-                Si la energía del electrón incidente supera la energía de enlace de la capa K (<em>E<sub>K</sub></em> =
-                69.5 keV en Tungsteno, 20.0 keV en Molibdeno), se ioniza el átomo y se produce una vacante.
-                Al decaer un electrón de una capa superior (L o M) para llenar la vacante, se emite un fotón
-                monoenergético característico (<em>K&alpha;<sub>1</sub></em>, <em>K&alpha;<sub>2</sub></em>,
-                <em>K&beta;</em>).
-              </p>
-            </div>
-            <div class="theory-col">
-              <h4>3. Efecto Talón (Anode Heel Effect)</h4>
-              <p>
-                Los rayos X se originan a una profundidad finita dentro del metal del blanco. Debido a la inclinación
-                del ángulo del ánodo (7° a 17°), los fotones emitidos hacia el lado del ánodo deben recorrer una mayor
-                trayectoria de tungsteno, sufriendo mayor autoabsorción.
-                Por ello, el haz de rayos X es notablemente más intenso en el lado del cátodo que en el lado del ánodo.
-              </p>
-            </div>
-            <div class="theory-col">
-              <h4>4. Filtración y Endurecimiento (Beer-Lambert)</h4>
-              <p>
-                Los filtros de Aluminio y Cobre eliminan preferencialmente los fotones de baja energía que no
-                penetrarían al paciente y solo aumentarían la dosis absorbida en piel.
-                La ley de Beer-Lambert (<em>I = I<sub>0</sub> e<sup>−&mu;x</sup></em>) eleva la energía media del haz
-                (<em>&Eacute;̄</em>), lo que se conoce como <strong>endurecimiento del haz</strong> (<em>beam
-                  hardening</em>).
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </section>
 
   <!-- Navegación de pestañas inmediata y robusta (opera en cualquier protocolo o navegador) -->
   <script>

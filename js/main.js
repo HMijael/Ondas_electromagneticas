@@ -51,6 +51,7 @@ class XRayPhysicsLabApp {
 
     // Experimental measurement logbook
     this.logbook = [];
+    this.simulationResults = [];
 
     // Core physics engines
     this.anodeThermo = new AnodeThermodynamics();
@@ -111,6 +112,7 @@ class XRayPhysicsLabApp {
       this.initTabNavigation();
       this.initSubsystemCheckboxes();
       this.initLogbook();
+      this.initSimulationResults();
     } catch (err) {
       console.error('initDOMControls error:', err);
     }
@@ -579,11 +581,11 @@ class XRayPhysicsLabApp {
     const ledIndicator = document.getElementById('exposure-led');
     if (expBanner && ledIndicator) {
       if (this.state.isExposing) {
-        expBanner.innerText = 'X-RAY EXPOSURE ACTIVE (ALTA TENSIÓN CONECTADA)';
+        expBanner.innerText = 'ALTA TENSIÓN CONECTADA';
         expBanner.className = 'exposure-banner exposure-banner-active';
         ledIndicator.className = 'status-led led-active';
       } else {
-        expBanner.innerText = 'STANDBY (CIRCUITO EN REPOSO)';
+        expBanner.innerText = 'CIRCUITO EN REPOSO';
         expBanner.className = 'exposure-banner exposure-banner-standby';
         ledIndicator.className = 'status-led led-standby';
       }
@@ -626,7 +628,7 @@ class XRayPhysicsLabApp {
     if (audioBtn) {
       audioBtn.addEventListener('click', () => {
         const isAudioActive = this.labSynth.toggleMute();
-        audioBtn.innerText = isAudioActive ? '🔊 AUDIO LAB: ACTIVO' : '🔇 AUDIO LAB: SILENCIADO';
+        audioBtn.innerText = isAudioActive ? ' AUDIO: ACTIVO' : ' AUDIO: SILENCIADO';
         audioBtn.className = isAudioActive ? 'btn-lab-util btn-audio-active' : 'btn-lab-util';
       });
     }
@@ -1001,6 +1003,248 @@ class XRayPhysicsLabApp {
     a.download = `mediciones_tubo_rayos_x_${Date.now()}.csv`;
     a.click();
     URL.revokeObjectURL(url);
+  }
+
+  /**
+   * PESTAÑA: RESULTADOS DE SIMULACIÓN
+   * Registro multivariable de los 14 parámetros físicos de simulación activa.
+   */
+  initSimulationResults() {
+    const logBtn = document.getElementById('btn-sim-log');
+    const exportCsvBtn = document.getElementById('btn-sim-export-csv');
+    const clearBtn = document.getElementById('btn-sim-clear');
+
+    if (logBtn) {
+      logBtn.addEventListener('click', () => this.recordSimulationResult());
+    }
+    if (exportCsvBtn) {
+      exportCsvBtn.addEventListener('click', () => this.exportSimulationResultsCSV());
+    }
+    if (clearBtn) {
+      clearBtn.addEventListener('click', () => this.clearSimulationResults());
+    }
+
+    // Cargar automáticamente resultados persistidos desde LocalStorage
+    this.loadSimulationResultsFromStorage();
+  }
+
+  loadSimulationResultsFromStorage() {
+    try {
+      const saved = localStorage.getItem('xray_lab_sim_results');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          this.simulationResults = parsed;
+          this.renderSimulationResultsTable();
+        }
+      }
+    } catch (err) {
+      console.warn('Error al recuperar resultados de LocalStorage:', err);
+    }
+  }
+
+  saveSimulationResultsToStorage() {
+    try {
+      localStorage.setItem('xray_lab_sim_results', JSON.stringify(this.simulationResults));
+    } catch (err) {
+      console.warn('Error al guardar resultados en LocalStorage:', err);
+    }
+  }
+
+  recordSimulationResult() {
+    const p = this.currentPhysics;
+    if (!p) return;
+
+    // 1. Integración de componentes espectrales: Bremsstrahlung vs Característica
+    let sumBrems = 0;
+    let sumChar = 0;
+    if (p.rawSpectrum && Array.isArray(p.rawSpectrum)) {
+      for (const pt of p.rawSpectrum) {
+        sumBrems += (pt.bremsstrahlung || 0);
+        sumChar += (pt.characteristic || 0);
+      }
+    }
+    const sumTot = sumBrems + sumChar;
+    const bremsPct = sumTot > 0 ? (sumBrems / sumTot) * 100 : 100;
+    const charPct = sumTot > 0 ? (sumChar / sumTot) * 100 : 0;
+    const totalXrayW = p.energyBalance.xrayRadiantPowerWatts ?? 0;
+    const bremsW = (totalXrayW * (bremsPct / 100)).toFixed(1);
+    const charW = (totalXrayW * (charPct / 100)).toFixed(1);
+
+    // 2. Termodinámica instantánea del ánodo
+    const thermal = this.anodeThermo.update(this.state.isExposing, p.kVp, p.cathode.actualMA, 0.0);
+
+    // 3. Flujo de electrones por segundo (I = q / t => N = I / e)
+    const eFluxNum = (p.cathode.actualMA * 1e-3) / 1.602176634e-19;
+    const electronFluxStr = `${eFluxNum.toExponential(2)} e⁻/s`;
+
+    // 4. Parámetros cinemáticos y cuánticos
+    const vKmS = p.kinematics.velocityKm_S.toLocaleString(undefined, { maximumFractionDigits: 0 });
+    const rpmVal = this.tubeModel ? this.tubeModel.getCurrentRPM().toLocaleString() : '9,600';
+    const canIonizeK = p.kVp >= p.targetMat.kEdgeEnergyKEV;
+
+    const entry = {
+      hora: new Date().toLocaleTimeString(),
+      kVp: p.kVp,
+      mA: p.cathode.actualMA.toFixed(0),
+      target: `${p.targetMat.symbol} (Z=${p.targetMat.atomicNumber})`,
+      targetSymbol: p.targetMat.symbol,
+      rpm: `${rpmVal} RPM`,
+      electronFlux: electronFluxStr,
+      beta: `β = ${p.kinematics.beta.toFixed(4)} (${(p.kinematics.beta * 100).toFixed(1)}% c)`,
+      speed: `${vKmS} km/s (γ=${p.kinematics.gamma.toFixed(3)})`,
+      duaneHunt: `${p.kinematics.lambdaMinPM.toFixed(2)} pm`,
+      rxFrenado: `${bremsPct.toFixed(1)}% (~${bremsW} W)`,
+      rxCaracteristico: charPct > 0
+        ? `${charPct.toFixed(1)}% (~${charW} W)`
+        : `0% (${canIonizeK ? '0 W' : 'Sub-umbral'})`,
+      hasCharacteristic: charPct > 0,
+      larmorPower: `${Number(p.energyBalance.xrayRadiantPowerWatts ?? 85.3).toFixed(1)} W`,
+      efficiency: `${p.energyBalance.efficiencyPercent.toFixed(3)}%`,
+      anodeHeat: `${Math.round(thermal.accumulatedHU).toLocaleString()} HU (${thermal.capacityPercent.toFixed(1)}%)`,
+      isThermalWarning: thermal.isThermalWarning,
+
+      // Valores numéricos en bruto para exportación CSV
+      betaRaw: p.kinematics.beta.toFixed(5),
+      speedKmSRaw: Math.round(p.kinematics.velocityKm_S),
+      gammaRaw: p.kinematics.gamma.toFixed(4),
+      duaneHuntRaw: p.kinematics.lambdaMinPM.toFixed(3),
+      bremsPctRaw: bremsPct.toFixed(2),
+      charPctRaw: charPct.toFixed(2),
+      larmorPowerRaw: (p.energyBalance.xrayRadiantPowerWatts ?? 85.3).toFixed(2),
+      efficiencyRaw: p.energyBalance.efficiencyPercent.toFixed(4),
+      huAccumRaw: Math.round(thermal.accumulatedHU),
+      huCapacityPctRaw: thermal.capacityPercent.toFixed(2)
+    };
+
+    this.simulationResults.unshift(entry);
+    this.saveSimulationResultsToStorage();
+    this.renderSimulationResultsTable();
+  }
+
+  renderSimulationResultsTable() {
+    const tbody = document.getElementById('sim-results-table-body');
+    const countBadge = document.getElementById('sim-count-badge');
+    const lastTimeBadge = document.getElementById('sim-last-time');
+    const lastMechBadge = document.getElementById('sim-last-mechanism');
+    const avgPowerBadge = document.getElementById('sim-avg-power');
+
+    if (countBadge) countBadge.innerText = this.simulationResults.length;
+
+    if (!tbody) return;
+
+    if (this.simulationResults.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="15" class="text-center text-muted">No se han registrado resultados de simulación aún. Pulse "Registrar Medición Actual" para capturar los 14 parámetros físicos simultáneamente.</td></tr>';
+      if (lastTimeBadge) lastTimeBadge.innerText = '--:--:--';
+      if (avgPowerBadge) avgPowerBadge.innerText = '-- W';
+      return;
+    }
+
+    const latest = this.simulationResults[0];
+    if (lastTimeBadge) lastTimeBadge.innerText = latest.hora;
+    if (lastMechBadge) {
+      lastMechBadge.innerText = latest.hasCharacteristic ? 'Bremsstrahlung + Característica (Kα/Kβ)' : 'Solo Bremsstrahlung (Continuo)';
+      lastMechBadge.style.color = latest.hasCharacteristic ? '#a855f7' : '#f59e0b';
+    }
+    if (avgPowerBadge) {
+      const sumPower = this.simulationResults.reduce((acc, r) => acc + (parseFloat(r.larmorPowerRaw) || 0), 0);
+      const avgP = (sumPower / this.simulationResults.length).toFixed(1);
+      avgPowerBadge.innerText = `${avgP} W`;
+    }
+
+    let rowsHtml = '';
+    this.simulationResults.forEach((item, index) => {
+      const rowNum = this.simulationResults.length - index;
+      rowsHtml += `
+        <tr>
+          <td><span class="badge" style="background: rgba(12,74,110,0.12); color: var(--glacier-800); font-weight:800;">#${rowNum}</span></td>
+          <td><strong>${item.hora}</strong></td>
+          <td><strong style="color: var(--glacier-700);">${item.kVp} kVp</strong></td>
+          <td>${item.mA} mA</td>
+          <td><span class="badge badge-target" style="font-weight:700;">${item.target}</span></td>
+          <td><span class="badge" style="background: rgba(245,158,11,0.15); color: #d97706; font-weight:700;">${item.rpm}</span></td>
+          <td style="font-family: var(--font-mono); color: var(--glacier-600);">${item.electronFlux}</td>
+          <td class="text-accent" style="font-weight:700;">${item.beta}</td>
+          <td>${item.speed}</td>
+          <td style="color: var(--racing-red); font-weight:800;">${item.duaneHunt}</td>
+          <td style="color: #d97706; font-weight:700;">${item.rxFrenado}</td>
+          <td style="${item.hasCharacteristic ? 'color: #9333ea; font-weight:700;' : 'color: var(--glacier-text-muted);'}">${item.rxCaracteristico}</td>
+          <td style="color: #b45309; font-weight:700;">${item.larmorPower}</td>
+          <td><span class="badge badge-ok" style="font-weight:800;">${item.efficiency}</span></td>
+          <td><span class="badge ${item.isThermalWarning ? 'badge-warn' : 'badge-ok'}" style="font-weight:700;">${item.anodeHeat}</span></td>
+        </tr>
+      `;
+    });
+    tbody.innerHTML = rowsHtml;
+  }
+
+  exportSimulationResultsCSV() {
+    if (this.simulationResults.length === 0) {
+      alert('No hay resultados de simulación registrados aún. Pulse "Registrar Medición Actual" primero.');
+      return;
+    }
+
+    const headers = [
+      'N_Secuencia',
+      'Hora',
+      'kVp',
+      'mA',
+      'Blanco_Anodo',
+      'RPM_Anodo',
+      'Flujo_Electrones_e_s',
+      'Velocidad_Relativista_Beta',
+      'Rapidez_Electrones_km_s',
+      'Factor_Lorentz_Gamma',
+      'Limite_Duane_Hunt_pm',
+      'RX_Frenado_Bremsstrahlung_Pct',
+      'RX_Caracteristicos_Pct',
+      'Potencia_Larmor_W',
+      'Eficiencia_Radiacion_Pct',
+      'Carga_Termica_HU',
+      'Carga_Termica_Capacidad_Pct'
+    ];
+
+    const csvRows = [headers.join(',')];
+
+    this.simulationResults.forEach((item, index) => {
+      const rowNum = this.simulationResults.length - index;
+      const row = [
+        rowNum,
+        `"${item.hora}"`,
+        item.kVp,
+        item.mA,
+        `"${item.target}"`,
+        `"${item.rpm}"`,
+        `"${item.electronFlux}"`,
+        `"${item.betaRaw}"`,
+        `"${item.speedKmSRaw}"`,
+        `"${item.gammaRaw}"`,
+        `"${item.duaneHuntRaw}"`,
+        `"${item.bremsPctRaw}"`,
+        `"${item.charPctRaw}"`,
+        `"${item.larmorPowerRaw}"`,
+        `"${item.efficiencyRaw}"`,
+        `"${item.huAccumRaw}"`,
+        `"${item.huCapacityPctRaw}"`
+      ];
+      csvRows.push(row.join(','));
+    });
+
+    const blob = new Blob([csvRows.join('\n')], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `resultados_simulacion_rayos_x_${Date.now()}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  clearSimulationResults() {
+    this.simulationResults = [];
+    try {
+      localStorage.removeItem('xray_lab_sim_results');
+    } catch (err) { }
+    this.renderSimulationResultsTable();
   }
 
   handleWindowResize() {

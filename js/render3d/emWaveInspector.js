@@ -390,21 +390,25 @@ export class EMWaveInspector {
 
       const fieldData = p.field || p.kinematics;
 
-      if (lambdaMinEl && fieldData && fieldData.duaneHuntCutoff) {
-        lambdaMinEl.innerText = `${fieldData.duaneHuntCutoff.lambdaMinPicometers.toFixed(2)} pm`;
+      const lambdaMin = fieldData?.lambdaMinPM ?? fieldData?.duaneHuntCutoff?.lambdaMinPicometers ?? (1239.84 / Math.max(1, this.kVp));
+      const nuMax = fieldData?.nuMaxEHz ?? fieldData?.duaneHuntCutoff?.frequencyMaxEHz ?? ((this.kVp * 1e3 * 1.602176634e-19) / 6.62607015e-34 / 1e18);
+
+      if (lambdaMinEl) {
+        lambdaMinEl.innerText = `λmin = ${Number(lambdaMin).toFixed(2)} pm`;
       }
-      if (freqMaxEl && fieldData && fieldData.duaneHuntCutoff) {
-        freqMaxEl.innerText = `${fieldData.duaneHuntCutoff.frequencyMaxEHz.toFixed(3)} EHz`;
+      if (freqMaxEl) {
+        freqMaxEl.innerText = `νmax = ${Number(nuMax).toFixed(3)} EHz`;
       }
       if (energyEl) {
         energyEl.innerText = `${this.kVp} keV`;
       }
       if (betaEl && fieldData) {
-        const beta = fieldData.beta || 0.5024;
-        betaEl.innerText = `β = ${beta.toFixed(4)} (${(beta * 100).toFixed(1)}% c)`;
+        const beta = fieldData.beta !== undefined ? fieldData.beta : 0.5024;
+        betaEl.innerText = `β = ${Number(beta).toFixed(4)} (${(beta * 100).toFixed(1)}% c)`;
       }
-      if (larmorPowEl && p.anode && p.anode.efficiency) {
-        const pow = p.anode.efficiency.xrayRadiantPowerWatts ?? p.anode.efficiency.xrayPowerWatts ?? 85.3;
+      if (larmorPowEl) {
+        const eff = p.anode?.efficiency || p.anode?.energyBalance || p.energyBalance;
+        const pow = eff?.xrayRadiantPowerWatts ?? eff?.xrayPowerWatts ?? 85.3;
         larmorPowEl.innerText = `${Number(pow).toFixed(1)} W`;
       }
     } catch (err) {
