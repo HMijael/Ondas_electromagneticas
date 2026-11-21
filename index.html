@@ -62,6 +62,14 @@
           title="Activar/desactivar sintetizador acústico de instrumentación">
           🔇 AUDIO LAB: SILENCIADO
         </button>
+        <button id="btn-toggle-sidebar" class="btn-lab-util btn-panel-toggle"
+          title="Ocultar o desplegar el Panel de Control para ampliar los modelos 3D al 100%">
+          ◧ OCULTAR PANEL
+        </button>
+        <button id="btn-fullscreen-lab" class="btn-lab-util btn-fullscreen-toggle"
+          title="Alternar modo pantalla completa en el laboratorio">
+          ⛶ PANTALLA COMPLETA
+        </button>
       </div>
     </div>
   </header>
@@ -75,8 +83,21 @@
       <!-- VISUALIZADOR 3D INTERACTIVO -->
       <div class="viewport-card">
         <div class="card-header-bar">
-          <span class="card-title">MODELO 3D // ÁNODO ROTATORIO & ONDAS EM</span>
-          <span class="card-meta">Cátodo Helicoidal y Anodo</span>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="card-title">MODELO 3D // ÁNODO ROTATORIO &amp; ONDAS EM</span>
+            <span class="badge badge-info">Haz Útil vs Dispersión 4π</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <div class="btn-group-toggle">
+              <button id="btn-waves-all" class="btn-toggle-option active"
+                title="Mostrar Haz Útil y Radiación Dispersa">Haz + Dispersión</button>
+              <button id="btn-waves-useful" class="btn-toggle-option"
+                title="Mostrar únicamente el cono colimado de haz útil">Solo Haz Útil</button>
+              <button id="btn-waves-scatter" class="btn-toggle-option"
+                title="Mostrar radiación dispersa y de fuga omnidireccional">Solo Dispersión</button>
+            </div>
+            <button class="btn-card-fullscreen" title="Pantalla completa: Modelo 3D Ánodo Rotatorio">⛶</button>
+          </div>
         </div>
 
         <div id="viewport-3d-container" class="viewport-canvas-wrapper">
@@ -115,6 +136,10 @@
                 <span class="hud-label">ENERGÍA MEDIA DEL HAZ</span>
                 <span id="hud-mean-e" class="hud-value hud-gold">Ē = 44.2 keV</span>
               </div>
+              <div class="hud-item">
+                <span class="hud-label">DISTRIBUCIÓN RAYOS X</span>
+                <span id="hud-scatter-ratio" class="hud-value hud-amber">Útil: ~1.2% | Fuga/Dispersión: ~98.8%</span>
+              </div>
             </div>
 
             <!-- Monitor Térmico de Unidades de Calor (HU) -->
@@ -133,7 +158,12 @@
         </div>
 
         <div class="viewport-footer-tips">
-          <span>💡 <strong>Control 3D:</strong> Clic izquierdo + arrastrar</span>
+          <span>
+            💡 <strong>Control 3D:</strong> Clic izquierdo + arrastrar | Rueda: Zoom |
+            <strong style="color: var(--glacier-400);">Haz Útil:</strong> Cono colimado inferior (1-2%) |
+            <strong style="color: #f59e0b);">Radiación Dispersa &amp; de Fuga:</strong> Emisión omnidireccional (4π
+            esterorradianes) atenuada por blindaje plomado
+          </span>
         </div>
       </div>
 
@@ -156,6 +186,7 @@
               title="Abrir Tratado Teórico y Matemático Detallado">
               TRATADO COMPLETO ↗
             </a>
+            <button class="btn-card-fullscreen" title="Pantalla completa: Choque Electrón-Núcleo & Onda EM">⛶</button>
           </div>
         </div>
 
@@ -199,7 +230,185 @@
         </div>
       </div>
 
+      <!-- NUEVO MODELO 3D INDEPENDIENTE: CAMPO DE POTENCIAL EN LA COPA ENFOCADORA (ECUACIÓN DE LAPLACE) -->
+      <div class="viewport-card focusing-cup-card">
+        <div class="card-header-bar">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="card-title">MODELADO DEL CAMPO DE POTENCIAL EN LA COPA ENFOCADORA</span>
+            <span class="badge badge-info">Laplace: ∇²V = 0 &amp; F = e∇V</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <div class="btn-group-toggle">
+              <button id="btn-cup-equipot" class="btn-toggle-option active">Equipotenciales ∇²V=0</button>
+              <button id="btn-cup-force" class="btn-toggle-option active">Fuerza F (e∇V)</button>
+              <button id="btn-cup-sagittal" class="btn-toggle-option">Corte Sagital</button>
+              <button id="btn-cup-cutaway" class="btn-toggle-option active">Corte Copa 3D</button>
+            </div>
+            <button class="btn-card-fullscreen" title="Pantalla completa: Campo de Potencial Copa Enfocadora">⛶</button>
+          </div>
+        </div>
+
+        <div id="canvas-focusing-cup-container" class="focusing-cup-canvas-wrapper">
+          <!-- HUD Flotante del Campo de Potencial y Enfoque -->
+          <div class="cup-hud-overlay">
+            <div class="hud-item">
+              <span class="hud-label">LEY DE LAPLACE</span>
+              <span class="hud-value hud-cyan">∇²V = 0 (ρ = 0)</span>
+            </div>
+            <div class="hud-item">
+              <span class="hud-label">FUERZA DE ENFOQUE</span>
+              <span id="cup-hud-force-val" class="hud-value hud-green">F = -eE = e∇V (CONVERGENTE)</span>
+            </div>
+            <div class="hud-item">
+              <span class="hud-label">FUERZA LATERAL FY</span>
+              <span id="cup-hud-fy" class="hud-value hud-gold">Fy = -1.92×10⁻¹⁴ N (Repulsión copa)</span>
+            </div>
+            <div class="hud-item">
+              <span class="hud-label">MANCHA FOCAL (ÁNODO)</span>
+              <span id="cup-hud-spot" class="hud-value hud-red">W = 0.60 mm (Foco Fino)</span>
+            </div>
+            <div class="hud-item">
+              <span class="hud-label">POLARIZACIÓN COPA</span>
+              <span id="cup-hud-bias" class="hud-value hud-amber">ΔVbias: 0 V (Copa = Filamento)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Controles interactivos específicos de la Copa Enfocadora -->
+        <div class="focusing-cup-controls-bar">
+          <div class="cup-control-group">
+            <span class="cup-control-label">RÉGIMEN DE POLARIZACIÓN:</span>
+            <div class="btn-group-toggle">
+              <button id="btn-bias-normal" class="btn-toggle-option active">Estándar (Vcopa = Vfil)</button>
+              <button id="btn-bias-grid" class="btn-toggle-option">Grid-Bias Negativo (Micro-Foco)</button>
+              <button id="btn-bias-unfocused" class="btn-toggle-option">Sin Copa / Dispersión</button>
+            </div>
+          </div>
+
+          <div class="cup-control-group">
+            <span class="cup-control-label">FILAMENTO:</span>
+            <div class="btn-group-toggle">
+              <button id="btn-cup-focal-fine" class="btn-toggle-option active">Foco Fino (0.6 mm)</button>
+              <button id="btn-cup-focal-broad" class="btn-toggle-option">Foco Grueso (1.2 mm)</button>
+            </div>
+          </div>
+
+          <div class="cup-control-group cup-slider-group">
+            <span class="cup-control-label">SESGO COPA (ΔVbias):</span>
+            <input type="range" id="slider-cup-bias" min="-400" max="200" step="10" value="0" class="cup-slider">
+            <span id="disp-cup-bias-val" class="cup-val-tag">0 V</span>
+          </div>
+        </div>
+
+        <div class="viewport-footer-tips focusing-cup-tips">
+          <span>
+            💡 <strong>Marco Físico &amp; Matemático (Ecuaciones de Laplace &amp; Poisson):</strong>
+            Divergencia: <strong style="color: var(--glacier-400);">∇·E = ρ/ε₀</strong> | Campo irrotacional: <strong
+              style="color: var(--racing-red);">E = −∇V</strong> ➔ Poisson: <strong style="color: #fbbf24;">∇²V =
+              −ρ/ε₀</strong>.
+            En tránsito libre fuera de carga espacial, <strong>ρ = 0 ➔ ∇²V = 0 (Laplace)</strong>.
+            La copa de níquel a potencial negativo configura <strong>superficies equipotenciales cóncavas</strong>.
+            La fuerza <strong style="color: #10b981;">F = −eE = e∇V</strong> ejerce una repulsión lateral que enfoca
+            convergentemente los electrones hacia la <strong>mancha focal</strong> del ánodo.
+          </span>
+          <span style="font-size: 9.5px; color: var(--glacier-text-muted); margin-top: 4px; display: block;">
+            OrbitControls: Arrastrar para orbitar 3D | Rueda: Zoom | Sincronizado en tiempo real con kVp y Emisión del
+            Tubo
+          </span>
+        </div>
+      </div>
+
+      <!-- NUEVO MODELO 3D INDEPENDIENTE: INTERACCIÓN ATÓMICA BREMSSTRAHLUNG & CARACTERÍSTICA -->
+      <div class="viewport-card atomic-interaction-card">
+        <div class="card-header-bar">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="card-title">INTERACCIÓN ATÓMICA // RADIACIÓN DE FRENADO &amp; CARACTERÍSTICA</span>
+            <span class="badge badge-info">Física Cuántica: Coulomb vs Ionización K</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <div class="btn-group-toggle">
+              <button id="btn-atom-mode-auto" class="btn-toggle-option active">Automático</button>
+              <button id="btn-atom-mode-brems" class="btn-toggle-option">Frenado (Coulomb)</button>
+              <button id="btn-atom-mode-kalpha" class="btn-toggle-option">Kα (L → K)</button>
+              <button id="btn-atom-mode-kbeta" class="btn-toggle-option">Kβ (M → K)</button>
+            </div>
+            <button class="btn-card-fullscreen" title="Pantalla completa: Interacción Atómica">⛶</button>
+          </div>
+        </div>
+
+        <div id="canvas-atomic-interaction-container" class="atomic-interaction-canvas-wrapper">
+          <!-- HUD Flotante Cuántico de la Interacción -->
+          <div class="atom-hud-overlay">
+            <div class="hud-item">
+              <span class="hud-label">PROCESO CUÁNTICO</span>
+              <span id="atom-hud-mechanism" class="hud-value hud-cyan">ESTADO: ESPERA DE INTERACCIÓN CUÁNTICA</span>
+            </div>
+            <div class="hud-item">
+              <span class="hud-label">FOTÓN EMITIDO</span>
+              <span id="atom-hud-photon" class="hud-value hud-gold">FOTÓN: NINGUNO</span>
+            </div>
+            <div class="hud-item">
+              <span class="hud-label">FLUJO DE ELECTRONES</span>
+              <span id="atom-hud-flux" class="hud-value hud-green">160 e⁻ en haz (~1.25×10¹⁶ e⁻/s a 200 mA)</span>
+            </div>
+            <div class="hud-item">
+              <span class="hud-label">CONDICIÓN UMBRAL</span>
+              <span id="atom-hud-threshold" class="hud-value hud-green">UMBRAL CAPA K: 80 keV ≥ 69.5 keV
+                (IONIZABLE)</span>
+            </div>
+            <div class="hud-item">
+              <span class="hud-label">ÁTOMO BLANCO</span>
+              <span id="atom-hud-shell" class="hud-value hud-purple">BLANCO: Tungsteno (Z=74, EK=69.5 keV)</span>
+            </div>
+            <div class="hud-item">
+              <span class="hud-label">DUANE-HUNT</span>
+              <span id="atom-hud-debroglie" class="hud-value hud-red">λmin: 15.50 pm</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Controles interactivos específicos de la Interacción Atómica -->
+        <div class="atomic-controls-bar">
+          <div class="atomic-control-group">
+            <span class="atomic-control-label">DISPARO MANUAL:</span>
+            <button id="btn-atom-trigger-brems" class="btn-atom-action"
+              title="Disparar deflexión coulombiana y radiación continua">⚡ Frenado (Brems)</button>
+            <button id="btn-atom-trigger-kalpha" class="btn-atom-action"
+              title="Ionizar capa K y transición L -> K (59.3 keV)">💥 Ionizar K &amp; Salto Kα</button>
+            <button id="btn-atom-trigger-kbeta" class="btn-atom-action" title="Transición M -> K (67.2 keV)">✨ Salto M →
+              K (Kβ)</button>
+          </div>
+
+          <div class="atomic-control-group">
+            <span class="atomic-control-label">MATERIAL BLANCO:</span>
+            <div class="btn-group-toggle">
+              <button id="btn-atom-mat-w" class="btn-toggle-option active">Tungsteno (W, 69.5 keV)</button>
+              <button id="btn-atom-mat-mo" class="btn-toggle-option">Molibdeno (Mo, 20.0 keV)</button>
+              <button id="btn-atom-mat-rh" class="btn-toggle-option">Rodio (Rh, 23.2 keV)</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="viewport-footer-tips atomic-interaction-tips">
+          <span>
+            💡 <strong>Mecanismos a Escala Atómica en el Blanco:</strong>
+            <strong style="color: #f59e0b;">1. Radiación de Frenado (Bremsstrahlung):</strong> El electrón incidente se
+            desvía por atracción electrostática del núcleo positivo (+Ze) sin tocar electrones orbitales; la
+            desaceleración emite un fotón continuo de energía <strong style="color: #f59e0b;">hν = Eᵢ − E_f</strong>.
+            | <strong style="color: #ef233c;">2. Radiación Característica:</strong> Si <strong
+              style="color: #10b981;">E_inc ≥ E_K</strong> (69.5 keV en W), expulsa un electrón de la Capa K creando una
+            vacante; un electrón de la Capa L o M cae para llenarla emitiendo un fotón monoenergético discreto (<strong
+              style="color: #ef233c;">Kα = 59.3 keV</strong>, <strong style="color: #a855f7;">Kβ = 67.2 keV</strong>).
+          </span>
+          <span style="font-size: 9.5px; color: var(--glacier-text-muted); margin-top: 4px; display: block;">
+            OrbitControls: Arrastrar para rotar 3D | Rueda: Zoom | Sincronizado en tiempo real con el selector de
+            kilovoltaje (kVp) y material del tubo
+          </span>
+        </div>
+      </div>
+
       <!-- OSCILOSCOPIO DIGITAL DE ESPECTRO RADIOLÓGICO -->
+      <!--
       <div class="oscilloscope-card">
         <div class="card-header-bar scope-header-bar">
           <div class="scope-header-left">
@@ -207,14 +416,15 @@
             <span class="scope-legend-hint">Espectro Crudo (Azul) vs. Transmitido Filtrado (Verde)</span>
           </div>
 
-          <!-- Selector de Eje X (Energía keV vs Longitud de Onda pm) -->
-          <div class="scope-controls">
-            <span class="scope-unit-label">EJE X:</span>
-            <div class="btn-group-toggle">
-              <button id="btn-scope-kev" class="btn-toggle-option active">Energía (keV)</button>
-              <button id="btn-scope-pm" class="btn-toggle-option">λ (pm) / ν (EHz)</button>
-            </div>
+      <!- - Selector de Eje X (Energía keV vs Longitud de Onda pm) - ->
+        <div class="scope-controls">
+          <span class="scope-unit-label">EJE X:</span>
+          <div class="btn-group-toggle">
+            <button id="btn-scope-kev" class="btn-toggle-option active">Energía (keV)</button>
+            <button id="btn-scope-pm" class="btn-toggle-option">λ (pm) / ν (EHz)</button>
           </div>
+          <button class="btn-card-fullscreen" title="Pantalla completa: Osciloscopio Espectral">⛶</button>
+        </div>
         </div>
 
         <div class="oscilloscope-canvas-wrapper">
@@ -235,7 +445,8 @@
             <span id="hud-efficiency" class="stat-val">η = 0.533%</span>
           </div>
         </div>
-      </div>
+        </div>
+        -->
 
     </section>
 
@@ -247,6 +458,10 @@
           <span class="rack-indicator"></span>
           <h2 class="rack-title">PANEL DE CONTROL RADIOLÓGICO</h2>
           <span class="rack-serial">RX</span>
+          <button id="btn-collapse-rack" class="btn-rack-collapse"
+            title="Ocultar y replegar panel para ampliar los modelos 3D al 100%">
+            OCULTAR ❯
+          </button>
         </div>
 
         <div class="rack-body">
@@ -399,6 +614,11 @@
 
   </main>
 
+  <!-- BOTÓN FLOTANTE PARA REABRIR PANEL CUANDO ESTÁ OCULTO -->
+  <button id="btn-floating-open-rack" class="floating-panel-toggle" title="Desplegar Panel de Control Radiológico">
+    ⚙ PANEL DE CONTROL ◀
+  </button>
+
   <!-- SECCIÓN INFERIOR: PIZARRA CIENTÍFICA, CUADERNO EXPERIMENTAL Y AISLAMIENTO -->
   <section class="lab-workbench-section">
     <div class="workbench-nav-bar">
@@ -437,23 +657,6 @@
           </div>
         </div>
         <div id="equations-container" class="equations-grid">
-          <div class="equation-card" data-eq-id="richardson">
-            <div class="eq-header">
-              <span class="eq-title">1. Emisión Termoiónica (Ley de Richardson-Dushman)</span>
-              <span class="eq-category-tag">Cátodo &amp; Termodinámica</span>
-            </div>
-            <div class="eq-body">
-              <div class="eq-formula"><em>J</em><sub>th</sub> = <em>A</em><sub>R</sub> · <em>T</em><sup>2</sup> ·
-                exp(−<em>&phi;</em> / <em>k</em><sub>B</sub><em>T</em>)</div>
-              <div class="eq-subst">
-                = (6.0×10<sup>5</sup>) · (2520 K)<sup>2</sup> · exp(−4.54 eV / [<em>k</em><sub>B</sub> · 2520 K])
-                = <strong class="text-accent">15.15 mA/cm²</strong>
-              </div>
-              <div class="eq-caption">Flujo de electrones desprendidos del filamento de tungsteno por calentamiento
-                Joule (T = 2520 K).</div>
-            </div>
-          </div>
-
           <div class="equation-card" data-eq-id="child_langmuir">
             <div class="eq-header">
               <span class="eq-title">2. Límite de Carga Espacial (Ley de Child-Langmuir)</span>
@@ -525,27 +728,6 @@
               </div>
               <div class="eq-caption">Longitud de onda de corte mínima: ningún fotón de Bremsstrahlung supera la energía
                 cinética del electrón incidente.</div>
-            </div>
-          </div>
-
-          <div class="equation-card" data-eq-id="beer_lambert">
-            <div class="eq-header">
-              <span class="eq-title">6. Atenuación Espectral y Endurecimiento del Haz (Beer-Lambert)</span>
-              <span class="eq-category-tag">Filtración &amp; Dosimetría</span>
-            </div>
-            <div class="eq-body">
-              <div class="eq-formula">
-                <em>I</em>(<em>E</em>) = <em>I</em><sub>0</sub>(<em>E</em>) ·
-                exp(−[&mu;<sub>Al</sub><em>x</em><sub>Al</sub> + &mu;<sub>Cu</sub><em>x</em><sub>Cu</sub> +
-                &mu;<sub>vidrio</sub><em>x</em><sub>g</sub>])
-              </div>
-              <div class="eq-subst">
-                Filtros: <strong>2.5 mm Al</strong> + <strong>0.00 mm Cu</strong> | HVL: <strong
-                  class="text-accent">2.84 mm Al</strong><br>
-                Energía Media Transmitida: <em>Ē</em> = <strong>44.20 keV</strong> (+11.80 keV)
-              </div>
-              <div class="eq-caption">Los fotones blandos son eliminados por efecto fotoeléctrico, reduciendo la dosis
-                en piel un 58.4%.</div>
             </div>
           </div>
         </div>
@@ -637,8 +819,17 @@
             <input type="checkbox" id="toggle-waves" checked>
             <span class="toggle-custom"></span>
             <div class="toggle-desc">
-              <strong>Ondas Electromagnéticas Transversales 3D</strong>
-              <span>Fotones de Bremsstrahlung con frecuencia ν = E/h</span>
+              <strong>Haz Útil de Rayos X (Cono Colimado)</strong>
+              <span>Fotones emitidos hacia el puerto de salida inferior (1-2%)</span>
+            </div>
+          </label>
+
+          <label class="toggle-card">
+            <input type="checkbox" id="toggle-scatter" checked>
+            <span class="toggle-custom"></span>
+            <div class="toggle-desc">
+              <strong>Radiación Dispersa &amp; de Fuga (4π esterorradianes)</strong>
+              <span>Fotones emitidos omnidireccionalmente fuera del haz útil (~98%)</span>
             </div>
           </label>
 

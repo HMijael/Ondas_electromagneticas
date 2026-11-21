@@ -286,7 +286,7 @@ html, body {
 }
 
 /* ============================================================
-   MAIN LAYOUT (60% Blanco Polar Container)
+   MAIN LAYOUT (60% Blanco Polar Container) & PANEL DESPLEGABLE
    ============================================================ */
 .lab-main-layout {
   display: grid;
@@ -295,6 +295,16 @@ html, body {
   padding: 12px 16px;
   max-width: 1920px;
   margin: 0 auto;
+  transition: grid-template-columns 0.3s cubic-bezier(0.16, 1, 0.3, 1), gap 0.3s ease;
+}
+
+.lab-main-layout.sidebar-collapsed {
+  grid-template-columns: 1fr 0px;
+  gap: 0;
+}
+
+.lab-main-layout.sidebar-collapsed .lab-controls-column {
+  display: none !important;
 }
 
 .lab-visualizers-column {
@@ -302,6 +312,7 @@ html, body {
   flex-direction: column;
   gap: 10px;
   min-width: 0;
+  width: 100%;
 }
 
 .lab-controls-column {
@@ -309,6 +320,204 @@ html, body {
   flex-direction: column;
   gap: 10px;
   min-width: 0;
+}
+
+/* Botón de alternancia de panel en cabecera */
+.btn-panel-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-panel-toggle.active-collapsed {
+  background: var(--glacier-600);
+  color: #ffffff;
+  border-color: var(--glacier-700);
+  box-shadow: 0 0 10px rgba(14, 165, 233, 0.4);
+}
+
+/* Botón colapsar dentro del rack header */
+.btn-rack-collapse {
+  background: rgba(12, 74, 110, 0.35);
+  color: #e0f2fe;
+  border: 1px solid rgba(186, 230, 253, 0.4);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  text-transform: uppercase;
+}
+
+.btn-rack-collapse:hover {
+  background: var(--racing-red);
+  border-color: var(--racing-red);
+  color: #ffffff;
+  box-shadow: 0 0 8px rgba(239, 35, 60, 0.4);
+}
+
+/* Botón flotante para reabrir panel */
+.floating-panel-toggle {
+  position: fixed;
+  right: 0;
+  top: 150px;
+  z-index: 1200;
+  background: linear-gradient(135deg, var(--glacier-600) 0%, var(--glacier-700) 100%);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-right: none;
+  border-radius: 8px 0 0 8px;
+  padding: 9px 13px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  cursor: pointer;
+  box-shadow: -4px 4px 16px rgba(12, 74, 110, 0.35);
+  display: none;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.floating-panel-toggle:hover {
+  background: linear-gradient(135deg, var(--glacier-500) 0%, var(--glacier-600) 100%);
+  transform: translateX(-4px);
+  box-shadow: -6px 6px 20px rgba(14, 165, 233, 0.5);
+}
+
+body.sidebar-is-collapsed .floating-panel-toggle {
+  display: inline-flex;
+}
+
+/* Botón de pantalla completa en tarjetas de visualización */
+.btn-card-fullscreen {
+  background: var(--polar-panel);
+  border: 1px solid var(--glacier-300);
+  color: var(--glacier-700);
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 800;
+  width: 26px;
+  height: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  line-height: 1;
+  padding: 0;
+  margin-left: 2px;
+}
+
+.btn-card-fullscreen:hover {
+  background: var(--glacier-500);
+  border-color: var(--glacier-600);
+  color: #ffffff;
+  box-shadow: 0 0 8px rgba(14, 165, 233, 0.4);
+  transform: scale(1.08);
+}
+
+.btn-fullscreen-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-fullscreen-toggle.active {
+  background: var(--racing-red);
+  color: #ffffff;
+  border-color: var(--racing-red);
+  box-shadow: 0 0 10px rgba(239, 35, 60, 0.4);
+}
+
+/* ============================================================
+   ESTILOS DE PANTALLA COMPLETA (:fullscreen)
+   ============================================================ */
+.viewport-card:fullscreen,
+.oscilloscope-card:fullscreen,
+.viewport-card:-webkit-full-screen,
+.oscilloscope-card:-webkit-full-screen {
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: none !important;
+  max-height: none !important;
+  border-radius: 0 !important;
+  border: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  background: #020617 !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+  z-index: 2147483647 !important;
+}
+
+.viewport-card:fullscreen .card-header-bar,
+.oscilloscope-card:fullscreen .card-header-bar,
+.viewport-card:-webkit-full-screen .card-header-bar,
+.oscilloscope-card:-webkit-full-screen .card-header-bar {
+  flex-shrink: 0 !important;
+  border-radius: 0 !important;
+  padding: 8px 16px !important;
+  background: #0b1526 !important;
+  border-bottom: 1px solid rgba(56, 189, 248, 0.3) !important;
+}
+
+.viewport-card:fullscreen .card-title,
+.oscilloscope-card:fullscreen .card-title,
+.viewport-card:-webkit-full-screen .card-title,
+.oscilloscope-card:-webkit-full-screen .card-title {
+  color: #f0f9ff !important;
+}
+
+.viewport-card:fullscreen .viewport-canvas-wrapper,
+.viewport-card:fullscreen .em-microscope-canvas-wrapper,
+.viewport-card:fullscreen .focusing-cup-canvas-wrapper,
+.viewport-card:fullscreen .atomic-interaction-canvas-wrapper,
+.oscilloscope-card:fullscreen .oscilloscope-canvas-wrapper,
+.viewport-card:-webkit-full-screen .viewport-canvas-wrapper,
+.viewport-card:-webkit-full-screen .em-microscope-canvas-wrapper,
+.viewport-card:-webkit-full-screen .focusing-cup-canvas-wrapper,
+.viewport-card:-webkit-full-screen .atomic-interaction-canvas-wrapper,
+.oscilloscope-card:-webkit-full-screen .oscilloscope-canvas-wrapper {
+  flex: 1 1 0 !important;
+  height: auto !important;
+  min-height: 0 !important;
+  width: 100% !important;
+  position: relative !important;
+}
+
+.viewport-card:fullscreen canvas,
+.oscilloscope-card:fullscreen canvas,
+.viewport-card:-webkit-full-screen canvas,
+.oscilloscope-card:-webkit-full-screen canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.viewport-card:fullscreen .focusing-cup-controls-bar,
+.viewport-card:fullscreen .atomic-controls-bar,
+.viewport-card:fullscreen .viewport-footer-tips,
+.oscilloscope-card:fullscreen .scope-footer-bar,
+.viewport-card:-webkit-full-screen .focusing-cup-controls-bar,
+.viewport-card:-webkit-full-screen .atomic-controls-bar,
+.viewport-card:-webkit-full-screen .viewport-footer-tips,
+.oscilloscope-card:-webkit-full-screen .scope-footer-bar {
+  flex-shrink: 0 !important;
+  border-radius: 0 !important;
 }
 
 /* ============================================================
@@ -567,6 +776,175 @@ html, body {
 
 .em-microscope-tips {
   background: var(--polar-panel);
+}
+
+/* ============================================================
+   SIMULADOR 3D: CAMPO DE POTENCIAL EN LA COPA ENFOCADORA
+   ============================================================ */
+.focusing-cup-card {
+  margin-top: 14px;
+}
+
+.focusing-cup-canvas-wrapper {
+  position: relative;
+  width: 100%;
+  height: 380px;
+  background: var(--bg-dark-canvas);
+  overflow: hidden;
+}
+
+.focusing-cup-canvas-wrapper canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.cup-hud-overlay {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  pointer-events: none;
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.focusing-cup-controls-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 14px;
+  background: var(--polar-panel);
+  border-top: 1px solid var(--polar-border);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.cup-control-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cup-control-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--glacier-700);
+  letter-spacing: 0.5px;
+}
+
+.cup-slider-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cup-slider {
+  width: 130px;
+  height: 6px;
+  accent-color: var(--glacier-500);
+  cursor: pointer;
+}
+
+.cup-val-tag {
+  display: inline-block;
+  min-width: 50px;
+  text-align: right;
+  font-weight: 800;
+  color: var(--glacier-600);
+}
+
+.focusing-cup-tips {
+  background: var(--polar-panel);
+  border-top: 1px solid var(--polar-border);
+}
+
+/* ============================================================
+   SIMULADOR 3D: INTERACCIÓN ATÓMICA BREMSSTRAHLUNG & CARACTERÍSTICA
+   ============================================================ */
+.atomic-interaction-card {
+  margin-top: 14px;
+}
+
+.atomic-interaction-canvas-wrapper {
+  position: relative;
+  width: 100%;
+  height: 420px;
+  background: var(--bg-dark-canvas);
+  overflow: hidden;
+}
+
+.atomic-interaction-canvas-wrapper canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.atom-hud-overlay {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  pointer-events: none;
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.atomic-controls-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 14px;
+  background: var(--polar-panel);
+  border-top: 1px solid var(--polar-border);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.atomic-control-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.atomic-control-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--glacier-700);
+  letter-spacing: 0.5px;
+}
+
+.btn-atom-action {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid var(--glacier-400);
+  background: var(--glacier-50);
+  color: var(--glacier-800);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.btn-atom-action:hover {
+  background: var(--glacier-500);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(14, 165, 233, 0.35);
+}
+
+.atomic-interaction-tips {
+  background: var(--polar-panel);
+  border-top: 1px solid var(--polar-border);
 }
 
 /* Enlace externo en la barra de pestañas */

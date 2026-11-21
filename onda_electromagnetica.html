@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Estudio Teórico y Físico-Matemático de la Onda Electromagnética en Rayos X | X-Ray Physics Lab</title>
-  
+
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="stylesheet" href="style.css">
 
@@ -117,7 +118,8 @@
       letter-spacing: 0.5px;
     }
 
-    .study-section-card p, .study-section-card li {
+    .study-section-card p,
+    .study-section-card li {
       font-size: 12px;
       line-height: 1.7;
       color: var(--glacier-text-main);
@@ -206,17 +208,42 @@
       gap: 5px;
     }
 
-    .chip-e { background: var(--racing-red-light); color: var(--racing-red); border: 1px solid var(--racing-red-border); }
-    .chip-b { background: var(--glacier-100); color: var(--glacier-700); border: 1px solid var(--glacier-300); }
-    .chip-s { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
-    .chip-e-beam { background: #cffafe; color: #0891b2; border: 1px solid #a5f3fc; }
+    .chip-e {
+      background: var(--racing-red-light);
+      color: var(--racing-red);
+      border: 1px solid var(--racing-red-border);
+    }
+
+    .chip-b {
+      background: var(--glacier-100);
+      color: var(--glacier-700);
+      border: 1px solid var(--glacier-300);
+    }
+
+    .chip-s {
+      background: #fef3c7;
+      color: #b45309;
+      border: 1px solid #fde68a;
+    }
+
+    .chip-e-beam {
+      background: #cffafe;
+      color: #0891b2;
+      border: 1px solid #a5f3fc;
+    }
 
     @media (max-width: 1100px) {
-      .study-grid { grid-template-columns: 1fr; }
-      .study-sim-sticky-column { position: static; }
+      .study-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .study-sim-sticky-column {
+        position: static;
+      }
     }
   </style>
 </head>
+
 <body class="lab-body">
 
   <div class="study-container">
@@ -253,176 +280,93 @@
         <article class="study-section-card">
           <h2>1. Naturaleza Electromagnética y Origen Físico del Fotón de Rayos X</h2>
           <p>
-            Cuando un electrón libre acelerado por una diferencia de potencial electrostático de decenas de kilovoltios ($V_0 \sim 20 - 150\text{ kVp}$) colisiona contra un blanco metálico de alto número atómico ($Z=74$ en Tungsteno), penetra en la red cristalina a velocidades relativistas ($\beta = v/c \sim 0.27 - 0.63$).
-          </p>
-          <p>
-            A escala atómica, el electrón no choca mecánicamente como una esfera sólida; interactúa intensamente con el <strong>campo electrostático nuclear coulombiano no apantallado</strong>. Esta interacción da lugar a dos mecanismos de emisión electromagnética perfectamente diferenciados:
+            Cuando un electrón libre ($q = -e$) es acelerado por una diferencia de potencial electrostático en el rango
+            de decenas de kilovoltios ($V_0 \sim 20\text{–}150\text{ kVp}$) e incide sobre un blanco metálico de alto
+            número atómico —como tungsteno ($Z = 74$)—, penetra en la red cristalina a velocidades relativistas ($\beta
+            = v/c \sim 0.27\text{–}0.63$). A escala atómica, el electrón no colisiona como una esfera rígida, sino que
+            interactúa intensamente con el <strong>campo electrostático nuclear coulombiano no apantallado</strong>,
+            dando lugar a dos mecanismos diferenciados de emisión electromagnética:
           </p>
           <ul>
             <li>
-              <strong>Radiación de Frenado (Bremsstrahlung):</strong> Emisión continua originada por la aceleración transversal y longitudinal brusca ($\vec{a} = d\vec{v}/dt$) del electrón incidente en el pozo coulombiano del núcleo ($+Ze$). Representa entre el $80\%$ y el $90\%$ del haz diagnóstico.
+              <strong>Radiación de Frenado (Bremsstrahlung):</strong> Emisión continua producida por la aceleración
+              transversal y longitudinal brusca ($\vec{a} = d\vec{v}/dt$) del electrón incidente dentro del pozo
+              coulombiano del núcleo ($+Ze$), la cual constituye entre el $80\%$ y el $90\%$ del haz diagnóstico.
             </li>
             <li>
-              <strong>Radiación Característica:</strong> Emisión discreta y monoenergética resultante de la ionización de electrones de capas profundas ($K, L$), seguida por la desexcitación de electrones de niveles superiores mediante saltos cuánticos radiativos.
+              <strong>Radiación Característica:</strong> Emisión discreta y monoenergética originada cuando el electrón
+              ioniza capas electrónicas profundas ($K, L$) y electrones de niveles superiores caen hacia esos estados
+              mediante transiciones radiativas.
             </li>
           </ul>
         </article>
 
         <!-- SECCIÓN 2: ELECTRODINÁMICA DE MAXWELL Y LIÉNARD-WIECHERT -->
         <article class="study-section-card">
-          <h2>2. Electrodinámica Clásica: Potenciales de Liénard-Wiechert y Potencia de Larmor</h2>
+          <h2>2. Electrodinámica de Cargas en Movimiento, Campos de Liénard-Wiechert y Flujo de Energía</h2>
           <p>
-            A partir de las ecuaciones covariantes de Maxwell en el gauge de Lorenz ($\partial_\mu A^\mu = 0$), el campo electromagnético exacto generado por una carga puntual $q = -e$ con trayectoria arbitraria $\vec{r}'(t')$ viene dado por los <strong>Campos de Liénard-Wiechert</strong> evaluados en el tiempo retardado $t_{\text{ret}} = t - |\vec{r} - \vec{r}'|/c$:
+            A partir de las ecuaciones covariantes de Maxwell en el <em>gauge</em> de Lorenz ($\partial_\mu A^\mu = 0$),
+            el campo electromagnético exacto de una carga puntual $q = -e$ con trayectoria arbitraria $\vec{r}'(t')$ se
+            describe mediante los <strong>campos de Liénard-Wiechert</strong> evaluados en el tiempo retardado
+            $t_{\text{ret}} = t - \lvert\vec{r} - \vec{r}'\rvert/c$:
           </p>
-
           <div class="math-callout">
-            $$\vec{E}(\vec{r}, t) = \underbrace{\frac{q}{4\pi\varepsilon_0} \left[ \frac{\hat{n} - \vec{\beta}}{\gamma^2 (1 - \vec{\beta}\cdot\hat{n})^3 R^2} \right]_{\text{ret}}}_{\text{Campo de Velocidad (Cuasiestático, } \propto 1/R^2\text{)}} + \underbrace{\frac{q}{4\pi\varepsilon_0 c} \left[ \frac{\hat{n} \times \left( (\hat{n} - \vec{\beta}) \times \dot{\vec{\beta}} \right)}{(1 - \vec{\beta}\cdot\hat{n})^3 R} \right]_{\text{ret}}}_{\text{Campo de Radiación (Onda EM, } \propto 1/R\text{)}}$$
+            $$\vec{E}(\vec{r}, t) = \underbrace{\frac{q}{4\pi\varepsilon_0}\left[\frac{\hat{n} - \vec{\beta}}{\gamma^2(1
+            - \vec{\beta}\cdot\hat{n})^3 R^2}\right]_{\text{ret}}}_{\text{Campo de Velocidad (Cuasiestático, }\propto
+            1/R^2\text{)}} + \underbrace{\frac{q}{4\pi\varepsilon_0 c}\left[\frac{\hat{n} \times ((\hat{n} -
+            \vec{\beta}) \times \dot{\vec{\beta}})}{(1 - \vec{\beta}\cdot\hat{n})^3 R}\right]_{\text{ret}}}_{\text{Campo
+            de Radiación (Onda EM, }\propto 1/R\text{)}}$$
           </div>
-
           <p>
-            donde $\vec{\beta} = \vec{v}/c$, $\dot{\vec{\beta}} = \vec{a}/c$, $\gamma = 1/\sqrt{1-\beta^2}$ es el factor de Lorentz, y $\hat{n} = \vec{R}/R$ es el vector unitario hacia el observador.
+            donde $\vec{\beta} = \vec{v}/c$, $\dot{\vec{\beta}} = \dot{\vec{a}}/c$, $\gamma = 1/\sqrt{1 - \beta^2}$ y
+            $\hat{n} = \vec{R}/R$ es el vector unitario hacia el observador. En la zona de radiación, el campo magnético
+            asociado es perpendicular tanto a $\hat{n}$ como a $\vec{E}_{\text{rad}}$:
           </p>
-          <p>
-            El campo magnético asociado $\vec{B}(\vec{r}, t)$ es estrictamente ortogonal al campo eléctrico y al vector de propagación:
-          </p>
-
           <div class="math-callout">
-            $$\vec{B}_{\text{rad}}(\vec{r}, t) = \frac{1}{c} \left( \hat{n} \times \vec{E}_{\text{rad}} \right)$$
+            $$\vec{B}_{\text{rad}}(\vec{r}, t) = \frac{1}{c}\left(\hat{n} \times \vec{E}_{\text{rad}}\right)$$
           </div>
-
-          <h3>Flujo de Energía: Vector de Poynting y Potencia Total Irradiada</h3>
           <p>
-            La densidad de flujo de energía electromagnética transportada por el fotón de rayos X está determinada por el <strong>Vector de Poynting</strong> $\vec{S}$:
+            La densidad de flujo de energía electromagnética transportada por la radiación queda determinada por el
+            <strong>vector de Poynting</strong>:
           </p>
-
           <div class="math-callout">
-            $$\vec{S} = \frac{1}{\mu_0} \left( \vec{E} \times \vec{B} \right) = \frac{1}{\mu_0 c} |\vec{E}_{\text{rad}}|^2 \, \hat{n} \quad \left[ \frac{\text{W}}{\text{m}^2} \right]$$
+            $$\vec{S} = \frac{1}{\mu_0}\left(\vec{E} \times \vec{B}\right) = \frac{1}{\mu_0
+            c}\lvert\vec{E}_{\text{rad}}\rvert^2 \hat{n} \quad \left[\frac{\text{W}}{\text{m}^2}\right]$$
           </div>
+        </article>
 
+        <!-- SECCIÓN 3: POTENCIA RADIADA: DE LARMOR A LIÉNARD -->
+        <article class="study-section-card">
+          <h2>3. Potencia Radiada: De Larmor a la Generalización Relativista de Liénard</h2>
           <p>
-            Integrando el flujo del vector de Poynting sobre una esfera cerrada en el infinito, se obtiene la <strong>Generalización Relativista de Liénard para la Potencia de Larmor</strong>:
+            Al integrar el flujo del vector de Poynting sobre una esfera cerrada en el infinito, se obtiene la potencia
+            total irradiada por la carga acelerada. En el límite no relativista ($v \ll c$), la expresión se reduce a la
+            <strong>fórmula de Larmor</strong>:
           </p>
-
+          <div class="math-callout">
+            $$P = \frac{e^2 a^2}{6\pi\varepsilon_0 c^3}$$
+          </div>
+          <p>
+            donde $e = 1.602 \times 10^{-19}\text{ C}$, $a$ es la magnitud de la desaceleración instantánea
+            ($\text{m/s}^2$), $\varepsilon_0 = 8.854 \times 10^{-12}\text{ F/m}$ es la permitividad del vacío y $c$ es
+            la velocidad de la luz en el vacío.
+          </p>
+          <p>
+            Para electrones relativistas en el blanco, la integración relativista conduce a la <strong>fórmula de
+              Liénard</strong>:
+          </p>
           <div class="math-callout math-callout-racing">
-            $$P = \frac{e^2 \gamma^6}{6\pi\varepsilon_0 c^3} \left[ |\vec{a}|^2 - |\vec{\beta} \times \vec{a}|^2 \right]$$
+            $$P = \frac{e^2 \gamma^6}{6\pi\varepsilon_0 c^3}\left[\lvert\vec{a}\rvert^2 - \lvert\vec{\beta} \times
+            \vec{a}\rvert^2\right]$$
           </div>
-
           <p>
-            Esta ecuación demuestra por qué la desaceleración de partículas superligeras como los electrones ($m_e = 9.109\times 10^{-31}\text{ kg}$) produce radiación electromagnética billones de veces más intensa que la de protones o iones pesados, dado que la aceleración coulombiana $a = F/m \propto 1/m$.
+            Esta ecuación explica por qué electrones de baja masa en reposo ($m_e = 9.109 \times 10^{-31}\text{ kg}$)
+            sufren aceleraciones coulombianas mucho mayores ($\vec{a} = \vec{F}/m \propto 1/m$) y emiten radiación
+            electromagnética órdenes de magnitud más intensa que partículas pesadas como protones o iones, amplificada
+            además por el factor $\gamma^6$.
           </p>
         </article>
 
-        <!-- SECCIÓN 3: ESPECTRO CONTINUO DE BREMSSTRAHLUNG Y LEY DE KRAMERS -->
-        <article class="study-section-card">
-          <h2>3. Dispersión Coulombiana y Espectro Continuo de Kramers (1923)</h2>
-          <p>
-            Cuando el electrón pasa a una distancia $b$ (parámetro de impacto) del núcleo cargado con $+Ze$, describe una trayectoria hiperbólica en el potencial central de Coulomb $V(r) = \frac{Ze^2}{4\pi\varepsilon_0 r}$.
-          </p>
-          <p>
-            Al experimentar una aceleración impulsiva temporal $\vec{a}(t)$ de duración $\tau \sim b/v \sim 10^{-19}\text{ s}$, el pulso de radiación electromagnética emitido posee componentes espectrales continuas dadas por la <strong>Transformada de Fourier</strong> $\tilde{a}(\omega) = \int_{-\infty}^\infty a(t) e^{i\omega t} dt$.
-          </p>
-          <p>
-            Hendrik Kramers dedujo en 1923 la distribución espectral de intensidad para un haz polienergético de electrones frenados en un blanco metálico grueso:
-          </p>
-
-          <div class="math-callout">
-            $$I(E) \, dE = K \cdot Z \cdot i \cdot \left( E_{\max} - E \right) \, dE$$
-          </div>
-
-          <p>
-            donde $K \approx 1.0 \times 10^{-9}\text{ keV}^{-1}$, $Z$ es el número atómico del blanco, $i$ es la corriente de tubo (mA), y $E_{\max} = e V_0$ es la energía cinética máxima de los electrones incidentes.
-          </p>
-          <p>
-            Esta ley explica por qué el espectro no filtrado (crudo) es una recta decreciente que nace en $E = 0$ y culmina exactamente en el corte cuántico $E_{\max}$.
-          </p>
-        </article>
-
-        <!-- SECCIÓN 4: LÍMITE CUÁNTICO DE DUANE-HUNT -->
-        <article class="study-section-card">
-          <h2>4. Límite Cuántico de Duane-Hunt y Longitud de Onda Mínima</h2>
-          <p>
-            La electrodinámica puramente clásica predecía que la desaceleración instantánea en distancias infinitesimales ($b \to 0$) emitiría frecuencias arbitrariamente altas ($\nu \to \infty$), lo que constituía una catástrofe ultravioleta del frenado.
-          </p>
-          <p>
-            En 1915, William Duane y Franklin Hunt aplicaron la hipótesis de cuantización de Planck-Einstein, postulando que la energía máxima que puede portar un único fotón de Bremsstrahlung corresponde a la pérdida total de la energía cinética del electrón en una única interacción frontal ($b \approx 0$):
-          </p>
-
-          <div class="math-callout math-callout-racing">
-            $$E_{\max} = h \cdot \nu_{\max} = \frac{h \cdot c}{\lambda_{\min}} = e \cdot V_0$$
-          </div>
-
-          <p>
-            Despejando la <strong>longitud de onda de corte de Duane-Hunt ($\lambda_{\min}$)</strong>:
-          </p>
-
-          <div class="math-callout math-callout-racing">
-            $$\lambda_{\min} = \frac{h c}{e V_0} = \frac{1239.84187 \text{ pm}\cdot\text{keV}}{V_0 (\text{kV})}$$
-          </div>
-
-          <p>
-            Para un tubo operando a $80\text{ kVp}$, la longitud de onda más corta posible en todo el espectro es:
-          </p>
-          <div class="math-callout">
-            $$\lambda_{\min} = \frac{1239.84}{80} = 15.498 \text{ pm} = 0.155 \text{ \AA} \quad \implies \quad \nu_{\max} = \frac{c}{\lambda_{\min}} = 19.34 \text{ EHz } (10^{18}\text{ Hz})$$
-          </div>
-          <p>
-            Ningún fotón puede ser generado con energía superior a $80\text{ keV}$, independientemente de la corriente mA o del material del blanco.
-          </p>
-        </article>
-
-        <!-- SECCIÓN 5: RADIACIÓN CARACTERÍSTICA Y LEY DE MOSELEY -->
-        <article class="study-section-card">
-          <h2>5. Radiación Característica: Cuantización Orbital y Ley de Moseley</h2>
-          <p>
-            Si la energía del electrón incidente supera la energía de enlace de la capa K ($E_0 > E_K$, donde $E_K = 69.5\text{ keV}$ en Tungsteno), existe una probabilidad finita de ionizar el átomo expulsando un electrón de la capa $1s_{1/2}$.
-          </p>
-          <p>
-            La vacante creada deja al átomo en un estado excitado inestable ($\sim 10^{-16}\text{ s}$). Al decaer un electrón desde un nivel cuántico superior, se emite un fotón monoenergético que cumple las <strong>reglas de selección dipolar</strong> ($\Delta l = \pm 1, \Delta j = 0, \pm 1$):
-          </p>
-          <ul>
-            <li><strong>Línea $K_{\alpha_1}$ ($2p_{3/2} \to 1s_{1/2}$):</strong> $E = 59.32\text{ keV}$ (Tungsteno)</li>
-            <li><strong>Línea $K_{\alpha_2}$ ($2p_{1/2} \to 1s_{1/2}$):</strong> $E = 57.98\text{ keV}$ (Tungsteno)</li>
-            <li><strong>Línea $K_{\beta_1}$ ($3p_{3/2} \to 1s_{1/2}$):</strong> $E = 67.24\text{ keV}$ (Tungsteno)</li>
-          </ul>
-
-          <div class="math-callout">
-            $$\sqrt{\nu_{K_\alpha}} = \sqrt{\frac{3}{4} R_\infty c} \cdot (Z - \sigma) \quad \text{(Ley de Moseley, 1913)}$$
-          </div>
-
-          <p>
-            donde $\sigma \approx 1$ es la constante de apantallamiento nuclear para la capa K. Esto permite identificar inequívocamente la composición atómica del blanco a través de sus picos discretos.
-          </p>
-        </article>
-
-        <!-- SECCIÓN 6: DISTRIBUCIÓN ANGULAR RELATIVISTA Y EFECTO TALÓN -->
-        <article class="study-section-card">
-          <h2>6. Distribución Espacial Relativista ("Beaming") y Efecto Talón</h2>
-          <p>
-            A velocidades no relativistas ($\beta \ll 1$), la radiación de frenado presenta la distribución dipolar simétrica clásica de Larmor ($dP/d\Omega \propto \sin^2\theta$, con máxima emisión perpendicular a la desaceleración $\theta = 90^\circ$).
-          </p>
-          <p>
-            A potenciales diagnósticos ($80 - 150\text{ kVp}$), la transformación de Lorentz deforma el lóbulo hacia adelante debido al efecto Doppler relativista:
-          </p>
-
-          <div class="math-callout">
-            $$\frac{dP}{d\Omega} = \frac{e^2 a^2}{16\pi^2\varepsilon_0 c^3} \frac{\sin^2\theta}{(1 - \beta\cos\theta)^5}$$
-          </div>
-
-          <p>
-            El ángulo de máxima emisión se desplaza hacia adelante: $\theta_{\max} \approx \arccos\left( \frac{\sqrt{1 + 15\beta^2} - 1}{3\beta} \right)$.
-          </p>
-          <p>
-            Debido a este efecto y a la inclinación del ánodo ($\alpha = 7^\circ - 17^\circ$), los fotones emitidos hacia el lado anódico deben atravesar un mayor espesor de tungsteno antes de emerger, sufriendo una atenuación exponencial mucho mayor según la <strong>Ley de Beer-Lambert</strong>:
-          </p>
-
-          <div class="math-callout">
-            $$I(\theta) = I_0(\theta) \cdot \exp\left(-\mu(E) \frac{\bar{x}}{\sin\theta}\right)$$
-          </div>
-
-          <p>
-            Esto genera el célebre <strong>Efecto Talón (Anode Heel Effect)</strong>: el haz de rayos X es hasta un $30\%$ más intenso en el lado del cátodo que en el lado del ánodo, principio esencial en la colimación y posicionamiento radiológico de pacientes en radiología de tórax y fémur.
-          </p>
-        </article>
 
       </main>
 
@@ -459,7 +403,8 @@
               <span>ALTA TENSIÓN (kVp):</span>
               <span id="study-val-kvp" class="study-readout-pill">80 kVp</span>
             </div>
-            <input type="range" id="study-slider-kvp" min="20" max="150" value="80" step="1" class="lab-slider slider-cyan">
+            <input type="range" id="study-slider-kvp" min="20" max="150" value="80" step="1"
+              class="lab-slider slider-cyan">
           </div>
 
           <!-- Modos de Componentes EM -->
@@ -476,26 +421,36 @@
 
           <!-- Displays Numéricos en Tiempo Real -->
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 6px;">
-            <div style="background: var(--polar-subtle); border: 1px solid var(--polar-border); border-radius: 5px; padding: 6px 8px;">
+            <div
+              style="background: var(--polar-subtle); border: 1px solid var(--polar-border); border-radius: 5px; padding: 6px 8px;">
               <div style="font-size: 8.5px; color: var(--glacier-text-muted); font-weight: 700;">LONGITUD λmin:</div>
-              <div id="study-readout-lambda" style="font-size: 13px; font-weight: 800; color: var(--racing-red);">15.50 pm</div>
+              <div id="study-readout-lambda" style="font-size: 13px; font-weight: 800; color: var(--racing-red);">15.50
+                pm</div>
             </div>
-            <div style="background: var(--polar-subtle); border: 1px solid var(--polar-border); border-radius: 5px; padding: 6px 8px;">
+            <div
+              style="background: var(--polar-subtle); border: 1px solid var(--polar-border); border-radius: 5px; padding: 6px 8px;">
               <div style="font-size: 8.5px; color: var(--glacier-text-muted); font-weight: 700;">FRECUENCIA νmax:</div>
-              <div id="study-readout-freq" style="font-size: 13px; font-weight: 800; color: var(--glacier-700);">19.34 EHz</div>
+              <div id="study-readout-freq" style="font-size: 13px; font-weight: 800; color: var(--glacier-700);">19.34
+                EHz</div>
             </div>
-            <div style="background: var(--polar-subtle); border: 1px solid var(--polar-border); border-radius: 5px; padding: 6px 8px;">
+            <div
+              style="background: var(--polar-subtle); border: 1px solid var(--polar-border); border-radius: 5px; padding: 6px 8px;">
               <div style="font-size: 8.5px; color: var(--glacier-text-muted); font-weight: 700;">VELOCIDAD β:</div>
-              <div id="study-readout-beta" style="font-size: 13px; font-weight: 800; color: var(--status-green);">50.2% c</div>
+              <div id="study-readout-beta" style="font-size: 13px; font-weight: 800; color: var(--status-green);">50.2%
+                c</div>
             </div>
-            <div style="background: var(--polar-subtle); border: 1px solid var(--polar-border); border-radius: 5px; padding: 6px 8px;">
+            <div
+              style="background: var(--polar-subtle); border: 1px solid var(--polar-border); border-radius: 5px; padding: 6px 8px;">
               <div style="font-size: 8.5px; color: var(--glacier-text-muted); font-weight: 700;">FACTOR LORENTZ γ:</div>
-              <div id="study-readout-gamma" style="font-size: 13px; font-weight: 800; color: var(--glacier-800);">1.1565</div>
+              <div id="study-readout-gamma" style="font-size: 13px; font-weight: 800; color: var(--glacier-800);">1.1565
+              </div>
             </div>
           </div>
 
-          <div style="font-size: 9.5px; color: var(--glacier-text-muted); line-height: 1.4; border-top: 1px solid var(--polar-border-subtle); padding-top: 8px;">
-            💡 <strong>Interacción 3D:</strong> Arrastre con el ratón para rotar la cámara y observar la perpendicularidad $\vec{E} \perp \vec{B}$ y el avance del vector de Poynting $\vec{S}$.
+          <div
+            style="font-size: 9.5px; color: var(--glacier-text-muted); line-height: 1.4; border-top: 1px solid var(--polar-border-subtle); padding-top: 8px;">
+            💡 <strong>Interacción 3D:</strong> Arrastre con el ratón para rotar la cámara y observar la
+            perpendicularidad $\vec{E} \perp \vec{B}$ y el avance del vector de Poynting $\vec{S}$.
           </div>
         </div>
 
@@ -582,33 +537,33 @@
     waveGroup.position.set(-1.8, 0.6, 0);
 
     // Eje z
-    const axisGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,0,0), new THREE.Vector3(waveLength,0,0)]);
+    const axisGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, 0, 0), new THREE.Vector3(waveLength, 0, 0)]);
     waveGroup.add(new THREE.Line(axisGeo, new THREE.LineBasicMaterial({ color: 0x64748b, transparent: true, opacity: 0.3 })));
 
     // E Wave (Vertical, Rojo Racing)
     const ePoints = [];
-    for (let i = 0; i <= waveSegments; i++) ePoints.push(new THREE.Vector3((i/waveSegments)*waveLength, 0, 0));
+    for (let i = 0; i <= waveSegments; i++) ePoints.push(new THREE.Vector3((i / waveSegments) * waveLength, 0, 0));
     const eGeo = new THREE.BufferGeometry().setFromPoints(ePoints);
     const eLine = new THREE.Line(eGeo, new THREE.LineBasicMaterial({ color: 0xef233c, linewidth: 2 }));
     waveGroup.add(eLine);
 
     // B Wave (Horizontal, Azul Glaciar)
     const bPoints = [];
-    for (let i = 0; i <= waveSegments; i++) bPoints.push(new THREE.Vector3((i/waveSegments)*waveLength, 0, 0));
+    for (let i = 0; i <= waveSegments; i++) bPoints.push(new THREE.Vector3((i / waveSegments) * waveLength, 0, 0));
     const bGeo = new THREE.BufferGeometry().setFromPoints(bPoints);
     const bLine = new THREE.Line(bGeo, new THREE.LineBasicMaterial({ color: 0x0ea5e9, linewidth: 2 }));
     waveGroup.add(bLine);
 
     // Vector de Poynting S
-    const poynting = new THREE.ArrowHelper(new THREE.Vector3(1,0,0), new THREE.Vector3(waveLength,0,0), 1.2, 0xffb703, 0.3, 0.15);
+    const poynting = new THREE.ArrowHelper(new THREE.Vector3(1, 0, 0), new THREE.Vector3(waveLength, 0, 0), 1.2, 0xffb703, 0.3, 0.15);
     waveGroup.add(poynting);
 
     // Flechas vectoriales
     const arrowsE = [];
     const arrowsB = [];
     for (let i = 0; i < 14; i++) {
-      const aE = new THREE.ArrowHelper(new THREE.Vector3(0,1,0), new THREE.Vector3(0,0,0), 0.7, 0xef233c, 0.15, 0.08);
-      const aB = new THREE.ArrowHelper(new THREE.Vector3(0,0,1), new THREE.Vector3(0,0,0), 0.7, 0x0ea5e9, 0.15, 0.08);
+      const aE = new THREE.ArrowHelper(new THREE.Vector3(0, 1, 0), new THREE.Vector3(0, 0, 0), 0.7, 0xef233c, 0.15, 0.08);
+      const aB = new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), new THREE.Vector3(0, 0, 0), 0.7, 0x0ea5e9, 0.15, 0.08);
       waveGroup.add(aE);
       waveGroup.add(aB);
       arrowsE.push(aE);
@@ -685,7 +640,7 @@
         electron.position.set(-2.8 + u, 0.6 / (1 + Math.exp(-u)), 0);
       } else {
         const u = ((cyc - 1.4) / 1.6) * 3.0;
-        electron.position.set(-2.8 + Math.cos(0.7)*u, 0.6 + Math.sin(0.7)*u, 0);
+        electron.position.set(-2.8 + Math.cos(0.7) * u, 0.6 + Math.sin(0.7) * u, 0);
       }
 
       // Ondas transversales
@@ -736,4 +691,5 @@
   </script>
 
 </body>
+
 </html>
