@@ -43,20 +43,6 @@ export function generateLiveEquations(state) {
 
   const equations = [
     {
-      id: 'richardson',
-      title: '1. Emisión Termoiónica (Ley de Richardson-Dushman)',
-      category: 'Cátodo & Termodinámica',
-      latex: `J_{\\text{th}} = A_R T^2 \\exp\\left(-\\frac{\\phi}{k_B T}\\right) = (6.0\\times 10^5) \\cdot (${tempK}\\text{ K})^2 \\cdot e^{-\\frac{${phiEV}\\text{ eV}}{k_B (${tempK}\\text{ K})}} = \\mathbf{${jThMA}\\text{ mA/cm}^2}`,
-      html: `
-        <div class="eq-formula"><em>J</em><sub>th</sub> = <em>A</em><sub>R</sub> · <em>T</em><sup>2</sup> · exp(−<em>&phi;</em> / <em>k</em><sub>B</sub><em>T</em>)</div>
-        <div class="eq-subst">
-          = (6.0×10<sup>5</sup>) · (${tempK} K)<sup>2</sup> · exp(−${phiEV} eV / [<em>k</em><sub>B</sub> · ${tempK} K])
-          = <strong class="text-accent">${jThMA} mA/cm²</strong>
-        </div>
-        <div class="eq-caption">Flujo de electrones desprendidos del filamento de tungsteno por calentamiento Joule (T = ${tempK} K).</div>
-      `
-    },
-    {
       id: 'child_langmuir',
       title: '2. Límite de Carga Espacial (Ley de Child-Langmuir)',
       category: 'Cátodo & Campo E',
@@ -113,22 +99,6 @@ export function generateLiveEquations(state) {
           <em>&nu;</em><sub>max</sub> = <em>e</em>·<em>V</em><sub>0</sub> / <em>h</em> = <strong class="text-accent">${nuMaxEHz} EHz</strong> (10<sup>18</sup> Hz)
         </div>
         <div class="eq-caption">Longitud de onda de corte mínima: ningún fotón de Bremsstrahlung puede poseer una energía mayor que la energía cinética total del electrón incidente.</div>
-      `
-    },
-    {
-      id: 'beer_lambert',
-      title: '6. Atenuación Espectral y Endurecimiento del Haz (Beer-Lambert)',
-      category: 'Filtración & Dosimetría',
-      latex: `I(E) = I_0(E) \\cdot \\exp\\left( -[\\mu_{\\text{Al}}(E)x_{\\text{Al}} + \\mu_{\\text{Cu}}(E)x_{\\text{Cu}} + \\mu_{\\text{vidrio}}x_g] \\right), \\quad \\text{HVL} = \\mathbf{${hvlMM}\\text{ mm Al}}`,
-      html: `
-        <div class="eq-formula">
-          <em>I</em>(<em>E</em>) = <em>I</em><sub>0</sub>(<em>E</em>) · exp(−[&mu;<sub>Al</sub><em>x</em><sub>Al</sub> + &mu;<sub>Cu</sub><em>x</em><sub>Cu</sub> + &mu;<sub>vidrio</sub><em>x</em><sub>g</sub>])
-        </div>
-        <div class="eq-subst">
-          Filtros: <strong>${alMM} mm Al</strong> + <strong>${cuMM} mm Cu</strong> + Inh. 1.0 mm | Capa Hemirreductora (HVL): <strong class="text-accent">${hvlMM} mm Al</strong><br>
-          Energía Media Transmitida: <em>Ē</em> = <strong>${meanEKEV} keV</strong> (Incremento por Endurecimiento: <strong>+${deltaEKEV} keV</strong>)
-        </div>
-        <div class="eq-caption">Los fotones de baja energía ("blandos") se absorben por efecto fotoeléctrico, reduciendo la dosis superficial en piel un ${filtration.skinDoseReductionPercent.toFixed(1)}%.</div>
       `
     }
   ];

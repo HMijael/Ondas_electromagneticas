@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tratado de Ecuaciones y Cálculos Electromagnéticos de Rayos X | X-Ray Physics Lab</title>
-  
+
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="stylesheet" href="style.css">
 
@@ -140,8 +141,15 @@
     }
 
     @keyframes fadeInDossier {
-      from { opacity: 0; transform: translateY(6px); }
-      to   { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .dossier-header {
@@ -185,7 +193,9 @@
     }
 
     @media (max-width: 1024px) {
-      .dossier-grid { grid-template-columns: 1fr; }
+      .dossier-grid {
+        grid-template-columns: 1fr;
+      }
     }
 
     /* Columna Teórica */
@@ -201,7 +211,8 @@
       gap: 6px;
     }
 
-    .dossier-theory-section p, .dossier-theory-section li {
+    .dossier-theory-section p,
+    .dossier-theory-section li {
       font-size: 12px;
       line-height: 1.7;
       color: var(--glacier-text-main);
@@ -319,6 +330,7 @@
     }
   </style>
 </head>
+
 <body class="lab-body">
 
   <div class="calc-container">
@@ -353,141 +365,26 @@
       </div>
 
       <div class="equation-nav-buttons">
-        <button class="eq-select-btn active" data-target="eq-1">
-          <span class="btn-badge">1. Cátodo & Termodinámica</span>
-          <span>Ley de Richardson-Dushman</span>
-        </button>
+
         <button class="eq-select-btn" data-target="eq-2">
-          <span class="btn-badge">2. Cátodo & Campo E</span>
+          <span class="btn-badge">1. Cátodo & Campo E</span>
           <span>Ley de Child-Langmuir</span>
         </button>
         <button class="eq-select-btn" data-target="eq-3">
-          <span class="btn-badge">3. Campo E & Electrones</span>
+          <span class="btn-badge">2. Campo E & Electrones</span>
           <span>Cinemática Relativista</span>
         </button>
-        <button class="eq-select-btn" data-target="eq-4">
-          <span class="btn-badge">4. Ánodo & Electrodinámica</span>
-          <span>Potencia de Larmor / Liénard</span>
-        </button>
         <button class="eq-select-btn" data-target="eq-5">
-          <span class="btn-badge">5. Ondas EM & Cuántica</span>
+          <span class="btn-badge">3. Ondas EM </span>
           <span>Límite Duane-Hunt & Planck</span>
         </button>
         <button class="eq-select-btn" data-target="eq-6">
-          <span class="btn-badge">6. Filtración & Dosimetría</span>
-          <span>Ley de Beer-Lambert & HVL</span>
+          <span class="btn-badge">4. Radiación Característica</span>
+          <span>Ley de Moseley</span>
         </button>
       </div>
     </nav>
 
-    <!-- ========================================================
-         DOSSIER 1: LEY DE RICHARDSON-DUSHMAN
-         ======================================================== -->
-    <article id="eq-1" class="equation-dossier-card active">
-      <div class="dossier-header">
-        <div class="dossier-title-group">
-          <h2>1. Emisión Termoiónica (Ley de Richardson-Dushman)</h2>
-          <span>TERMODINÁMICA ESTADÍSTICA DEL FILAMENTO DE TUNGSTENO</span>
-        </div>
-        <span class="dossier-badge">Cátodo · Régimen Térmico</span>
-      </div>
-
-      <div class="dossier-grid">
-        <!-- Marco Teórico -->
-        <div class="dossier-theory-section">
-          <h3>📖 Marco Teórico y Fundamentos Físicos</h3>
-          <p>
-            La emisión termoiónica es el proceso mediante el cual electrones con suficiente energía térmica superan la barrera del potencial electrostático en la superficie de un metal caliente (efecto Edison/Richardson).
-          </p>
-          <p>
-            A temperatura ambiente, los electrones de conducción en el tungsteno siguen la <strong>estadística cuántica de Fermi-Dirac</strong>. Al hacer circular una corriente por el filamento helicoidal de tungsteno, el calentamiento Joule eleva su temperatura hasta $T \approx 2100 - 2700\text{ K}$. En la cola de alta energía de la distribución de Fermi-Dirac, una fracción de electrones adquiere una energía cinética normal a la superficie que supera la <strong>función de trabajo</strong> ($\phi = 4.54\text{ eV}$ para el Tungsteno).
-          </p>
-
-          <div class="formula-display-box">
-            $$J_{\text{th}} = A_R \cdot T^2 \cdot \exp\left(-\frac{\phi}{k_B T}\right)$$
-          </div>
-
-          <table class="variable-table">
-            <thead>
-              <tr>
-                <th>Variable</th>
-                <th>Descripción Física</th>
-                <th>Valor / Unidad</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>$J_{\text{th}}$</td>
-                <td>Densidad de corriente de emisión termoiónica saturada</td>
-                <td>$\text{A/m}^2$ o $\text{mA/cm}^2$</td>
-              </tr>
-              <tr>
-                <td>$A_R$</td>
-                <td>Constante universal de Richardson ($A_R = \frac{4\pi m_e e k_B^2}{h^3}$)</td>
-                <td>$6.0 \times 10^5 \text{ A}/(\text{m}^2\cdot\text{K}^2)$ (W)</td>
-              </tr>
-              <tr>
-                <td>$T$</td>
-                <td>Temperatura termodinámica del filamento</td>
-                <td>$\text{Kelvin (K)}$</td>
-              </tr>
-              <tr>
-                <td>$\phi$</td>
-                <td>Función de trabajo del metal del filamento</td>
-                <td>$4.54\text{ eV}$ ($7.27\times 10^{-19}\text{ J}$)</td>
-              </tr>
-              <tr>
-                <td>$k_B$</td>
-                <td>Constante de Boltzmann</td>
-                <td>$1.380649 \times 10^{-23}\text{ J/K}$</td>
-              </tr>
-            </tbody>
-          </table>
-
-          <h3>🔬 Relevancia en Ingeniería del Tubo de Rayos X</h3>
-          <p>
-            Pequeñas variaciones en la corriente del circuito del filamento provocan grandes cambios exponenciales en la tasa de electrones desprendidos. Por esta razón, los generadores radiológicos modernos de alta frecuencia incorporan circuitos de estabilización de la corriente de filamento con tolerancias menores al $0.1\%$.
-          </p>
-        </div>
-
-        <!-- Cálculos Actuales de la Pizarra en Vivo -->
-        <div class="dossier-calc-section">
-          <div class="calc-section-title">
-            <span>📊 Cálculos Actuales de la Simulación</span>
-            <span class="badge badge-ok">En Vivo</span>
-          </div>
-
-          <div class="calc-step-card">
-            <div class="calc-step-label">1. Parámetros Operativos del Filamento</div>
-            <p>Temperatura de operación: <strong>$T = 2520\text{ K}$</strong></p>
-            <p>Función de trabajo del Tungsteno: <strong>$\phi = 4.54\text{ eV}$</strong></p>
-            <p>Energía térmica media: $k_B T = (8.617\times 10^{-5}\text{ eV/K})(2520\text{ K}) = \mathbf{0.217\text{ eV}}$</p>
-          </div>
-
-          <div class="calc-step-card">
-            <div class="calc-step-label">2. Factor Exponencial de Boltzmann</div>
-            <div class="calc-step-subst">
-              $$\exp\left(-\frac{\phi}{k_B T}\right) = \exp\left(-\frac{4.54\text{ eV}}{0.217\text{ eV}}\right) = e^{-20.92} \approx 8.21 \times 10^{-10}$$
-            </div>
-          </div>
-
-          <div class="calc-step-card">
-            <div class="calc-step-label">3. Sustitución Completa en Ley de Richardson</div>
-            <div class="calc-step-subst">
-              $$J_{\text{th}} = (6.0\times 10^5) \cdot (2520)^2 \cdot (8.21\times 10^{-10}) = \mathbf{15.15\text{ mA/cm}^2}$$
-            </div>
-          </div>
-
-          <div class="calc-result-box">
-            <div>
-              <div style="font-size: 9px; font-weight: 700; color: var(--glacier-text-muted);">DENSIDAD TERMOIÓNICA:</div>
-              <div class="calc-result-val">15.15 mA/cm²</div>
-            </div>
-            <span class="badge badge-ok">Saturación Térmica</span>
-          </div>
-        </div>
-      </div>
-    </article>
 
     <!-- ========================================================
          DOSSIER 2: LEY DE CHILD-LANGMUIR
@@ -495,62 +392,55 @@
     <article id="eq-2" class="equation-dossier-card">
       <div class="dossier-header">
         <div class="dossier-title-group">
-          <h2>2. Límite de Carga Espacial (Ley de Child-Langmuir)</h2>
-          <span>ELECTROSTÁTICA DE DIODO EN VACÍO CON CARGA ESPACIAL</span>
+          <h2>1. Carga Espacial (Ley de Child-Langmuir)</h2>
+          <span>ELECTROSTÁTICA EN VACÍO CON CARGA ESPACIAL</span>
         </div>
         <span class="dossier-badge">Cátodo · Copa de Enfoque</span>
       </div>
 
       <div class="dossier-grid">
         <div class="dossier-theory-section">
-          <h3>📖 Marco Teórico y Ecuación de Poisson</h3>
+          <h3>Aceleración electrostática en el cátodo</h3>
           <p>
-            Cuando los electrones abandonan el filamento, forman una nube de carga negativa (la <em>carga espacial</em>) en la proximidad inmediata del cátodo. Los electrones en la nube ejercen una fuerza electrostática de repulsión coulombiana sobre los nuevos electrones que intentan desprenderse del filamento.
+            En un tubo de rayos X al vacío, el transporte de electrones desde el cátodo hasta el ánodo está gobernado
+            por la interacción entre el campo eléctrico aplicado, la distribución de carga espacial y la geometría de
+            enfoque. El punto de partida común es la primera ecuación de Maxwell para el campo electrostático en un
+            medio con densidad volumétrica de carga $\rho$ y permitividad del vacío $\varepsilon_0$:
           </p>
           <p>
-            Clement Child (1911) e Irving Langmuir (1913) resolvieron la <strong>Ecuación de Poisson unidimensional</strong> $\frac{d^2 V}{dx^2} = -\frac{\rho(x)}{\varepsilon_0}$ acoplada con la ley de conservación de la energía $\frac{1}{2}m_e v(x)^2 = e V(x)$ y la densidad de corriente $J = -\rho(x) v(x) = \text{constante}$.
+            $$\nabla \cdot \mathbf{E} = \frac{\rho}{\varepsilon_0}$$
           </p>
-
-          <div class="formula-display-box">
-            $$J_{\text{sc}} = \frac{4}{9} \varepsilon_0 \sqrt{\frac{2e}{m_e}} \cdot \frac{V^{3/2}}{d^2} = (2.33 \times 10^{-6}) \cdot \frac{V^{3/2}}{d^2}$$
-          </div>
-
-          <table class="variable-table">
-            <thead>
-              <tr>
-                <th>Símbolo</th>
-                <th>Definición</th>
-                <th>Valor / Unidad SI</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>$V$</td>
-                <td>Diferencia de potencial cátodo-ánodo (kVp)</td>
-                <td>$\text{Voltios (V)}$</td>
-              </tr>
-              <tr>
-                <td>$d$</td>
-                <td>Distancia de separación efectiva cátodo-ánodo</td>
-                <td>$0.018\text{ m } (1.8\text{ cm})$</td>
-              </tr>
-              <tr>
-                <td>$\varepsilon_0$</td>
-                <td>Permitividad dieléctrica del vacío</td>
-                <td>$8.854187 \times 10^{-12}\text{ F/m}$</td>
-              </tr>
-              <tr>
-                <td>$e/m_e$</td>
-                <td>Relación carga-masa del electrón</td>
-                <td>$1.758820 \times 10^{11}\text{ C/kg}$</td>
-              </tr>
-            </tbody>
-          </table>
-
-          <h3>🔬 Transición de Régimen: Carga Espacial vs. Saturación por Temperatura</h3>
           <p>
-            A tensiones bajas ($kVp < 40$), la corriente del tubo está gobernada por $V^{3/2}$ (régimen de carga espacial). A tensiones altas ($kVp \ge 70 - 80$), el campo electrostático barrenador arrastra toda la carga disponible, y la corriente queda limitada exclusivamente por la temperatura del filamento (régimen de saturación de Richardson).
+            Dado que el campo electrostático es irrotacional, se expresa como el gradiente negativo del potencial
+            escalar $V$ ($\mathbf{E} = -\nabla V$), lo que conduce directamente a la ecuación de Poisson:
           </p>
+          <p>
+            $$\nabla \cdot (-\nabla V) = \frac{\rho}{\varepsilon_0} \implies \nabla^2 V = -\frac{\rho}{\varepsilon_0}$$
+          </p>
+
+          <h3>Carga Espacial y Límite de Child-Langmuir</h3>
+          <p>
+            En la proximidad inmediata del filamento, los electrones emitidos forman una nube de carga negativa que
+            ejerce repulsión coulombiana sobre los electrones que intentan abandonar el cátodo. Al resolver la ecuación
+            de Poisson en una dimensión ($\frac{d^2 V}{dx^2} = -\frac{\rho(x)}{\varepsilon_0}$) junto con la
+            conservación de la energía ($\frac{1}{2} m_e v(x)^2 = eV(x)$) y la continuidad de la densidad de corriente
+            ($J = -\rho(x)v(x) = \text{constante}$), se obtiene la densidad de corriente límite de Child-Langmuir:
+          </p>
+          <p>
+            $$J_{sc} = \frac{4}{9} \varepsilon_0 \sqrt{\frac{2e}{m_e}} \frac{V^{3/2}}{d^2}$$
+          </p>
+          <ul>
+            <li>
+              <strong>Régimen de carga espacial:</strong> A tensiones bajas (por ejemplo, $\text{kVp} &lt; 40$), la
+              corriente está limitada por la repulsión de la nube electrónica y crece proporcionalmente a $V^{3/2} /
+              d^2$.
+            </li>
+            <li>
+              <strong>Régimen de saturación por temperatura:</strong> A tensiones altas (por ejemplo, $\text{kVp} \ge
+              70\text{–}80$), el campo eléctrico extrae toda la carga disponible y el límite pasa a estar dictado por la
+              temperatura del filamento.
+            </li>
+          </ul>
         </div>
 
         <div class="dossier-calc-section">
@@ -577,13 +467,15 @@
           <div class="calc-step-card">
             <div class="calc-step-label">3. Densidad Límite de Child-Langmuir</div>
             <div class="calc-step-subst">
-              $$J_{\text{sc}} = (2.334\times 10^{-6}) \cdot \frac{22627417}{3.24\times 10^{-4}} = 162.80\text{ mA/cm}^2$$
+              $$J_{\text{sc}} = (2.334\times 10^{-6}) \cdot \frac{22627417}{3.24\times 10^{-4}} = 162.80\text{
+              mA/cm}^2$$
             </div>
           </div>
 
           <div class="calc-result-box">
             <div>
-              <div style="font-size: 9px; font-weight: 700; color: var(--glacier-text-muted);">LÍMITE CARGA ESPACIAL:</div>
+              <div style="font-size: 9px; font-weight: 700; color: var(--glacier-text-muted);">LÍMITE CARGA ESPACIAL:
+              </div>
               <div class="calc-result-val">162.80 mA/cm²</div>
             </div>
             <span class="badge badge-ok">Régimen Saturado</span>
@@ -598,7 +490,7 @@
     <article id="eq-3" class="equation-dossier-card">
       <div class="dossier-header">
         <div class="dossier-title-group">
-          <h2>3. Aceleración Electrostática y Cinemática Relativista</h2>
+          <h2>2. Aceleración Electrostática y Cinemática Relativista</h2>
           <span>FACTOR DE LORENTZ, VELOCIDAD RELATIVISTA Y MASA INERCIAL</span>
         </div>
         <span class="dossier-badge">Electrodinámica · Campo E</span>
@@ -608,7 +500,11 @@
         <div class="dossier-theory-section">
           <h3>📖 Marco Teórico de la Relatividad Especial</h3>
           <p>
-            En un tubo de rayos X que opera entre $20$ y $150\text{ kVp}$, la energía cinética adquirida por los electrones ($eV \sim 20 - 150\text{ keV}$) representa una fracción significativa de su energía en reposo ($m_e c^2 = 511.00\text{ keV}$). La física clásica de Newton ($\frac{1}{2}m v^2 = eV$) comete un error mayor al $10\%$ a $80\text{ kVp}$, por lo que es mandatorio emplear las ecuaciones de la <strong>Relatividad Especial de Einstein</strong>.
+            En un tubo de rayos X que opera entre $20$ y $150\text{ kVp}$, la energía cinética adquirida por los
+            electrones ($eV \sim 20 - 150\text{ keV}$) representa una fracción significativa de su energía en reposo
+            ($m_e c^2 = 511.00\text{ keV}$). La física clásica de Newton ($\frac{1}{2}m v^2 = eV$) comete un error mayor
+            al $10\%$ a $80\text{ kVp}$, por lo que es mandatorio emplear las ecuaciones de la <strong>Relatividad
+              Especial de Einstein</strong>.
           </p>
 
           <div class="formula-display-box">
@@ -650,7 +546,9 @@
 
           <h3>🔬 Consecuencias en la Física del Frenado</h3>
           <p>
-            El factor de Lorentz $\gamma$ modifica radicalmente la tasa de radiación de frenado en el ánodo. La potencia emitida escala proporcional a $\gamma^6$, y la distribución espacial de los fotones emitidos se inclina drásticamente hacia adelante (efecto "headlight").
+            El factor de Lorentz $\gamma$ modifica radicalmente la tasa de radiación de frenado en el ánodo. La potencia
+            emitida escala proporcional a $\gamma^6$, y la distribución espacial de los fotones emitidos se inclina
+            drásticamente hacia adelante (efecto "headlight").
           </p>
         </div>
 
@@ -684,7 +582,8 @@
 
           <div class="calc-result-box">
             <div>
-              <div style="font-size: 9px; font-weight: 700; color: var(--glacier-text-muted);">VELOCIDAD ELECTRÓNICA:</div>
+              <div style="font-size: 9px; font-weight: 700; color: var(--glacier-text-muted);">VELOCIDAD ELECTRÓNICA:
+              </div>
               <div class="calc-result-val">150,600 km/s (50.2% c)</div>
             </div>
             <span class="badge badge-info">γ = 1.1565</span>
@@ -693,108 +592,6 @@
       </div>
     </article>
 
-    <!-- ========================================================
-         DOSSIER 4: POTENCIA DE LARMOR / LIÉNARD
-         ======================================================== -->
-    <article id="eq-4" class="equation-dossier-card">
-      <div class="dossier-header">
-        <div class="dossier-title-group">
-          <h2>4. Radiación por Frenado Brusco (Potencia de Larmor / Liénard)</h2>
-          <span>ELECTRODINÁMICA DE RADIACIÓN DE CARGAS Y RENDIMIENTO TÉRMICO</span>
-        </div>
-        <span class="dossier-badge">Ánodo · Bremsstrahlung</span>
-      </div>
-
-      <div class="dossier-grid">
-        <div class="dossier-theory-section">
-          <h3>📖 Marco Teórico y Ecuación de Liénard</h3>
-          <p>
-            Toda partícula con carga eléctrica acelerada irradia potencia en forma de ondas electromagnéticas. Para un electrón en trayectoria relativista que sufre una desaceleración violenta $\vec{a} = d\vec{v}/dt$ al interactuar con el campo electrostático del núcleo metálico ($Z$), la potencia electromagnética instantánea irradiada viene dada por la <strong>fórmula relativista de Liénard</strong>:
-          </p>
-
-          <div class="formula-display-box">
-            $$P = \frac{e^2 \gamma^6}{6\pi \varepsilon_0 c^3} \left[ |\vec{a}|^2 - |\vec{\beta} \times \vec{a}|^2 \right]$$
-          </div>
-
-          <h3>Eficiencia Radiológica y Balance Térmico</h3>
-          <p>
-            Debido a que la inmensa mayoría de las interacciones en el ánodo son colisiones inelásticas con los electrones orbitales atómicos (que excitan la red cristalina en vibraciones térmicas y fonones), la eficiencia $\eta$ de producción de rayos X es extremadamente baja:
-          </p>
-
-          <div class="formula-display-box">
-            $$\eta = \frac{P_{\text{Rayos X}}}{P_{\text{Eléctrica Total}}} \approx 9 \times 10^{-10} \cdot Z \cdot V_0$$
-          </div>
-
-          <table class="variable-table">
-            <thead>
-              <tr>
-                <th>Blanco Metálico</th>
-                <th>Número $Z$</th>
-                <th>Eficiencia a 80 kVp</th>
-                <th>Fracción Térmica</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Tungsteno (W)</td>
-                <td>74</td>
-                <td>$\approx 0.533\%$</td>
-                <td>$99.47\%$ Calor</td>
-              </tr>
-              <tr>
-                <td>Molibdeno (Mo)</td>
-                <td>42</td>
-                <td>$\approx 0.302\%$</td>
-                <td>$99.70\%$ Calor</td>
-              </tr>
-              <tr>
-                <td>Rodio (Rh)</td>
-                <td>45</td>
-                <td>$\approx 0.324\%$</td>
-                <td>$99.68\%$ Calor</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="dossier-calc-section">
-          <div class="calc-section-title">
-            <span>📊 Cálculos Actuales de la Simulación</span>
-            <span class="badge badge-warn">80 kVp · 200 mA</span>
-          </div>
-
-          <div class="calc-step-card">
-            <div class="calc-step-label">1. Potencia Eléctrica Suministrada</div>
-            <div class="calc-step-subst">
-              $$P_{\text{el}} = V \cdot I = (80,000\text{ V}) \cdot (0.200\text{ A}) = \mathbf{16,000\text{ W } (16.0\text{ kW})}$$
-            </div>
-          </div>
-
-          <div class="calc-step-card">
-            <div class="calc-step-label">2. Eficiencia Radiológica $\eta$ (Tungsteno $Z=74$)</div>
-            <div class="calc-step-subst">
-              $$\eta \approx 9 \times 10^{-10} \cdot (74) \cdot (80,000) = 5.328 \times 10^{-3} = \mathbf{0.533\%}$$
-            </div>
-          </div>
-
-          <div class="calc-step-card">
-            <div class="calc-step-label">3. Partición de Potencia Útil vs. Calorífica</div>
-            <div class="calc-step-subst">
-              $$P_{\text{Rayos X}} = 16,000\text{ W} \times 0.005328 = \mathbf{85.3\text{ W}}$$
-              $$P_{\text{Calor}} = 16,000\text{ W} - 85.3\text{ W} = \mathbf{15,914.7\text{ W } (99.47\%)}$$
-            </div>
-          </div>
-
-          <div class="calc-result-box">
-            <div>
-              <div style="font-size: 9px; font-weight: 700; color: var(--glacier-text-muted);">DISIPACIÓN TÉRMICA EN ÁNODO:</div>
-              <div class="calc-result-val calc-result-val-danger">15,915 W (99.47%)</div>
-            </div>
-            <span class="badge badge-warn">Rotor Activo 9600 RPM</span>
-          </div>
-        </div>
-      </div>
-    </article>
 
     <!-- ========================================================
          DOSSIER 5: LÍMITE CUÁNTICO DE DUANE-HUNT
@@ -802,7 +599,7 @@
     <article id="eq-5" class="equation-dossier-card">
       <div class="dossier-header">
         <div class="dossier-title-group">
-          <h2>5. Límite Cuántico de Duane-Hunt & Ley de Planck</h2>
+          <h2>3. Límite Cuántico de Duane-Hunt & Ley de Planck</h2>
           <span>CORTE CUÁNTICO DE MÁXIMA ENERGÍA Y LONGITUD DE ONDA MÍNIMA</span>
         </div>
         <span class="dossier-badge">Mecánica Cuántica · Planck</span>
@@ -812,15 +609,17 @@
         <div class="dossier-theory-section">
           <h3>📖 Marco Teórico y Resolución Cuántica</h3>
           <p>
-            William Duane y Franklin Hunt descubrieron experimentalmente en 1915 que el espectro continuo de Bremsstrahlung termina abruptamente en una longitud de onda mínima $\lambda_{\min}$, independientemente del número atómico del blanco metálico o de la corriente mA.
-          </p>
-          <p>
-            Este resultado fue una de las confirmaciones históricas cruciales de la teoría cuántica de Planck-Einstein: la energía de un fotón electromagnético está cuantizada en paquetes $E = h\nu$. Por el principio de conservación de la energía, un electrón que colisiona frontalmente contra el campo nuclear no puede ceder más que su energía cinética total $E_0 = e V_0$ a un único fotón:
+            Debido a que cada electrón experimenta desaceleraciones de distinta magnitud según la distancia de impacto
+            al núcleo, la energía radiada genera un espectro continuo de fotones. La máxima energía que puede llevarse
+            un solo fotón ocurre cuando un electrón entrega el 100% de su energía cinética $E_k = eV$ en un único evento
+            de frenado. Esto define la frecuencia máxima $\nu_{\max}$ y la longitud de onda mínima $\lambda_{\min}$
+            gobernadas por la Ley de Duane-Hunt:
           </p>
 
           <div class="formula-display-box">
             $$E_{\max} = h \cdot \nu_{\max} = \frac{h \cdot c}{\lambda_{\min}} = e \cdot V_0$$
-            $$\lambda_{\min} = \frac{h \cdot c}{e \cdot V_0} = \frac{1239.84187\text{ pm}\cdot\text{keV}}{V_0(\text{kV})}$$
+            $$\lambda_{\min} = \frac{h \cdot c}{e \cdot V_0} = \frac{1239.84187\text{
+            pm}\cdot\text{keV}}{V_0(\text{kV})}$$
           </div>
 
           <table class="variable-table">
@@ -835,7 +634,8 @@
               <tr>
                 <td>Constante de Planck</td>
                 <td>$h$</td>
-                <td>$6.62607015 \times 10^{-34}\text{ J}\cdot\text{s}$ ($4.135667 \times 10^{-15}\text{ eV}\cdot\text{s}$)</td>
+                <td>$6.62607015 \times 10^{-34}\text{ J}\cdot\text{s}$ ($4.135667 \times 10^{-15}\text{
+                  eV}\cdot\text{s}$)</td>
               </tr>
               <tr>
                 <td>Velocidad de la luz</td>
@@ -865,14 +665,16 @@
           <div class="calc-step-card">
             <div class="calc-step-label">1. Longitud de Onda Mínima $\lambda_{\min}$</div>
             <div class="calc-step-subst">
-              $$\lambda_{\min} = \frac{1239.84187\text{ pm}\cdot\text{keV}}{80\text{ keV}} = \mathbf{15.498\text{ pm } (0.155\text{ \AA})}$$
+              $$\lambda_{\min} = \frac{1239.84187\text{ pm}\cdot\text{keV}}{80\text{ keV}} = \mathbf{15.498\text{ pm }
+              (0.155\text{ \AA})}$$
             </div>
           </div>
 
           <div class="calc-step-card">
             <div class="calc-step-label">2. Frecuencia Máxima de Radiación $\nu_{\max}$</div>
             <div class="calc-step-subst">
-              $$\nu_{\max} = \frac{c}{\lambda_{\min}} = \frac{2.9979 \times 10^8\text{ m/s}}{15.498 \times 10^{-12}\text{ m}} = 1.9344 \times 10^{19}\text{ Hz} = \mathbf{19.344\text{ EHz}}$$
+              $$\nu_{\max} = \frac{c}{\lambda_{\min}} = \frac{2.9979 \times 10^8\text{ m/s}}{15.498 \times
+              10^{-12}\text{ m}} = 1.9344 \times 10^{19}\text{ Hz} = \mathbf{19.344\text{ EHz}}$$
             </div>
             <p style="font-size: 10px; color: var(--glacier-text-muted);">1 EHz (Exahercio) = $10^{18}$ Hz.</p>
           </div>
@@ -894,75 +696,76 @@
     <article id="eq-6" class="equation-dossier-card">
       <div class="dossier-header">
         <div class="dossier-title-group">
-          <h2>6. Atenuación Espectral y Endurecimiento del Haz (Beer-Lambert)</h2>
-          <span>FILTRACIÓN EXPONENCIAL, CAPA HEMIRREDUCTORA (HVL) Y REDUCCIÓN DE DOSIS</span>
+          <h2>4. Radiación Característica y Ley de Moseley</h2>
+          <span>PRODUCCIÓN DE RAYOS X, TRANSICIONES ELECTRÓNICAS Y ESPECTRO DISCRETO</span>
         </div>
-        <span class="dossier-badge">Física Médica · Dosimetría</span>
+        <span class="dossier-badge">Física Médica · Física de Radiaciones</span>
       </div>
 
       <div class="dossier-grid">
         <div class="dossier-theory-section">
-          <h3>📖 Marco Teórico y Ley de Beer-Lambert</h3>
+          <h3>📖 Marco Teórico y Transiciones de Capas</h3>
           <p>
-            Al emerger del ánodo, el haz primario polienergético atraviesa la ventana de vidrio del tubo, el aceite aislante y los filtros añadidos de Aluminio (Al) y Cobre (Cu).
-          </p>
-          <p>
-            La atenuación de un haz de fotones con energía $E$ a través de capas sucesivas de materiales de espesor $x_i$ y coeficiente lineal de atenuación $\mu_i(E)$ viene descrita por la <strong>Ley de Beer-Lambert</strong>:
-          </p>
-
-          <div class="formula-display-box">
-            $$I(E) = I_0(E) \cdot \exp\left( - \sum_{i} \mu_i(E) \cdot x_i \right)$$
-            $$I(E) = I_0(E) \cdot e^{-\left( \mu_{\text{Al}}(E) x_{\text{Al}} + \mu_{\text{Cu}}(E) x_{\text{Cu}} + \mu_{\text{vidrio}}(E) x_{\text{vidrio}} \right)}$$
-          </div>
-
-          <h3>Endurecimiento del Haz y Capa Hemirreductora (HVL)</h3>
-          <p>
-            Debido a que el coeficiente fotoeléctrico decrece fuertemente con la energía ($\tau \propto Z^4 / E^3$), los filtros absorben preferencialmente los fotones de baja energía ("blandos"), que no contribuirían a la formación de la imagen y sólo aumentarían la dosis en piel del paciente. Esto provoca el <strong>endurecimiento del haz</strong> (<em>beam hardening</em>), desplazando la energía media $\bar{E}$ hacia valores superiores.
-          </p>
-          <p>
-            La <strong>Capa Hemirreductora (HVL)</strong> es el espesor de material (típicamente Aluminio) que reduce la intensidad total del haz a la mitad:
+            Si el electrón incidente posee energía suficiente para expulsar a un electrón ligado de las capas internas
+            del tungsteno (capa K), el átomo queda ionizado. Un electrón de una capa superior (capa L o M) cae a la
+            vacante disponible, emitiendo un fotón discreto de radiación característica:
           </p>
 
           <div class="formula-display-box">
-            $$\int_0^{E_{\max}} I(E) \cdot e^{-\mu_{\text{Al}}(E) \cdot \text{HVL}} \, dE = \frac{1}{2} \int_0^{E_{\max}} I(E) \, dE$$
+            $$h\nu = E_{\text{inicial}} - E_{\text{final}}$$
           </div>
+
+          <h3>Ley de Moseley y Líneas Espectrales</h3>
+          <p>
+            La frecuencia de estas líneas espectrales $K_{\alpha}$, $K_{\beta}$ se relaciona con el número atómico $Z$
+            del material del ánodo mediante la <strong>Ley de Moseley</strong>:
+          </p>
+
+          <div class="formula-display-box">
+            $$\sqrt{\nu} = R_k(Z - \sigma)$$
+          </div>
+
+          <p>
+            Donde $R_k$ es la constante de proporcionalidad espectral y $\sigma$ es la constante de apantallamiento
+            atómico.
+          </p>
         </div>
 
         <div class="dossier-calc-section">
           <div class="calc-section-title">
-            <span>📊 Cálculos Actuales de la Simulación</span>
-            <span class="badge badge-ok">Filtro: 2.5 mm Al</span>
+            <span>📊 Cálculos y Transiciones en el Ánodo</span>
+            <span class="badge badge-ok">Ánodo: Tungsteno (W, Z=74)</span>
           </div>
 
           <div class="calc-step-card">
-            <div class="calc-step-label">1. Espesores de Filtración Integrada</div>
-            <p>Filtro añadido de Aluminio: <strong>$x_{\text{Al}} = 2.5\text{ mm}$</strong></p>
-            <p>Filtro de Cobre añadido: <strong>$x_{\text{Cu}} = 0.00\text{ mm}$</strong></p>
-            <p>Filtración inherente (vidrio + aceite): <strong>$x_{\text{inh}} \approx 1.0\text{ mm Al eq.}$</strong></p>
+            <div class="calc-step-label">1. Energías de Enlace (Típicas para W)</div>
+            <p>Capa K (fundamental): <strong>$E_K \approx -69.5\text{ keV}$</strong></p>
+            <p>Capa L (superior): <strong>$E_L \approx -11.5\text{ keV}$</strong></p>
+            <p>Capa M (superior): <strong>$E_M \approx -2.5\text{ keV}$</strong></p>
           </div>
 
           <div class="calc-step-card">
-            <div class="calc-step-label">2. Corrimiento de la Energía Media $\bar{E}$</div>
+            <div class="calc-step-label">2. Emisión de Fotones Característicos</div>
             <div class="calc-step-subst">
-              $$\bar{E}_{\text{cruda}} = 32.40\text{ keV} \implies \bar{E}_{\text{filtrada}} = \mathbf{44.20\text{ keV}}$$
-              $$\Delta \bar{E}_{\text{endurecimiento}} = 44.20 - 32.40 = \mathbf{+11.80\text{ keV}}$$
+              $$h\nu (K_{\alpha}) = E_L - E_K \approx -11.5 - (-69.5) = \mathbf{58.0\text{ keV}}$$
+              $$h\nu (K_{\beta}) = E_M - E_K \approx -2.5 - (-69.5) = \mathbf{67.0\text{ keV}}$$
             </div>
           </div>
 
           <div class="calc-step-card">
-            <div class="calc-step-label">3. Capa Hemirreductora Resultante (HVL)</div>
+            <div class="calc-step-label">3. Ley de Moseley (Parámetros)</div>
             <div class="calc-step-subst">
-              $$\text{HVL}_{\text{Al}} = \mathbf{2.84\text{ mm Al}}$$
-              $$\text{Reducción de Dosis en Piel: } \mathbf{58.4\%}$$
+              $$\text{Número Atómico (W): } Z = \mathbf{74}$$
+              $$\text{Apantallamiento para Capa K: } \sigma \approx \mathbf{1.0}$$
             </div>
           </div>
 
           <div class="calc-result-box">
             <div>
-              <div style="font-size: 9px; font-weight: 700; color: var(--glacier-text-muted);">CAPA HEMIRREDUCTORA (HVL):</div>
-              <div class="calc-result-val">2.84 mm Al</div>
+              <div style="font-size: 9px; font-weight: 700; color: var(--glacier-text-muted);">ENERGÍA FOTÓN Kα:</div>
+              <div class="calc-result-val">58.0 keV</div>
             </div>
-            <span class="badge badge-ok">Ē = 44.2 keV</span>
+            <span class="badge badge-ok">Z = 74</span>
           </div>
         </div>
       </div>
@@ -972,12 +775,12 @@
 
   <!-- SCRIPT INTERACTIVO DEL NAVEGADOR DE ECUACIONES -->
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
       const navButtons = document.querySelectorAll('.eq-select-btn');
       const dossierCards = document.querySelectorAll('.equation-dossier-card');
 
       navButtons.forEach(btn => {
-        btn.addEventListener('click', function() {
+        btn.addEventListener('click', function () {
           const targetId = this.getAttribute('data-target');
 
           // Alternar botones
@@ -997,4 +800,5 @@
   </script>
 
 </body>
+
 </html>

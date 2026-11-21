@@ -14,6 +14,8 @@ import { generateLiveEquations, renderEquationsToDOM } from './physics/equations
 import { XRayTubeModel } from './render3d/tubeModel.js';
 import { ParticleAndWaveSimulation } from './render3d/particles3d.js';
 import { EMWaveInspector } from './render3d/emWaveInspector.js';
+import { FocusingCupSimulator } from './render3d/focusingCupSimulator.js';
+import { AtomicXRayInteractionSimulator } from './render3d/atomicInteractionSimulator.js';
 import { SpectrumOscilloscope } from './render2d/spectrumChart.js';
 import { LaboratoryAudioSynthesizer } from './audio/labSynth.js';
 
@@ -62,6 +64,8 @@ class XRayPhysicsLabApp {
     this.tubeModel = null;
     this.particleSim = null;
     this.emInspector = null;
+    this.cupSimulator = null;
+    this.atomicSimulator = null;
     this.oscilloscope = null;
 
     // Timing
@@ -82,6 +86,18 @@ class XRayPhysicsLabApp {
       this.initEMInspector();
     } catch (err) {
       console.error('initEMInspector error:', err);
+    }
+
+    try {
+      this.initFocusingCupSimulator();
+    } catch (err) {
+      console.error('initFocusingCupSimulator error:', err);
+    }
+
+    try {
+      this.initAtomicSimulator();
+    } catch (err) {
+      console.error('initAtomicSimulator error:', err);
     }
 
     try {
@@ -271,6 +287,170 @@ class XRayPhysicsLabApp {
     }
   }
 
+  initFocusingCupSimulator() {
+    try {
+      const el = document.getElementById('canvas-focusing-cup-container');
+      if (el) {
+        this.cupSimulator = new FocusingCupSimulator('canvas-focusing-cup-container');
+
+        // Botones de Modos de Visualización (Equipotenciales, Fuerza, Corte Sagital, Corte Copa 3D)
+        const btnEquipot = document.getElementById('btn-cup-equipot');
+        const btnForce = document.getElementById('btn-cup-force');
+        const btnSagittal = document.getElementById('btn-cup-sagittal');
+        const btnCutaway = document.getElementById('btn-cup-cutaway');
+
+        if (btnEquipot) {
+          btnEquipot.addEventListener('click', () => {
+            btnEquipot.classList.toggle('active');
+            this.cupSimulator.toggleEquipotentials(btnEquipot.classList.contains('active'));
+          });
+        }
+
+        if (btnForce) {
+          btnForce.addEventListener('click', () => {
+            btnForce.classList.toggle('active');
+            this.cupSimulator.toggleForceVectors(btnForce.classList.contains('active'));
+          });
+        }
+
+        if (btnSagittal) {
+          btnSagittal.addEventListener('click', () => {
+            btnSagittal.classList.toggle('active');
+            this.cupSimulator.toggleSagittalPlane(btnSagittal.classList.contains('active'));
+          });
+        }
+
+        if (btnCutaway) {
+          btnCutaway.addEventListener('click', () => {
+            btnCutaway.classList.toggle('active');
+            this.cupSimulator.toggleCutaway(btnCutaway.classList.contains('active'));
+          });
+        }
+
+        // Presets de Régimen de Polarización (Normal, Grid-bias, Dispersión)
+        const btnNormal = document.getElementById('btn-bias-normal');
+        const btnGrid = document.getElementById('btn-bias-grid');
+        const btnUnfocused = document.getElementById('btn-bias-unfocused');
+        const sliderBias = document.getElementById('slider-cup-bias');
+        const dispBiasVal = document.getElementById('disp-cup-bias-val');
+
+        const setBiasPreset = (mode, btnActive, val) => {
+          if (this.cupSimulator) this.cupSimulator.setBiasMode(mode);
+          [btnNormal, btnGrid, btnUnfocused].forEach(b => { if (b) b.classList.remove('active'); });
+          if (btnActive) btnActive.classList.add('active');
+          if (sliderBias) sliderBias.value = val;
+          if (dispBiasVal) dispBiasVal.innerText = (val >= 0 ? `+${val} V` : `${val} V`);
+        };
+
+        if (btnNormal) btnNormal.addEventListener('click', () => setBiasPreset('normal', btnNormal, 0));
+        if (btnGrid) btnGrid.addEventListener('click', () => setBiasPreset('grid', btnGrid, -250));
+        if (btnUnfocused) btnUnfocused.addEventListener('click', () => setBiasPreset('unfocused', btnUnfocused, 120));
+
+        if (sliderBias) {
+          sliderBias.addEventListener('input', (e) => {
+            const val = parseFloat(e.target.value);
+            if (dispBiasVal) dispBiasVal.innerText = (val >= 0 ? `+${val} V` : `${val} V`);
+            if (this.cupSimulator) this.cupSimulator.setBiasVoltage(val);
+            [btnNormal, btnGrid, btnUnfocused].forEach(b => { if (b) b.classList.remove('active'); });
+            if (val < -50 && btnGrid) btnGrid.classList.add('active');
+            else if (val > 50 && btnUnfocused) btnUnfocused.classList.add('active');
+            else if (Math.abs(val) <= 50 && btnNormal) btnNormal.classList.add('active');
+          });
+        }
+
+        // Selector de Filamento (Foco Fino 0.6 mm vs Foco Grueso 1.2 mm)
+        const btnFine = document.getElementById('btn-cup-focal-fine');
+        const btnBroad = document.getElementById('btn-cup-focal-broad');
+
+        const setFocalMode = (mode, btnActive) => {
+          if (this.cupSimulator) this.cupSimulator.setFocalSpotMode(mode);
+          [btnFine, btnBroad].forEach(b => { if (b) b.classList.remove('active'); });
+          if (btnActive) btnActive.classList.add('active');
+          this.state.focalSpotKey = mode;
+          this.computePhysics();
+          this.updateHUD();
+          this.updateEquations();
+        };
+
+        if (btnFine) btnFine.addEventListener('click', () => setFocalMode('fine', btnFine));
+        if (btnBroad) btnBroad.addEventListener('click', () => setFocalMode('broad', btnBroad));
+      }
+    } catch (err) {
+      console.error('FocusingCupSimulator Init Error:', err);
+    }
+  }
+
+  initAtomicSimulator() {
+    try {
+      const el = document.getElementById('canvas-atomic-interaction-container');
+      if (el) {
+        this.atomicSimulator = new AtomicXRayInteractionSimulator('canvas-atomic-interaction-container');
+
+        // Modos: Automático, Frenado (Brems), Kα, Kβ
+        const btnAuto = document.getElementById('btn-atom-mode-auto');
+        const btnBrems = document.getElementById('btn-atom-mode-brems');
+        const btnKalpha = document.getElementById('btn-atom-mode-kalpha');
+        const btnKbeta = document.getElementById('btn-atom-mode-kbeta');
+
+        const setAtomMode = (mode, activeBtn) => {
+          if (this.atomicSimulator) this.atomicSimulator.setSimMode(mode);
+          [btnAuto, btnBrems, btnKalpha, btnKbeta].forEach(b => { if (b) b.classList.remove('active'); });
+          if (activeBtn) activeBtn.classList.add('active');
+        };
+
+        if (btnAuto) btnAuto.addEventListener('click', () => setAtomMode('auto', btnAuto));
+        if (btnBrems) btnBrems.addEventListener('click', () => {
+          setAtomMode('brems', btnBrems);
+          if (this.atomicSimulator) this.atomicSimulator.triggerBremsstrahlungEvent(0.5);
+        });
+        if (btnKalpha) btnKalpha.addEventListener('click', () => {
+          setAtomMode('kalpha', btnKalpha);
+          if (this.atomicSimulator) this.atomicSimulator.triggerCharacteristicEvent('K_alpha');
+        });
+        if (btnKbeta) btnKbeta.addEventListener('click', () => {
+          setAtomMode('kbeta', btnKbeta);
+          if (this.atomicSimulator) this.atomicSimulator.triggerCharacteristicEvent('K_beta');
+        });
+
+        // Disparadores manuales
+        const btnTrigBrems = document.getElementById('btn-atom-trigger-brems');
+        const btnTrigKalpha = document.getElementById('btn-atom-trigger-kalpha');
+        const btnTrigKbeta = document.getElementById('btn-atom-trigger-kbeta');
+
+        if (btnTrigBrems) btnTrigBrems.addEventListener('click', () => {
+          if (this.atomicSimulator) this.atomicSimulator.triggerBremsstrahlungEvent(0.35 + Math.random() * 0.4);
+        });
+        if (btnTrigKalpha) btnTrigKalpha.addEventListener('click', () => {
+          if (this.atomicSimulator) this.atomicSimulator.triggerCharacteristicEvent('K_alpha');
+        });
+        if (btnTrigKbeta) btnTrigKbeta.addEventListener('click', () => {
+          if (this.atomicSimulator) this.atomicSimulator.triggerCharacteristicEvent('K_beta');
+        });
+
+        // Selector de material del blanco
+        const btnMatW = document.getElementById('btn-atom-mat-w');
+        const btnMatMo = document.getElementById('btn-atom-mat-mo');
+        const btnMatRh = document.getElementById('btn-atom-mat-rh');
+
+        const setAtomMat = (matKey, activeBtn) => {
+          if (this.atomicSimulator) this.atomicSimulator.setTargetMaterial(matKey);
+          [btnMatW, btnMatMo, btnMatRh].forEach(b => { if (b) b.classList.remove('active'); });
+          if (activeBtn) activeBtn.classList.add('active');
+          this.state.targetMatKey = matKey;
+          this.computePhysics();
+          this.updateHUD();
+          this.updateEquations();
+        };
+
+        if (btnMatW) btnMatW.addEventListener('click', () => setAtomMat('W', btnMatW));
+        if (btnMatMo) btnMatMo.addEventListener('click', () => setAtomMat('Mo', btnMatMo));
+        if (btnMatRh) btnMatRh.addEventListener('click', () => setAtomMat('Rh', btnMatRh));
+      }
+    } catch (err) {
+      console.error('AtomicSimulator Init Error:', err);
+    }
+  }
+
   /**
    * Evaluates comprehensive coupled radiological physics.
    */
@@ -333,6 +513,16 @@ class XRayPhysicsLabApp {
     if (this.emInspector) {
       this.emInspector.updatePhysicsParameters(this.currentPhysics, this.state.isExposing, this.state.timeScale);
     }
+
+    // Update Independent 3D Focusing Cup Potential Simulator
+    if (this.cupSimulator) {
+      this.cupSimulator.updatePhysicsParameters(this.currentPhysics, this.state.isExposing, this.state.timeScale, this.state.focalSpotKey);
+    }
+
+    // Update Independent 3D Atomic Interaction Simulator (Bremsstrahlung vs Característica)
+    if (this.atomicSimulator) {
+      this.atomicSimulator.updatePhysicsParameters(this.currentPhysics, this.state.isExposing, this.state.timeScale);
+    }
   }
 
   /**
@@ -378,6 +568,11 @@ class XRayPhysicsLabApp {
     // Power & Efficiency
     this.setDOMText('hud-power', `${(p.energyBalance.totalElectricalPowerWatts / 1000).toFixed(2)} kW`);
     this.setDOMText('hud-efficiency', `η = ${p.energyBalance.efficiencyPercent.toFixed(3)}% (Calor: ${p.energyBalance.heatFractionPercent.toFixed(2)}%)`);
+
+    // Useful vs Scatter radiation distribution
+    const usefulPercent = 1.0 + (p.kVp / 150.0) * 0.8;
+    const scatterPercent = 100.0 - usefulPercent;
+    this.setDOMText('hud-scatter-ratio', `Útil: ~${usefulPercent.toFixed(1)}% | Fuga/Disp: ~${scatterPercent.toFixed(1)}%`);
 
     // Exposure State Banner & LEDs
     const expBanner = document.getElementById('exposure-status-banner');
@@ -435,6 +630,10 @@ class XRayPhysicsLabApp {
         audioBtn.className = isAudioActive ? 'btn-lab-util btn-audio-active' : 'btn-lab-util';
       });
     }
+
+    // 2.5 Panel de Control Desplegable y Pantalla Completa
+    this.initSidebarToggle();
+    this.initFullscreenControls();
 
     // 3. kVp Controls (20 to 150)
     this.bindRangeWithSteppers({
@@ -632,6 +831,8 @@ class XRayPhysicsLabApp {
     const checkVectors = document.getElementById('toggle-vectors');
     const checkDarkroom = document.getElementById('toggle-darkroom');
 
+    const checkScatter = document.getElementById('toggle-scatter');
+
     if (checkGlass) {
       checkGlass.addEventListener('change', (e) => {
         if (this.tubeModel) this.tubeModel.setSubsystemVisibility('glassEnvelope', e.target.checked);
@@ -657,6 +858,11 @@ class XRayPhysicsLabApp {
         if (this.particleSim) this.particleSim.setToggles({ showWaves: e.target.checked });
       });
     }
+    if (checkScatter) {
+      checkScatter.addEventListener('change', (e) => {
+        if (this.particleSim) this.particleSim.setToggles({ showScatter: e.target.checked });
+      });
+    }
     if (checkVectors) {
       checkVectors.addEventListener('change', (e) => {
         if (this.particleSim) this.particleSim.setToggles({ showVectorInspector: e.target.checked });
@@ -670,6 +876,25 @@ class XRayPhysicsLabApp {
         }
       });
     }
+
+    // Botones de Modo de Radiación 3D (Haz + Dispersión, Solo Haz Útil, Solo Dispersión)
+    const btnWavesAll = document.getElementById('btn-waves-all');
+    const btnWavesUseful = document.getElementById('btn-waves-useful');
+    const btnWavesScatter = document.getElementById('btn-waves-scatter');
+
+    const setWavesMode = (mode, activeBtn) => {
+      if (this.particleSim) {
+        this.particleSim.setToggles({ scatterMode: mode });
+      }
+      [btnWavesAll, btnWavesUseful, btnWavesScatter].forEach(b => { if (b) b.classList.remove('active'); });
+      if (activeBtn) activeBtn.classList.add('active');
+      if (checkWaves) checkWaves.checked = (mode === 'all' || mode === 'useful');
+      if (checkScatter) checkScatter.checked = (mode === 'all' || mode === 'scatter');
+    };
+
+    if (btnWavesAll) btnWavesAll.addEventListener('click', () => setWavesMode('all', btnWavesAll));
+    if (btnWavesUseful) btnWavesUseful.addEventListener('click', () => setWavesMode('useful', btnWavesUseful));
+    if (btnWavesScatter) btnWavesScatter.addEventListener('click', () => setWavesMode('scatter', btnWavesScatter));
   }
 
   initLogbook() {
@@ -796,6 +1021,166 @@ class XRayPhysicsLabApp {
     if (this.emInspector) {
       this.emInspector.resize();
     }
+
+    if (this.cupSimulator) {
+      this.cupSimulator.resize();
+    }
+
+    if (this.atomicSimulator) {
+      this.atomicSimulator.resize();
+    }
+  }
+
+  /**
+   * Alterna el despliegue del Panel de Control lateral para permitir que los
+   * modelos 3D y el osciloscopio ocupen el 100% del ancho disponible.
+   */
+  toggleSidebar(forceState) {
+    const mainLayout = document.querySelector('.lab-main-layout');
+    const toggleBtn = document.getElementById('btn-toggle-sidebar');
+    if (!mainLayout) return;
+
+    const isCurrentlyCollapsed = mainLayout.classList.contains('sidebar-collapsed');
+    const willCollapse = (forceState !== undefined) ? forceState : !isCurrentlyCollapsed;
+
+    if (willCollapse) {
+      mainLayout.classList.add('sidebar-collapsed');
+      document.body.classList.add('sidebar-is-collapsed');
+      if (toggleBtn) {
+        toggleBtn.innerHTML = '◨ MOSTRAR PANEL';
+        toggleBtn.classList.add('active-collapsed');
+        toggleBtn.title = 'Desplegar Panel de Control Radiológico';
+      }
+    } else {
+      mainLayout.classList.remove('sidebar-collapsed');
+      document.body.classList.remove('sidebar-is-collapsed');
+      if (toggleBtn) {
+        toggleBtn.innerHTML = '◧ OCULTAR PANEL';
+        toggleBtn.classList.remove('active-collapsed');
+        toggleBtn.title = 'Ocultar Panel de Control para ampliar los modelos 3D al 100%';
+      }
+    }
+
+    // Reajustar dimensiones de todos los renderers WebGL y Canvas 2D
+    this.handleWindowResize();
+    window.dispatchEvent(new Event('resize'));
+    setTimeout(() => {
+      this.handleWindowResize();
+      window.dispatchEvent(new Event('resize'));
+    }, 60);
+    setTimeout(() => {
+      this.handleWindowResize();
+      window.dispatchEvent(new Event('resize'));
+    }, 320);
+  }
+
+  initSidebarToggle() {
+    const toggleBtn = document.getElementById('btn-toggle-sidebar');
+    if (toggleBtn) {
+      toggleBtn.addEventListener('click', () => this.toggleSidebar());
+    }
+
+    const collapseRackBtn = document.getElementById('btn-collapse-rack');
+    if (collapseRackBtn) {
+      collapseRackBtn.addEventListener('click', () => this.toggleSidebar(true));
+    }
+
+    const floatingOpenBtn = document.getElementById('btn-floating-open-rack');
+    if (floatingOpenBtn) {
+      floatingOpenBtn.addEventListener('click', () => this.toggleSidebar(false));
+    }
+  }
+
+  initFullscreenControls() {
+    // 1. Alternador global de pantalla completa para el laboratorio
+    const fsLabBtn = document.getElementById('btn-fullscreen-lab');
+    if (fsLabBtn) {
+      fsLabBtn.addEventListener('click', () => {
+        const fsEl = document.fullscreenElement || document.webkitFullscreenElement;
+        if (!fsEl) {
+          const el = document.documentElement;
+          if (el.requestFullscreen) {
+            el.requestFullscreen().catch(err => console.warn('Fullscreen err:', err));
+          } else if (el.webkitRequestFullscreen) {
+            el.webkitRequestFullscreen();
+          }
+        } else {
+          if (document.exitFullscreen) {
+            document.exitFullscreen().catch(err => console.warn('Exit fullscreen err:', err));
+          } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+          }
+        }
+      });
+    }
+
+    // 2. Botones individuales de pantalla completa por tarjeta
+    const cardFsButtons = document.querySelectorAll('.btn-card-fullscreen');
+    cardFsButtons.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const card = btn.closest('.viewport-card, .oscilloscope-card');
+        if (!card) return;
+
+        const currentFs = document.fullscreenElement || document.webkitFullscreenElement;
+        if (currentFs === card) {
+          if (document.exitFullscreen) {
+            document.exitFullscreen().catch(err => console.warn('Exit card fullscreen:', err));
+          } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+          }
+        } else {
+          if (card.requestFullscreen) {
+            card.requestFullscreen().catch(err => console.warn('Card requestFullscreen:', err));
+          } else if (card.webkitRequestFullscreen) {
+            card.webkitRequestFullscreen();
+          }
+        }
+      });
+    });
+
+    // 3. Listener centralizado de cambio de pantalla completa
+    const onFullscreenChange = () => {
+      const fsEl = document.fullscreenElement || document.webkitFullscreenElement;
+      const isFs = !!fsEl;
+
+      if (fsLabBtn) {
+        if (isFs && fsEl === document.documentElement) {
+          fsLabBtn.innerHTML = '🗗 SALIR PANTALLA';
+          fsLabBtn.classList.add('active');
+          fsLabBtn.title = 'Salir del modo pantalla completa';
+        } else {
+          fsLabBtn.innerHTML = '⛶ PANTALLA COMPLETA';
+          fsLabBtn.classList.remove('active');
+          fsLabBtn.title = 'Alternar modo pantalla completa en el laboratorio';
+        }
+      }
+
+      // Actualizar iconos de botones de tarjeta
+      document.querySelectorAll('.btn-card-fullscreen').forEach(btn => {
+        const card = btn.closest('.viewport-card, .oscilloscope-card');
+        if (isFs && fsEl === card) {
+          btn.innerHTML = '🗗';
+          btn.title = 'Restaurar tamaño normal';
+        } else {
+          btn.innerHTML = '⛶';
+          btn.title = 'Pantalla completa para este modelo';
+        }
+      });
+
+      // Recalcular dimensiones para WebGL y Canvas 2D
+      setTimeout(() => {
+        this.handleWindowResize();
+        window.dispatchEvent(new Event('resize'));
+      }, 80);
+      setTimeout(() => {
+        this.handleWindowResize();
+        window.dispatchEvent(new Event('resize'));
+      }, 300);
+    };
+
+    document.addEventListener('fullscreenchange', onFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', onFullscreenChange);
   }
 
   /**
@@ -844,6 +1229,20 @@ class XRayPhysicsLabApp {
     try {
       if (this.emInspector) {
         this.emInspector.update(deltaSec);
+      }
+    } catch (e) { }
+
+    // 4c. Focusing Cup Potential & Electrostatic Lens Simulator Update
+    try {
+      if (this.cupSimulator) {
+        this.cupSimulator.update(deltaSec);
+      }
+    } catch (e) { }
+
+    // 4d. Atomic X-Ray Interaction Simulator (Bremsstrahlung & Característica)
+    try {
+      if (this.atomicSimulator) {
+        this.atomicSimulator.update(deltaSec);
       }
     } catch (e) { }
 
